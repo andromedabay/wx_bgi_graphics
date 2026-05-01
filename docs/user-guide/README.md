@@ -1,7 +1,9 @@
-# User Guide
+\page user_guide User Guide
 
 This guide is for programmers who want to build, run, and use
 `wx_BGI_Graphics` as an application/library dependency.
+
+\tableofcontents
 
 ## Start Here
 
@@ -31,6 +33,6 @@ This guide is for programmers who want to build, run, and use
 
 ## Related Guides
 
-- Return to the **[project README](../../README.md)**
+- Return to the project README in the repository root
 - For internal build, test, and design details, see the
   **[Developer Guide](../developer-guide/README.md)**

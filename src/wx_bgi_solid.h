@@ -50,6 +50,9 @@ BGI_API void BGI_CALL wxbgi_solid_set_face_color(int color);
 
 /**
  * Draw an axis-aligned box centred at (cx, cy, cz).
+ * @param cx      World-space X coordinate of the box centre.
+ * @param cy      World-space Y coordinate of the box centre.
+ * @param cz      World-space Z coordinate of the box centre.
  * @param width   Extent along the world X axis.
  * @param depth   Extent along the world Y axis.
  * @param height  Extent along the world Z axis.
@@ -60,6 +63,9 @@ BGI_API void BGI_CALL wxbgi_solid_box(
 
 /**
  * Draw a UV sphere centred at (cx, cy, cz).
+ * @param cx      World-space X coordinate of the sphere centre.
+ * @param cy      World-space Y coordinate of the sphere centre.
+ * @param cz      World-space Z coordinate of the sphere centre.
  * @param radius  Sphere radius in world units.
  * @param slices  Longitude subdivisions (≥3).
  * @param stacks  Latitude subdivisions (≥2).
@@ -70,6 +76,9 @@ BGI_API void BGI_CALL wxbgi_solid_sphere(
 
 /**
  * Draw a Z-aligned cylinder centred at (cx, cy, cz).
+ * @param cx      World-space X coordinate of the cylinder centre.
+ * @param cy      World-space Y coordinate of the cylinder centre.
+ * @param cz      World-space Z coordinate of the cylinder centre.
  * @param radius  Cylinder radius.
  * @param height  Total height along Z.
  * @param slices  Circumference subdivisions (≥3).
@@ -82,6 +91,9 @@ BGI_API void BGI_CALL wxbgi_solid_cylinder(
 
 /**
  * Draw a Z-aligned cone.  Base is at (cx, cy, cz), apex at (cx, cy, cz+height).
+ * @param cx      World-space X coordinate of the cone base centre.
+ * @param cy      World-space Y coordinate of the cone base centre.
+ * @param cz      World-space Z coordinate of the cone base centre.
  * @param radius  Base radius.
  * @param height  Height along Z.
  * @param slices  Circumference subdivisions (≥3).
@@ -94,6 +106,9 @@ BGI_API void BGI_CALL wxbgi_solid_cone(
 
 /**
  * Draw a torus (donut) centred at (cx, cy, cz) in the XY plane.
+ * @param cx       World-space X coordinate of the torus centre.
+ * @param cy       World-space Y coordinate of the torus centre.
+ * @param cz       World-space Z coordinate of the torus centre.
  * @param major_r  Distance from torus centre to tube centre.
  * @param minor_r  Tube radius.
  * @param rings    Segments around the main axis (≥3).

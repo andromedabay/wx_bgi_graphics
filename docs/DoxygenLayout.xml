@@ -4,8 +4,6 @@
   <!-- Navigation index tabs for HTML output -->
   <navindex>
     <tab type="mainpage" visible="yes" title="Main Page"/>
-    <tab type="section" refid="user-guide" title="User-Guide" />
-    <tab type="section" refid="developer-guide" title="Developer-Guide" />
     <tab type="pages" visible="yes" title="" intro=""/>
     <tab type="topics" visible="yes" title="Topics" intro=""/>
     <tab type="modules" visible="yes" title="" intro="">

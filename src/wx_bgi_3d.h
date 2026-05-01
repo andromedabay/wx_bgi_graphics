@@ -87,6 +87,9 @@ BGI_API const char *BGI_CALL wxbgi_cam_get_active(void);
 /**
  * @brief Sets the eye (camera position) in world space.
  * @param name Camera name, or NULL for the active camera.
+ * @param x    World-space X coordinate of the eye position.
+ * @param y    World-space Y coordinate of the eye position.
+ * @param z    World-space Z coordinate of the eye position.
  */
 BGI_API void BGI_CALL wxbgi_cam_set_eye(const char *name,
                                          float x, float y, float z);
@@ -94,6 +97,9 @@ BGI_API void BGI_CALL wxbgi_cam_set_eye(const char *name,
 /**
  * @brief Sets the look-at target in world space.
  * @param name Camera name, or NULL for the active camera.
+ * @param x    World-space X coordinate of the target point.
+ * @param y    World-space Y coordinate of the target point.
+ * @param z    World-space Z coordinate of the target point.
  */
 BGI_API void BGI_CALL wxbgi_cam_set_target(const char *name,
                                             float x, float y, float z);
@@ -101,6 +107,9 @@ BGI_API void BGI_CALL wxbgi_cam_set_target(const char *name,
 /**
  * @brief Sets the up vector.  For Z-up worlds use (0, 0, 1).
  * @param name Camera name, or NULL for the active camera.
+ * @param x    X component of the up vector.
+ * @param y    Y component of the up vector.
+ * @param z    Z component of the up vector.
  */
 BGI_API void BGI_CALL wxbgi_cam_set_up(const char *name,
                                         float x, float y, float z);
@@ -191,18 +200,21 @@ BGI_API void BGI_CALL wxbgi_cam_set_screen_viewport(const char *name,
 /**
  * @brief Writes the view matrix into @p out16 (column-major float[16]).
  * @param name Camera name, or NULL for the active camera.
+ * @param out16 Output buffer receiving 16 floats in column-major order.
  */
 BGI_API void BGI_CALL wxbgi_cam_get_view_matrix(const char *name, float *out16);
 
 /**
  * @brief Writes the projection matrix into @p out16 (column-major float[16]).
  * @param name Camera name, or NULL for the active camera.
+ * @param out16 Output buffer receiving 16 floats in column-major order.
  */
 BGI_API void BGI_CALL wxbgi_cam_get_proj_matrix(const char *name, float *out16);
 
 /**
  * @brief Writes the combined view-projection matrix into @p out16.
  * @param name Camera name, or NULL for the active camera.
+ * @param out16 Output buffer receiving 16 floats in column-major order.
  */
 BGI_API void BGI_CALL wxbgi_cam_get_vp_matrix(const char *name, float *out16);
 
@@ -277,12 +289,16 @@ BGI_API int BGI_CALL wxbgi_cam2d_create(const char *name);
 /**
  * @brief Sets the 2-D camera pan (world-space centre of the view).
  * @param name Camera name, or NULL for the active camera.
+ * @param x    World-space X coordinate of the 2-D view centre.
+ * @param y    World-space Y coordinate of the 2-D view centre.
  */
 BGI_API void BGI_CALL wxbgi_cam2d_set_pan(const char *name, float x, float y);
 
 /**
  * @brief Pans the 2-D camera by a world-space delta.
  * @param name Camera name, or NULL for the active camera.
+ * @param dx   World-space X delta to add to the current pan.
+ * @param dy   World-space Y delta to add to the current pan.
  */
 BGI_API void BGI_CALL wxbgi_cam2d_pan_by(const char *name, float dx, float dy);
 
@@ -291,6 +307,7 @@ BGI_API void BGI_CALL wxbgi_cam2d_pan_by(const char *name, float dx, float dy);
  *
  * The zoom is clamped to a minimum of 1e-6 to prevent division by zero.
  * @param name Camera name, or NULL for the active camera.
+ * @param zoom New zoom factor (1 = nominal, 2 = 2× magnification).
  */
 BGI_API void BGI_CALL wxbgi_cam2d_set_zoom(const char *name, float zoom);
 
@@ -395,6 +412,9 @@ BGI_API const char *BGI_CALL wxbgi_ucs_get_active(void);
 /**
  * @brief Sets the origin of a UCS in world space.
  * @param name   UCS name, or NULL for the active UCS.
+ * @param ox     World-space X coordinate of the UCS origin.
+ * @param oy     World-space Y coordinate of the UCS origin.
+ * @param oz     World-space Z coordinate of the UCS origin.
  */
 BGI_API void BGI_CALL wxbgi_ucs_set_origin(const char *name,
                                             float ox, float oy, float oz);
@@ -449,6 +469,7 @@ BGI_API void BGI_CALL wxbgi_ucs_align_to_plane(const char *name,
 /**
  * @brief Writes the local-to-world matrix into @p out16 (column-major float[16]).
  * @param name UCS name, or NULL for the active UCS.
+ * @param out16 Output buffer receiving 16 floats in column-major order.
  */
 BGI_API void BGI_CALL wxbgi_ucs_get_local_to_world_matrix(const char *name,
                                                            float *out16);
@@ -456,6 +477,7 @@ BGI_API void BGI_CALL wxbgi_ucs_get_local_to_world_matrix(const char *name,
 /**
  * @brief Writes the world-to-local matrix into @p out16 (column-major float[16]).
  * @param name UCS name, or NULL for the active UCS.
+ * @param out16 Output buffer receiving 16 floats in column-major order.
  */
 BGI_API void BGI_CALL wxbgi_ucs_get_world_to_local_matrix(const char *name,
                                                            float *out16);
@@ -581,7 +603,13 @@ BGI_API void BGI_CALL wxbgi_world_line(float x1, float y1, float z1,
 BGI_API void BGI_CALL wxbgi_world_circle(float cx, float cy, float cz, float radius);
 
 /** @brief Draws an ellipse arc (world-space centre, world-unit semi-axes rx/ry).
- *  @param startAngle  Arc start in degrees (0=right, CCW).  @param endAngle  Arc end. */
+ *  @param cx          World-space X coordinate of the ellipse centre.
+ *  @param cy          World-space Y coordinate of the ellipse centre.
+ *  @param cz          World-space Z coordinate of the ellipse centre.
+ *  @param rx          World-unit semi-axis along the projected world X direction.
+ *  @param ry          World-unit semi-axis along the projected world Y direction.
+ *  @param startAngle  Arc start in degrees (0=right, CCW).
+ *  @param endAngle    Arc end angle in degrees. */
 BGI_API void BGI_CALL wxbgi_world_ellipse(float cx, float cy, float cz,
                                            float rx, float ry,
                                            int startAngle, int endAngle);
@@ -591,7 +619,8 @@ BGI_API void BGI_CALL wxbgi_world_rectangle(float x1, float y1, float z1,
                                              float x2, float y2, float z2);
 
 /** @brief Draws an open polyline through world-space points.
- *  @param xyzTriplets  Flat (x,y,z) array; length = pointCount*3. */
+ *  @param xyzTriplets  Flat (x,y,z) array; length = pointCount*3.
+ *  @param pointCount   Number of points represented in @p xyzTriplets. */
 BGI_API void BGI_CALL wxbgi_world_polyline(const float *xyzTriplets, int pointCount);
 
 /** @brief Draws and fills a closed polygon through world-space points.
@@ -617,7 +646,9 @@ BGI_API void BGI_CALL wxbgi_ucs_circle(const char *ucsName,
                                         float cx, float cy, float cz, float radius);
 
 /** @brief Draws an open polyline through UCS-local points.  NULL ucsName = active UCS.
- *  @param xyzTriplets  Flat (x,y,z) array in UCS local space. */
+ *  @param ucsName      UCS name, or NULL for the active UCS.
+ *  @param xyzTriplets  Flat (x,y,z) array in UCS local space.
+ *  @param pointCount   Number of points represented in @p xyzTriplets. */
 BGI_API void BGI_CALL wxbgi_ucs_polyline(const char *ucsName,
                                           const float *xyzTriplets, int pointCount);
 

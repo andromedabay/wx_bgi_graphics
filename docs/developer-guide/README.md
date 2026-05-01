@@ -1,7 +1,9 @@
-# Developer Guide
+\page developer_guide Developer Guide
 
 This guide is for contributors and programmers who want to understand how the
 project is built, tested, documented, and organized internally.
+
+\tableofcontents
 
 ## Build, Tooling, and Quality
 
@@ -25,6 +27,6 @@ project is built, tested, documented, and organized internally.
 
 ## Related Guides
 
-- Return to the **[project README](../../README.md)**
+- Return to the project README in the repository root
 - For public feature usage and tutorials, see the
   **[User Guide](../user-guide/README.md)**

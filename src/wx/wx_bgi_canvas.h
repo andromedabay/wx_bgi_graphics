@@ -59,10 +59,10 @@ protected:
      * shared BGI scratch buffer.  Because wx paint events are sequential on
      * the main thread, the scratch buffer is safe to reuse across panels.
      *
-     * @param w  Logical pixel width  of this canvas.
-     * @param h  Logical pixel height of this canvas.
+     * @param w Logical pixel width of this canvas.
+     * @param h Logical pixel height of this canvas.
      */
-    virtual void PreBlit(int /*w*/, int /*h*/) {}
+    virtual void PreBlit(int w, int h) { (void)w; (void)h; }
 
     /**
      * @brief Called AFTER @c wxbgi_wx_render_page_gl_vp() and all 3-D solid
@@ -72,10 +72,15 @@ protected:
      * UCS axes) on top of 3-D solid geometry.  Typically implemented by
      * calling @c wxbgi_wx_render_overlays_for_camera() for this panel's camera.
      *
-     * @param pageW,pageH  Logical BGI page dimensions.
-     * @param vpW,vpH      Physical framebuffer dimensions (may differ on HiDPI).
+     * @param pageW Logical BGI page width.
+     * @param pageH Logical BGI page height.
+     * @param vpW   Physical framebuffer width (may differ on HiDPI).
+     * @param vpH   Physical framebuffer height (may differ on HiDPI).
      */
-    virtual void PostBlit(int /*pageW*/, int /*pageH*/, int /*vpW*/, int /*vpH*/) {}
+    virtual void PostBlit(int pageW, int pageH, int vpW, int vpH)
+    {
+        (void)pageW; (void)pageH; (void)vpW; (void)vpH;
+    }
 
 private:
     wxGLContext* m_glContext{nullptr};   ///< Points to the process-wide shared context.

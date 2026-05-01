@@ -5,7 +5,7 @@ content into Doxygen to generate HTML and PDF output.
 
 ## Source of Truth
 
-- The main landing page is **[README.md](../../README.md)**
+- The main landing page is the repository `README.md`
 - Guide landing pages live under:
   - `docs/user-guide/`
   - `docs/developer-guide/`
