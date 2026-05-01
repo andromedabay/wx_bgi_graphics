@@ -1,3 +1,5 @@
+\mainpage wx_BGI_Graphics
+
 # wx_BGI_Graphics
 
 `wx_BGI_Graphics` is a cross-platform shared library that keeps the classic
@@ -16,7 +18,9 @@ solids, embedded wxWidgets canvases, and optional OpenLB-oriented live viewing.
 3. Hide most OpenGL complexity behind a small and stable API surface.
 4. Provide both classic BGI calls and optional modern extension APIs.
 5. Support both lightweight standalone windows and richer wxWidgets embedding.
-6. Support [OpenLB](https://www.openlb.net/) integration through DDS metadata, material-sampling helpers, and live visualization. OpenLB itself is not included in this shared-lib.
+6. Support [OpenLB](https://www.openlb.net/) integration through DDS metadata,
+   material-sampling helpers, and live visualization. OpenLB itself is not
+   included in this shared-lib.
 
 ## Highlights
 
@@ -57,21 +61,28 @@ tools include Doxygen, LaTeX/MiKTeX, FreePascal, and Python 3.
 
 The documentation is organized into two main hierarchies.
 
+\section user-guide User-Guide
+
 Start here if you want to build the library, run it, and use its public
 features in applications.
 
-- **[User Guide index](./docs/user-guide/README.md)**
-- **[Getting Started](./docs/user-guide/getting-started.md)**
+\subpage user_guide
+
+- **[User Guide index](./user-guide/README.md)**
+- **[Getting Started](./user-guide/getting-started.md)**
+
+\section developer-guide Developer-Guide
 
 Start here if you want to understand how the project is built, how the major
 subsystems are organized, how tests are structured, and how the docs pipeline is
 generated.
 
-- **[Developer Guide index](./docs/developer-guide/README.md)**
-- **[Architecture Overview](./docs/developer-guide/architecture-overview.md)**
-- **[OpenLB Bridge Plan](./docs/developer-guide/openlb-bridge-plan.md)**
-- **[Documentation Pipeline](./docs/developer-guide/documentation-pipeline.md)**
+\subpage developer_guide
 
+- **[Developer Guide index](./developer-guide/README.md)**
+- **[Architecture Overview](./developer-guide/architecture-overview.md)**
+- **[OpenLB Bridge Plan](./developer-guide/openlb-bridge-plan.md)**
+- **[Documentation Pipeline](./developer-guide/documentation-pipeline.md)**
 
 ## Public Headers
 
@@ -86,12 +97,12 @@ generated.
 
 ## Quick Orientation
 
-- New users should begin with **[Getting Started](./docs/user-guide/getting-started.md)**.
-- For animation/page-buffer workflow, read **[Tutorial.md](./docs/user-guide/Tutorial.md)**.
-- For retained scenes and composition, read **[DDS.md](./docs/DDS.md)** and
-  **[Object-Operation.md](./docs/Object-Operation.md)**.
+- New users should begin with **[Getting Started](./user-guide/getting-started.md)**.
+- For animation/page-buffer workflow, read **[Tutorial.md](./user-guide/Tutorial.md)**.
+- For retained scenes and composition, read **[DDS.md](./DDS.md)** and
+  **[Object-Operation.md](./Object-Operation.md)**.
 - For DDS-to-OpenLB authoring and viewer integration, read
-  **[OpenLB-Support.md](./docs/user-guide/OpenLB-Support.md)**.
+  **[OpenLB-Support.md](./user-guide/OpenLB-Support.md)**.
 - For build, testing, and design internals, use the **Developer Guide**.
 
 ## OpenLB Status
@@ -105,5 +116,5 @@ validation currently requires a Linux, macOS, or WSL-style toolchain.
 
 ## Screenshot Gallery
 
-See **[ScreenShots.md](./docs/user-guide/ScreenShots.md)** for example output and reference
-images from the current demos.
+See **[ScreenShots.md](./user-guide/ScreenShots.md)** for example output and
+reference images from the current demos.

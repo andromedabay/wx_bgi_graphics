@@ -5,7 +5,7 @@ content into Doxygen to generate HTML and PDF output.
 
 ## Source of Truth
 
-- The main landing page is **[README.md](../../README.md)**
+- The main landing page is the repository `README.md`
 - Guide landing pages live under:
   - `docs/user-guide/`
   - `docs/developer-guide/`
@@ -57,5 +57,5 @@ When restructuring docs:
 
 ## Related Pages
 
-- **[Building.md](./Building.md)** for current doc build commands
+- **Building.md** for current doc build commands
 - **[Developer Guide index](./README.md)** for the rest of the internal docs

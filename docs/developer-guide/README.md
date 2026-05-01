@@ -1,13 +1,15 @@
-# Developer Guide
+\page developer_guide Developer Guide
 
 This guide is for contributors and programmers who want to understand how the
 project is built, tested, documented, and organized internally.
+
+\tableofcontents
 
 ## Build, Tooling, and Quality
 
 | Topic | Description |
 |---|---|
-| **[Building.md](./Building.md)** | Dependencies, CMake flags, platform-specific build notes, output paths, and documentation build targets |
+| **Building.md** | Dependencies, CMake flags, platform-specific build notes, output paths, and documentation build targets |
 | **[Tests.md](./Tests.md)** | Test catalog, categories, platform notes, and security/test-seam rules |
 | **[Documentation Pipeline](./documentation-pipeline.md)** | How markdown, Doxygen, HTML, and PDF outputs are wired together |
 
@@ -25,6 +27,6 @@ project is built, tested, documented, and organized internally.
 
 ## Related Guides
 
-- Return to the **[project README](../../README.md)**
+- Return to the project README in the repository root
 - For public feature usage and tutorials, see the
   **[User Guide](../user-guide/README.md)**

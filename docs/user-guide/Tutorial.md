@@ -64,34 +64,34 @@ For programmers mixing raw OpenGL with BGI, the extension API exposes:
 
 ### 2. Conceptual Steps (English Explanation)
 
-##### Step 1 -- Initialize Graphics
+#### Step 1 -- Initialize Graphics
 
 Call `initwindow()` or `initgraph()`.  Two BGI software page buffers (page 0 and
 page 1) are created automatically.  The GLFW window opens with a hardware
 double-buffered OpenGL context.
 
-##### Step 2 -- Direct Drawing to the Back Buffer
+#### Step 2 -- Direct Drawing to the Back Buffer
 
 Call `setactivepage(1)` to send all drawing commands to page 1 while page 0
 remains visible.  In Double-Buffering you deliberately avoid drawing on the
 visible page.
 
-##### Step 3 -- Draw Your Frame
+#### Step 3 -- Draw Your Frame
 
 Use normal BGI drawing commands (`line`, `circle`, `outtextxy`, etc.).
 Nothing appears on screen yet -- all output goes into the page 1 CPU buffer.
 
-##### Step 4 -- Flip / Present the Frame
+#### Step 4 -- Flip / Present the Frame
 
 Call `swapbuffers()`.  This exchanges which page is active and which is visual,
 then calls `flushToScreen()` to upload the new visual page to OpenGL and
 call `glfwSwapBuffers()` on the GPU.
 
-##### Step 5 -- Clear and Repeat
+#### Step 5 -- Clear and Repeat
 
 Call `cleardevice()` (which clears the new active page) and draw the next frame.
 
-##### Step 6 -- Cleanup
+#### Step 6 -- Cleanup
 
 Call `closegraph()`.  Both software page buffers are freed and the GLFW window is
 destroyed.

@@ -3,7 +3,7 @@
 This document describes the automated test suite for wx_BGI_Graphics.  
 All tests are registered with CTest and run automatically in CI.
 
-See **[Building.md](./Building.md)** for build commands.  
+See **Building.md** for build commands.  
 See **[WxWidgets.md](../WxWidgets.md)** for the embedded canvas integration guide.
 
 ---
@@ -71,7 +71,7 @@ These tests link directly against `wx_bgi_opengl` (the DLL/shared library) and e
 | `test_multi_scene` | Multi-CHDOP scene lifecycle: `wxbgi_dds_scene_create`, `wxbgi_dds_scene_exists`, `wxbgi_dds_scene_set_active`, `wxbgi_cam_set_scene`/`wxbgi_cam_get_scene`, scene isolation (objects in "secondary" do not appear in "default"), `wxbgi_dds_scene_destroy` (cameras fall back to "default"), JSON round-trip preserving scene assignment |
 | `wxbgi_multi_scene_demo` | Full 3-panel multi-scene demo in `--test` mode: builds "main" and "secondary" scene graphs, creates three cameras (two perspective + one pixel-space ortho), renders one frame via `wxbgi_render_dds`, exits cleanly |
 | `test_solids` | `wxbgi_solid_box`, `wxbgi_solid_sphere`, `wxbgi_solid_cylinder`, `wxbgi_solid_cone`, `wxbgi_solid_torus` — all draw modes |
-| `test_input_hooks` | Keyboard queue injection via test seams; hook ordering (see [Test Seam Policy](#keyboard-injection-test-seams-wxbgi_enable_test_seams)) |
+| `test_input_hooks` | Keyboard queue injection via test seams; hook ordering (see the **Keyboard Injection Test Seams (`WXBGI_ENABLE_TEST_SEAMS`)** section below) |
 | `test_input_bypass` | Scroll bypass, input hook chaining, `wxbgi_set_input_hook` |
 
 ### Python Test (17)

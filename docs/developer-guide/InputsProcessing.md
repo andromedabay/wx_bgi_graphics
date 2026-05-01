@@ -8,40 +8,7 @@ function.
 
 ## Table of Contents
 
-1. [Overview](#overview)
-2. [Low-Level Backend APIs](#low-level-backend-apis)
-3. [Keyboard Handling](#keyboard-handling)
-   - [Built-in Keyboard Callbacks](#built-in-keyboard-callbacks)
-   - [Key Translation and Queue](#key-translation-and-queue)
-   - [DOS-Style Extended Key Codes](#dos-style-extended-key-codes)
-   - [BgiState Keyboard Fields](#bgistate-keyboard-fields)
-   - [Public Keyboard API](#public-keyboard-api)
-   - [Test Seams](#test-seams)
-4. [Mouse Handling](#mouse-handling)
-   - [Built-in Mouse Callbacks](#built-in-mouse-callbacks)
-   - [Coordinate System](#coordinate-system)
-   - [BgiState Mouse Fields](#bgistate-mouse-fields)
-   - [Public Mouse API](#public-mouse-api)
-   - [Click-to-Pick Pipeline](#click-to-pick-pipeline)
-5. [Event Pump](#event-pump)
-6. [Thread Safety](#thread-safety)
-7. [User Input Hooks (Callback Chaining)](#user-input-hooks-callback-chaining)
-   - [Design: Additive Chain](#design-additive-chain)
-   - [Built-in Callback Actions Reference](#built-in-callback-actions-reference)
-   - [Thread-Safety Warning](#thread-safety-warning)
-   - [Hook Types and Constants](#hook-types-and-constants)
-   - [Registration API](#registration-api)
-   - [Usage Examples](#usage-examples)
-8. [Mouse Scroll (Wheel) Events](#mouse-scroll-wheel-events)
-9. [Default Behavior Bypass](#default-behavior-bypass)
-10. [Hook-Context DDS Functions (`wxbgi_hk_*`)](#hook-context-dds-functions-wxbgi_hk_)
-11. [Programs at a Glance](#programs-at-a-glance)
-12. [Code Map](#code-map)
-    - [Data Structures](#data-structures)
-    - [Keyboard Layer](#keyboard-layer)
-    - [Mouse Layer](#mouse-layer)
-    - [Event Pump Layer](#event-pump-layer)
-    - [File Dependency Diagram](#file-dependency-diagram)
+\tableofcontents
 
 ---
 
@@ -138,7 +105,8 @@ glfwSetMouseButtonCallback(bgi::gState.window, mouseButtonCallback);
 > **Important:** GLFW supports only **one** registered callback per event type per window.
 > The library owns all four callbacks. Users must **not** call `glfwSet*Callback()` directly --
 > doing so would silently destroy the key queue, keyDown state, mouse tracking, and selection
-> system. Use the `wxbgi_set_*_hook()` API instead (see [User Input Hooks](#user-input-hooks-callback-chaining)).
+> system. Use the `wxbgi_set_*_hook()` API instead; the full hook model is
+> described in the **User Input Hooks (Callback Chaining)** section below.
 
 ---
 
@@ -162,7 +130,8 @@ Fires on **every** key press, repeat, and release.
    Translates special/control keys into DOS-compatible byte sequences and pushes them
    into `gState.keyQueue`:
    - Control characters: Escape -> 27, Enter -> 13, Tab -> 9, Backspace -> 8 (single byte each)
-   - Navigation/function keys -> two-byte `{0, scancode}` sequence (see [DOS-Style Extended Key Codes](#dos-style-extended-key-codes))
+   - Navigation/function keys -> two-byte `{0, scancode}` sequence (described in
+     the **DOS-Style Extended Key Codes** section below)
    - Printable characters are **not** pushed here -- delegated to `charCallback` (avoids double-queuing)
 
 3. **`userKeyHook` invocation (after all library logic, all actions):**

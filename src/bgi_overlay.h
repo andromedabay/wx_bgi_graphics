@@ -13,15 +13,15 @@
  * selection cursor.
  *
  * **Grid and UCS axes** are global (visible in every camera viewport when
- * enabled) and are drawn by @ref drawOverlaysForCamera(), which is called from
+ * enabled) and are drawn by @c drawOverlaysForCamera(), which is called from
  * @c wxbgi_render_dds() after the DDS scene traversal and before
  * @c flushToScreen().
  *
  * **Concentric circles + crosshair** are per-camera and are also drawn by
- * @ref drawOverlaysForCamera().
+ * @c drawOverlaysForCamera().
  *
  * **Selection cursor square** is drawn as an OpenGL @c GL_LINE_LOOP by
- * @ref drawSelectionCursorsGL(), which is called from @c flushToScreen() after
+ * @c drawSelectionCursorsGL(), which is called from @c flushToScreen() after
  * the pixel-buffer rendering pass and before @c glFlush(), so it always
  * appears on top of everything else.
  */

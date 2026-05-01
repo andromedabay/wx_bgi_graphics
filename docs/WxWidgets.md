@@ -7,19 +7,7 @@ drawing surface -- cameras, viewports, DDS scene graph -- inside a **wxWidgets**
 <!-- ------------------------------------------------------------------ -->
 ## Contents
 
-1. [Quick Start — C++ with WxBgiCanvas](#quick-start)
-2. [Standalone wx API (Python / Pascal / C)](#standalone-wx-api-python--pascal--c)
-3. [CMake Usage](#cmake-usage)
-4. [WxBgiCanvas API](#wxbgicanvas-api)
-5. [BGI Drawing in wx Mode](#bgi-drawing-in-wx-mode)
-6. [Event Routing Table](#event-routing-table)
-7. [Scroll and Input Hooks in wx Mode](#scroll-and-input-hooks-in-wx-mode)
-8. [3D Camera and Solid Primitives](#3d-camera-and-solid-primitives)
-9. [Thread Safety](#thread-safety)
-10. [Multi-Canvas — Shared GL Context Architecture](#multi-canvas--shared-gl-context-architecture)
-11. [Automated Test](#automated-test)
-12. [Interactive Demos](#interactive-demos)
-13. [Non-Blocking Solver Loop (OpenLB Style)](#non-blocking-solver-loop-openlb-style)
+\tableofcontents
 
 ---
 
@@ -364,7 +352,7 @@ OpenGL sample (`cube.cpp`):
    `"world"` UCS.  GLFW is **never** started in wx mode.
 
 This pattern avoids the DLL-boundary wxWidgets initialisation crash described in
-the [Architecture Note](#architecture-note) below.
+the architecture note below.
 
 ### Rendering
 
@@ -601,8 +589,8 @@ protected:
 };
 ```
 
-See the [4-Panel Camera Demo](#4-panel-camera-demo-wxbgi_camera_demo_cpp) for
-a complete working example.
+See the **4-Panel Camera Demo (`wxbgi_camera_demo_cpp`)** section below for a
+complete working example.
 
 ---
 
@@ -804,4 +792,5 @@ automatically, `PreBlit` re-renders the DDS, and the scene reappears correctly.
 
 ---
 
-*See also: [README.md](../README.md) · [InputsProcessing.md](./developer-guide/InputsProcessing.md) · [DDS.md](./DDS.md) · [VisualAids.md](./user-guide/VisualAids.md)*
+*See also: the project README, `docs/developer-guide/InputsProcessing.md`,
+`docs/DDS.md`, and `docs/user-guide/VisualAids.md`.*

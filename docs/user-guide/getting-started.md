@@ -62,7 +62,7 @@ cmake --build build -j
 ```
 
 For detailed platform notes, optional flags, OpenLB staging, and macOS-specific
-workarounds, see **[Building.md](../developer-guide/Building.md)**.
+workarounds, see **Building.md** in the Developer Guide.
 
 ## Run Tests
 

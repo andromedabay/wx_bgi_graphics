@@ -608,10 +608,19 @@ find_package(LATEX COMPONENTS PDFLATEX QUIET)
 if(DOXYGEN_FOUND)
     set(DOXYGEN_OUTPUT_DIR ${CMAKE_BINARY_DIR}/doxygen)
     set(DOXYGEN_CONFIG_FILE ${CMAKE_BINARY_DIR}/Doxyfile)
+    set(DOXYGEN_PDF_CONFIG_FILE ${CMAKE_BINARY_DIR}/Doxyfile-pdf)
 
+    set(DOXYGEN_GENERATE_LATEX NO)
     configure_file(
         ${CMAKE_SOURCE_DIR}/docs/Doxyfile.in
         ${DOXYGEN_CONFIG_FILE}
+        @ONLY
+    )
+
+    set(DOXYGEN_GENERATE_LATEX YES)
+    configure_file(
+        ${CMAKE_SOURCE_DIR}/docs/Doxyfile.in
+        ${DOXYGEN_PDF_CONFIG_FILE}
         @ONLY
     )
 
@@ -632,16 +641,13 @@ if(DOXYGEN_FOUND)
         DEPENDS ${CMAKE_SOURCE_DIR}/docs/topics.tex
     )
 
-    add_custom_target(
-        copy_topics_tex ALL
-        DEPENDS ${DOXYGEN_OUTPUT_DIR}/latex/topics.tex
-    )
+    add_custom_target(copy_topics_tex DEPENDS ${DOXYGEN_OUTPUT_DIR}/latex/topics.tex)
 
     if(PDFLATEX_COMPILER)
         if(WIN32)
             add_custom_target(
                 api_docs_pdf
-                COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_CONFIG_FILE}
+                COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_PDF_CONFIG_FILE}
                 COMMAND ${CMAKE_COMMAND} -E chdir ${DOXYGEN_OUTPUT_DIR}/latex make.bat
                 DEPENDS copy_topics_tex
                 COMMENT "Generating Doxygen PDF documentation"
@@ -650,7 +656,7 @@ if(DOXYGEN_FOUND)
         else()
             add_custom_target(
                 api_docs_pdf
-                COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_CONFIG_FILE}
+                COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_PDF_CONFIG_FILE}
                 COMMAND ${CMAKE_COMMAND} -E chdir ${DOXYGEN_OUTPUT_DIR}/latex ${CMAKE_MAKE_PROGRAM}
                 DEPENDS copy_topics_tex
                 COMMENT "Generating Doxygen PDF documentation"
