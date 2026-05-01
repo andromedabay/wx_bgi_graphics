@@ -440,7 +440,7 @@ Practical consequence:
 
 > `examples/cpp/wxbgi_openlb_live_demo.cpp`
 
-![OpenLB live demo](../../images/screenshot_openlb_live_demo.png)
+![OpenLB live demo](../images/screenshot_openlb_live_demo.png)
 
 The demo shows the current viewer pattern: a live false-colour scalar field,
 decimated vector arrows, and a scalar legend rendered in real time inside the
@@ -450,7 +450,7 @@ wx-backed `wx_bgi` window.
 > `examples/cpp/openlb-demo/run_openlb_pipe_3d_demo.sh` - BASH script to build and run it
 > `examples/cpp/openlb-demo/run_openlb_pipe_3d_demo_macos.sh` - BASH script for macOS
 
-![OpenLB Pipe-Flow Demo](../../images/OpenLB-Pipe-demo.png)
+![OpenLB Pipe-Flow Demo](../images/OpenLB-Pipe-demo.png)
 
 The demo shows the GLFW (WXBGI_SYSTEM_GLFW=ON) based Frames from wx_bgi_graphics being setup and used
 with OpenLB driving C/C++ program.
@@ -459,7 +459,7 @@ with OpenLB driving C/C++ program.
 > `examples/cpp/openlb-demo/run_openlb_pipe_3d_wx_slider_demo.sh` - BASH script to build and run it
 > `examples/cpp/openlb-demo/run_openlb_pipe_3d_wx_slider_demo_macos.sh` - BASH script for macOS
 
-![OpenLB Pipe-Flow Live-Controll Demo](../../images/OpenLB-Slider-Pipe-demo.png)
+![OpenLB Pipe-Flow Live-Controll Demo](../images/OpenLB-Slider-Pipe-demo.png)
 
 The demo shows the wxWidgets based Frames from wx_bgi_graphics being setup and used
 with OpenLB driving C/C++ program. Plus it introduces a Slider to live-control 

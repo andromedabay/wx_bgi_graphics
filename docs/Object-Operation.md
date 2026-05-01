@@ -180,9 +180,9 @@ wxbgi_render_dds(NULL);
 
 These screenshots come from the current `wxbgi_set_operations_demo_cpp` scene and show retained translation + set-operation results rendered as compound solids:
 
-![Compound solids shaded mode](../images/set-operations-compound-solids-shaded.png)
+![Compound solids shaded mode](images/set-operations-compound-solids-shaded.png)
 
-![Compound solids wireframe mode](../images/set-operations-compound-solids-wireframe.png)
+![Compound solids wireframe mode](images/set-operations-compound-solids-wireframe.png)
 
 ---
 
