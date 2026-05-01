@@ -625,9 +625,20 @@ if(DOXYGEN_FOUND)
     )
 
     add_custom_target(
+        copy_doc_images
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${DOXYGEN_OUTPUT_DIR}/images
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+                ${CMAKE_SOURCE_DIR}/images
+                ${DOXYGEN_OUTPUT_DIR}/images
+        COMMENT "Staging documentation images"
+        VERBATIM
+    )
+
+    add_custom_target(
         api_docs
         COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_CONFIG_FILE}
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        DEPENDS copy_doc_images
         COMMENT "Generating Doxygen API documentation"
         VERBATIM
     )
@@ -649,7 +660,7 @@ if(DOXYGEN_FOUND)
                 api_docs_pdf
                 COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_PDF_CONFIG_FILE}
                 COMMAND ${CMAKE_COMMAND} -E chdir ${DOXYGEN_OUTPUT_DIR}/latex make.bat
-                DEPENDS copy_topics_tex
+                DEPENDS copy_doc_images copy_topics_tex
                 COMMENT "Generating Doxygen PDF documentation"
                 VERBATIM
             )
@@ -658,7 +669,7 @@ if(DOXYGEN_FOUND)
                 api_docs_pdf
                 COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_PDF_CONFIG_FILE}
                 COMMAND ${CMAKE_COMMAND} -E chdir ${DOXYGEN_OUTPUT_DIR}/latex ${CMAKE_MAKE_PROGRAM}
-                DEPENDS copy_topics_tex
+                DEPENDS copy_doc_images copy_topics_tex
                 COMMENT "Generating Doxygen PDF documentation"
                 VERBATIM
             )
