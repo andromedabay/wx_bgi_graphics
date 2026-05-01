@@ -11,7 +11,7 @@
  *   Linux:    build/capture_screenshots            [images_dir]
  *   macOS:    build/capture_screenshots            [images_dir]
  *
- * The optional argument sets the output directory (default: "images").
+ * The optional argument sets the output directory (default: "docs/images").
  */
 
 #include "wx_bgi.h"
@@ -101,8 +101,8 @@ static void buildScene(std::array<int, kGradSteps> &gradColors)
 
 int main(int argc, char *argv[])
 {
-    // Output directory (default: "images")
-    std::string outDir = "images";
+    // Output directory (default: "docs/images")
+    std::string outDir = "docs/images";
     if (argc >= 2 && argv[1][0] != '-')
         outDir = argv[1];
 

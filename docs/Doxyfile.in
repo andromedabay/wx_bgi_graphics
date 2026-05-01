@@ -24,7 +24,7 @@ RECURSIVE = YES
 
 LAYOUT_FILE = @CMAKE_SOURCE_DIR@/docs/DoxygenLayout.xml  # Custom layout for navigation/chapters
 
-IMAGE_PATH             = "@CMAKE_SOURCE_DIR@/images"
+IMAGE_PATH             = "@CMAKE_SOURCE_DIR@/docs/images"
 USE_MDFILE_AS_MAINPAGE = "@CMAKE_SOURCE_DIR@/docs/mainpage.md"
 
 GENERATE_HTML          = YES

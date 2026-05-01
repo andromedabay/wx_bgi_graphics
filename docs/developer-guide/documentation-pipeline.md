@@ -44,7 +44,7 @@ The PDF build requires a working LaTeX toolchain.
 ## Images
 
 Markdown image references are resolved through the Doxygen `IMAGE_PATH`
-configuration so screenshots from `images/` appear in generated HTML and PDF.
+configuration so screenshots from `docs/images/` appear in generated HTML and PDF.
 
 ## Maintenance Guidance
 

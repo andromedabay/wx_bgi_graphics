@@ -626,10 +626,21 @@ if(DOXYGEN_FOUND)
 
     add_custom_target(
         copy_doc_images
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${DOXYGEN_OUTPUT_DIR}/images
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-                ${CMAKE_SOURCE_DIR}/images
+                ${CMAKE_SOURCE_DIR}/docs/images
+                ${DOXYGEN_OUTPUT_DIR}
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${DOXYGEN_OUTPUT_DIR}/images
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${DOXYGEN_OUTPUT_DIR}/html/images
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/images
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+                ${CMAKE_SOURCE_DIR}/docs/images
                 ${DOXYGEN_OUTPUT_DIR}/images
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+                ${CMAKE_SOURCE_DIR}/docs/images
+                ${DOXYGEN_OUTPUT_DIR}/html/images
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+                ${CMAKE_SOURCE_DIR}/docs/images
+                ${CMAKE_BINARY_DIR}/images
         COMMENT "Staging documentation images"
         VERBATIM
     )
