@@ -29,7 +29,7 @@ IMAGE_PATH             = "@CMAKE_SOURCE_DIR@/images"
 USE_MDFILE_AS_MAINPAGE = "@CMAKE_SOURCE_DIR@/docs/mainpage.md"
 
 GENERATE_HTML          = YES
-GENERATE_LATEX         = YES
+GENERATE_LATEX         = @DOXYGEN_GENERATE_LATEX@
 USE_PDFLATEX           = YES
 GENERATE_XML           = NO
 GENERATE_MAN           = NO

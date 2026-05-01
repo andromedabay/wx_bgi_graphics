@@ -57,5 +57,5 @@ When restructuring docs:
 
 ## Related Pages
 
-- **[Building.md](./Building.md)** for current doc build commands
+- **Building.md** for current doc build commands
 - **[Developer Guide index](./README.md)** for the rest of the internal docs

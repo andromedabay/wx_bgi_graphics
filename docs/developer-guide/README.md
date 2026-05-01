@@ -9,7 +9,7 @@ project is built, tested, documented, and organized internally.
 
 | Topic | Description |
 |---|---|
-| **[Building.md](./Building.md)** | Dependencies, CMake flags, platform-specific build notes, output paths, and documentation build targets |
+| **Building.md** | Dependencies, CMake flags, platform-specific build notes, output paths, and documentation build targets |
 | **[Tests.md](./Tests.md)** | Test catalog, categories, platform notes, and security/test-seam rules |
 | **[Documentation Pipeline](./documentation-pipeline.md)** | How markdown, Doxygen, HTML, and PDF outputs are wired together |
 
