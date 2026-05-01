@@ -72,8 +72,12 @@ jobs:
           $rel = Invoke-RestMethod `
             'https://api.github.com/repos/pal1000/mesa-dist-win/releases/latest' `
             -Headers @{ Authorization = "Bearer $env:GITHUB_TOKEN"; 'User-Agent' = 'gh-actions' }
-          $url = ($rel.assets | Where-Object { $_.name -match 'release-msvc\.7z$' }).browser_download_url
-          Invoke-WebRequest $url -OutFile mesa.7z
+          $asset = $rel.assets |
+            Where-Object { $_.name -match 'release-msvc\.7z$' } |
+            Sort-Object name |
+            Select-Object -First 1
+          if (-not $asset) { throw 'Mesa release-msvc.7z asset not found in latest mesa-dist-win release' }
+          Invoke-WebRequest $asset.browser_download_url -OutFile mesa.7z
           7z x mesa.7z -omesa -y | Out-Null
           $mesaDir = (Get-ChildItem mesa -Recurse -Filter 'opengl32.dll' |
                       Where-Object { $_.DirectoryName -match 'x64' } |
@@ -178,8 +182,12 @@ jobs:
           $rel = Invoke-RestMethod `
             'https://api.github.com/repos/pal1000/mesa-dist-win/releases/latest' `
             -Headers @{ Authorization = "Bearer $env:GITHUB_TOKEN"; 'User-Agent' = 'gh-actions' }
-          $url = ($rel.assets | Where-Object { $_.name -match 'release-msvc\.7z$' }).browser_download_url
-          Invoke-WebRequest $url -OutFile mesa.7z
+          $asset = $rel.assets |
+            Where-Object { $_.name -match 'release-msvc\.7z$' } |
+            Sort-Object name |
+            Select-Object -First 1
+          if (-not $asset) { throw 'Mesa release-msvc.7z asset not found in latest mesa-dist-win release' }
+          Invoke-WebRequest $asset.browser_download_url -OutFile mesa.7z
           7z x mesa.7z -omesa -y | Out-Null
           $mesaDir = (Get-ChildItem mesa -Recurse -Filter 'opengl32.dll' |
                       Where-Object { $_.DirectoryName -match 'x64' } |
