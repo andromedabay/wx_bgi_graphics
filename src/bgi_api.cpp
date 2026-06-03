@@ -1025,8 +1025,22 @@ BGI_API int BGI_CALL installuserdriver(char *name, void *detect)
 
 BGI_API int BGI_CALL installuserfont(char *name)
 {
-    (void)name;
-    return -1;
+    std::lock_guard<std::mutex> lock(bgi::gMutex);
+    if (name == nullptr)
+    {
+        bgi::gState.lastResult = bgi::grInvalidFont;
+        return -1;
+    }
+
+    const int fontId = bgi::fontIdFromName(name);
+    if (fontId < 0)
+    {
+        bgi::gState.lastResult = bgi::grInvalidFont;
+        return -1;
+    }
+
+    bgi::gState.lastResult = bgi::grOk;
+    return fontId;
 }
 
 BGI_API void BGI_CALL line(int x1, int y1, int x2, int y2)
@@ -1426,6 +1440,16 @@ BGI_API void BGI_CALL settextjustify(int horiz, int vert)
 BGI_API void BGI_CALL settextstyle(int font, int direction, int charsize)
 {
     std::lock_guard<std::mutex> lock(bgi::gMutex);
+    if (!bgi::isKnownFont(font))
+    {
+        bgi::gState.lastResult = bgi::grInvalidFont;
+        return;
+    }
+    if (direction != bgi::HORIZ_DIR && direction != bgi::VERT_DIR)
+    {
+        bgi::gState.lastResult = bgi::grInvalidInput;
+        return;
+    }
     bgi::gState.textSettings.font = font;
     bgi::gState.textSettings.direction = direction;
     bgi::gState.textSettings.charsize = std::max(1, charsize);

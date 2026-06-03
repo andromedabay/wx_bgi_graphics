@@ -13,6 +13,7 @@ include(CTest)
 
 include(FetchContent)
 set(FETCHCONTENT_BASE_DIR ${CMAKE_BINARY_DIR}/_deps_fc)
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -180,6 +181,16 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(manifold)
 
+message(STATUS "Fetching stb...")
+
+FetchContent_Declare(
+    stb
+    GIT_REPOSITORY https://github.com/nothings/stb.git
+    GIT_TAG        master
+    GIT_SHALLOW    ON
+)
+FetchContent_MakeAvailable(stb)
+
 # ---------------------------------------------------------------------------
 # wxWidgets — unified interface target `wx_bgi_wx_iface`
 #
@@ -270,6 +281,7 @@ set(SRCS
     src/bgi_state.cpp
     src/bgi_draw.cpp
     src/bgi_font.cpp
+    src/bgi_outline_font.cpp
     src/bgi_image.cpp
     src/bgi_api.cpp
     src/bgi_modern_api.cpp
@@ -294,6 +306,53 @@ set(SRCS
     src/bgi_field_vis.cpp
 )
 
+set(GENERATED_FONT_DIR ${CMAKE_BINARY_DIR}/generated_fonts)
+set(ROBOTO_FONT_CPP ${GENERATED_FONT_DIR}/roboto_font.cpp)
+set(PLAYFAIR_FONT_CPP ${GENERATED_FONT_DIR}/playfair_font.cpp)
+set(HANDJET_FONT_CPP ${GENERATED_FONT_DIR}/handjet_font.cpp)
+
+add_custom_command(
+    OUTPUT ${ROBOTO_FONT_CPP}
+    COMMAND ${Python3_EXECUTABLE}
+            ${CMAKE_SOURCE_DIR}/tools/embed_binary.py
+            ${CMAKE_SOURCE_DIR}/third_party/fonts/roboto/Roboto.ttf
+            ${ROBOTO_FONT_CPP}
+            kRobotoFont
+    DEPENDS
+        ${CMAKE_SOURCE_DIR}/tools/embed_binary.py
+        ${CMAKE_SOURCE_DIR}/third_party/fonts/roboto/Roboto.ttf
+)
+
+add_custom_command(
+    OUTPUT ${PLAYFAIR_FONT_CPP}
+    COMMAND ${Python3_EXECUTABLE}
+            ${CMAKE_SOURCE_DIR}/tools/embed_binary.py
+            ${CMAKE_SOURCE_DIR}/third_party/fonts/playfairdisplay/PlayfairDisplay.ttf
+            ${PLAYFAIR_FONT_CPP}
+            kPlayfairDisplayFont
+    DEPENDS
+        ${CMAKE_SOURCE_DIR}/tools/embed_binary.py
+        ${CMAKE_SOURCE_DIR}/third_party/fonts/playfairdisplay/PlayfairDisplay.ttf
+)
+
+add_custom_command(
+    OUTPUT ${HANDJET_FONT_CPP}
+    COMMAND ${Python3_EXECUTABLE}
+            ${CMAKE_SOURCE_DIR}/tools/embed_binary.py
+            ${CMAKE_SOURCE_DIR}/third_party/fonts/handjet/Handjet.ttf
+            ${HANDJET_FONT_CPP}
+            kHandjetFont
+    DEPENDS
+        ${CMAKE_SOURCE_DIR}/tools/embed_binary.py
+        ${CMAKE_SOURCE_DIR}/third_party/fonts/handjet/Handjet.ttf
+)
+
+list(APPEND SRCS
+    ${ROBOTO_FONT_CPP}
+    ${PLAYFAIR_FONT_CPP}
+    ${HANDJET_FONT_CPP}
+)
+
 if(WXBGI_ENABLE_WX)
     list(APPEND SRCS
         src/wx/wx_bgi_canvas.cpp
@@ -304,6 +363,7 @@ endif()
 add_library(wx_bgi_opengl SHARED ${SRCS})
 
 target_include_directories(wx_bgi_opengl PUBLIC src)
+target_include_directories(wx_bgi_opengl PRIVATE ${stb_SOURCE_DIR})
 target_compile_definitions(wx_bgi_opengl PRIVATE GLEW_STATIC)
 target_link_libraries(wx_bgi_opengl PRIVATE GLEW::GLEW glfw OpenGL::GL glm::glm nlohmann_json::nlohmann_json yaml-cpp::yaml-cpp manifold)
 
@@ -349,6 +409,26 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
             $<TARGET_FILE:wx_bgi_opengl>
             $<TARGET_FILE_DIR:wxbgi_keyboard_queue_cpp>
+)
+
+add_executable(wxbgi_fonts_demo_cpp examples/cpp/wxbgi_fonts_demo.cpp)
+target_link_libraries(wxbgi_fonts_demo_cpp PRIVATE wx_bgi_opengl)
+
+add_custom_command(
+    TARGET wxbgi_fonts_demo_cpp POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            $<TARGET_FILE:wx_bgi_opengl>
+            $<TARGET_FILE_DIR:wxbgi_fonts_demo_cpp>
+)
+
+add_executable(test_fonts examples/cpp/test_fonts.cpp)
+target_link_libraries(test_fonts PRIVATE wx_bgi_opengl)
+
+add_custom_command(
+    TARGET test_fonts POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            $<TARGET_FILE:wx_bgi_opengl>
+            $<TARGET_FILE_DIR:test_fonts>
 )
 
 if(WXBGI_ENABLE_WX)
@@ -799,6 +879,8 @@ endif()
 if(BUILD_TESTING)
     add_test(NAME bgi_api_coverage_cpp COMMAND $<TARGET_FILE:bgi_api_coverage_cpp>)
     set_tests_properties(bgi_api_coverage_cpp PROPERTIES TIMEOUT 20)
+    add_test(NAME test_fonts COMMAND $<TARGET_FILE:test_fonts>)
+    set_tests_properties(test_fonts PROPERTIES TIMEOUT 20)
 
     if(WXBGI_ENABLE_WX)
         add_test(NAME wxbgi_camera_demo_cpp COMMAND $<TARGET_FILE:wxbgi_camera_demo_cpp> --test)

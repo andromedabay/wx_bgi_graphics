@@ -99,6 +99,7 @@ generated.
 
 - New users should begin with **[Getting Started](./user-guide/getting-started.md)**.
 - For animation/page-buffer workflow, read **[Tutorial.md](./user-guide/Tutorial.md)**.
+- For classic and embedded font usage, read **[Fonts.md](./user-guide/Fonts.md)**.
 - For retained scenes and composition, read **[DDS.md](./DDS.md)** and
   **[Object-Operation.md](./Object-Operation.md)**.
 - For DDS-to-OpenLB authoring and viewer integration, read

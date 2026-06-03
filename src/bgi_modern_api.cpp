@@ -14,6 +14,7 @@
 #include "bgi_camera.h"
 #include "bgi_dds.h"
 #include "bgi_draw.h"
+#include "bgi_font.h"
 #include "bgi_gl.h"
 #include "bgi_overlay.h"
 #include "bgi_state.h"
@@ -80,6 +81,35 @@ BGI_API int BGI_CALL wxbgi_is_ready(void)
 {
     std::lock_guard<std::mutex> lock(bgi::gMutex);
     return ensureReadyUnlocked() ? 1 : 0;
+}
+
+BGI_API int BGI_CALL wxbgi_font_count(void)
+{
+    std::lock_guard<std::mutex> lock(bgi::gMutex);
+    bgi::gState.lastResult = bgi::grOk;
+    return bgi::fontCount();
+}
+
+BGI_API const char *BGI_CALL wxbgi_font_name(int fontId)
+{
+    std::lock_guard<std::mutex> lock(bgi::gMutex);
+    const char *name = bgi::fontName(fontId);
+    bgi::gState.lastResult = name != nullptr ? bgi::grOk : bgi::grInvalidFont;
+    return name;
+}
+
+BGI_API int BGI_CALL wxbgi_font_id(const char *name)
+{
+    std::lock_guard<std::mutex> lock(bgi::gMutex);
+    if (name == nullptr)
+    {
+        bgi::gState.lastResult = bgi::grInvalidFont;
+        return -1;
+    }
+
+    const int fontId = bgi::fontIdFromName(name);
+    bgi::gState.lastResult = fontId >= 0 ? bgi::grOk : bgi::grInvalidFont;
+    return fontId;
 }
 
 BGI_API int BGI_CALL wxbgi_poll_events(void)
