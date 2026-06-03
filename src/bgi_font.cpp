@@ -1,14 +1,17 @@
 #include "bgi_font.h"
 
 #include "bgi_draw.h"
+#include "bgi_outline_font.h"
 #include "bgi_state.h"
 
 #include <algorithm>
 #include <array>
+#include <cctype>
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
 #include <string>
+#include <vector>
 
 namespace bgi
 {
@@ -171,6 +174,44 @@ namespace bgi
         constexpr Stroke kTildeStrokes[] = {
             {0, 8, 2, 6}, {2, 6, 5, 8}, {5, 8, 8, 6}, {8, 6, 10, 8}};
 
+        // ── Latin accent helpers and special Latin letters ───────────────────────
+        constexpr Stroke kAccentGraveStrokes[] = {{6, 2, 4, 0}};
+        constexpr Stroke kAccentAcuteStrokes[] = {{4, 2, 6, 0}};
+        constexpr Stroke kAccentCircumflexStrokes[] = {{3, 2, 5, 0}, {5, 0, 7, 2}};
+        constexpr Stroke kAccentTildeStrokes[] = {{2, 1, 4, 0}, {4, 0, 6, 1}, {6, 1, 8, 0}};
+        constexpr Stroke kAccentDiaeresisStrokes[] = {{3, 1, 3, 1}, {7, 1, 7, 1}};
+        constexpr Stroke kAccentRingStrokes[] = {{4, 0, 6, 0}, {6, 0, 6, 2}, {6, 2, 4, 2}, {4, 2, 4, 0}};
+        constexpr Stroke kAccentCedillaStrokes[] = {{5, 14, 4, 16}, {4, 16, 5, 17}, {5, 17, 6, 16}};
+
+        constexpr Stroke kUpperAEStrokes[] = {
+            {0, 14, 4, 0}, {4, 0, 8, 14}, {1, 8, 6, 8},
+            {7, 0, 15, 0}, {7, 0, 7, 14}, {7, 7, 13, 7}, {7, 14, 15, 14}};
+        constexpr Stroke kLowerAEStrokes[] = {
+            {2, 5, 7, 5}, {7, 5, 9, 7}, {9, 7, 9, 14}, {0, 7, 2, 5}, {0, 7, 0, 12},
+            {0, 12, 2, 14}, {2, 14, 7, 14}, {7, 14, 9, 12},
+            {9, 10, 15, 10}, {15, 10, 13, 5}, {13, 5, 11, 5}, {11, 5, 9, 7},
+            {9, 12, 11, 14}, {11, 14, 14, 14}, {14, 14, 15, 13}};
+        constexpr Stroke kUpperEthStrokes[] = {
+            {0, 0, 0, 14}, {0, 0, 7, 0}, {7, 0, 10, 3}, {10, 3, 10, 11}, {10, 11, 7, 14},
+            {7, 14, 0, 14}, {0, 7, 7, 7}};
+        constexpr Stroke kLowerEthStrokes[] = {
+            {10, 0, 10, 14}, {0, 7, 6, 7},
+            {10, 7, 8, 5}, {8, 5, 2, 5}, {2, 5, 0, 7}, {0, 7, 0, 12}, {0, 12, 2, 14},
+            {2, 14, 10, 14}};
+        constexpr Stroke kUpperThornStrokes[] = {
+            {0, 0, 0, 14}, {0, 3, 8, 3}, {8, 3, 10, 5}, {10, 5, 10, 9}, {10, 9, 8, 11}, {8, 11, 0, 11}};
+        constexpr Stroke kLowerThornStrokes[] = {
+            {0, 0, 0, 14}, {0, 5, 8, 5}, {8, 5, 10, 7}, {10, 7, 10, 11}, {10, 11, 8, 13}, {8, 13, 0, 13}};
+        constexpr Stroke kUpperOslashStrokes[] = {
+            {2, 0, 8, 0}, {8, 0, 10, 2}, {10, 2, 10, 12}, {10, 12, 8, 14}, {8, 14, 2, 14}, {2, 14, 0, 12},
+            {0, 12, 0, 2}, {0, 2, 2, 0}, {0, 14, 10, 0}};
+        constexpr Stroke kLowerOslashStrokes[] = {
+            {2, 5, 8, 5}, {8, 5, 10, 7}, {10, 7, 10, 12}, {10, 12, 8, 14}, {8, 14, 2, 14},
+            {2, 14, 0, 12}, {0, 12, 0, 7}, {0, 7, 2, 5}, {0, 14, 10, 5}};
+        constexpr Stroke kEszettStrokes[] = {
+            {0, 0, 0, 14}, {0, 0, 6, 0}, {6, 0, 8, 2}, {8, 2, 8, 5}, {8, 5, 6, 7},
+            {6, 7, 8, 9}, {8, 9, 8, 12}, {8, 12, 6, 14}, {6, 14, 2, 14}};
+
         // ── Distinct lowercase letter glyphs ─────────────────────────────────────
         // x-height: y=5..14  ascenders: y=0..14  descender tails reach y=14
 
@@ -304,6 +345,13 @@ namespace bgi
         constexpr Stroke kLowerZStrokes[] = {
             {0, 5, 10, 5}, {10, 5, 0, 14}, {0, 14, 10, 14}};
 
+        struct GlyphInfo
+        {
+            StrokeGlyph glyph;
+            const Stroke *accentStrokes;
+            std::size_t accentCount;
+        };
+
         const StrokeGlyph kGlyphUnknown{12, kUnknownStrokes, std::size(kUnknownStrokes)};
         const StrokeGlyph kGlyphSpace{6, nullptr, 0};
 
@@ -410,15 +458,98 @@ namespace bgi
             }
         }
 
-        StrokeGlyph glyphForChar(unsigned char c)
+        void drawStrokeGlyph(int x, int y, const StrokeGlyph &glyph, int color, int thickness)
+        {
+            for (std::size_t index = 0; index < glyph.count; ++index)
+            {
+                const auto &stroke = glyph.strokes[index];
+                const auto start = transformPoint(x, y, stroke.x1, stroke.y1);
+                const auto finish = transformPoint(x, y, stroke.x2, stroke.y2);
+                drawStrokeLine(start, finish, color, thickness);
+            }
+        }
+
+        std::string normalizeFontName(const std::string &name)
+        {
+            std::string normalized;
+            normalized.reserve(name.size());
+            for (unsigned char ch : name)
+            {
+                if (std::isalnum(ch) != 0)
+                {
+                    normalized.push_back(static_cast<char>(std::tolower(ch)));
+                }
+            }
+            return normalized;
+        }
+
+        std::vector<std::uint32_t> decodeText(const std::string &text)
+        {
+            std::vector<std::uint32_t> codepoints;
+            codepoints.reserve(text.size());
+
+            for (std::size_t index = 0; index < text.size();)
+            {
+                const unsigned char lead = static_cast<unsigned char>(text[index]);
+                if (lead < 0x80)
+                {
+                    codepoints.push_back(lead);
+                    ++index;
+                    continue;
+                }
+
+                auto appendByteFallback = [&]()
+                {
+                    codepoints.push_back(lead);
+                    ++index;
+                };
+
+                if (lead >= 0xC2 && lead <= 0xDF && index + 1 < text.size())
+                {
+                    const unsigned char b1 = static_cast<unsigned char>(text[index + 1]);
+                    if ((b1 & 0xC0) == 0x80)
+                    {
+                        codepoints.push_back(((lead & 0x1F) << 6) | (b1 & 0x3F));
+                        index += 2;
+                        continue;
+                    }
+                }
+                else if (lead >= 0xE0 && lead <= 0xEF && index + 2 < text.size())
+                {
+                    const unsigned char b1 = static_cast<unsigned char>(text[index + 1]);
+                    const unsigned char b2 = static_cast<unsigned char>(text[index + 2]);
+                    if ((b1 & 0xC0) == 0x80 && (b2 & 0xC0) == 0x80)
+                    {
+                        codepoints.push_back(((lead & 0x0F) << 12) | ((b1 & 0x3F) << 6) | (b2 & 0x3F));
+                        index += 3;
+                        continue;
+                    }
+                }
+                else if (lead >= 0xF0 && lead <= 0xF4 && index + 3 < text.size())
+                {
+                    const unsigned char b1 = static_cast<unsigned char>(text[index + 1]);
+                    const unsigned char b2 = static_cast<unsigned char>(text[index + 2]);
+                    const unsigned char b3 = static_cast<unsigned char>(text[index + 3]);
+                    if ((b1 & 0xC0) == 0x80 && (b2 & 0xC0) == 0x80 && (b3 & 0xC0) == 0x80)
+                    {
+                        codepoints.push_back(((lead & 0x07) << 18) | ((b1 & 0x3F) << 12) | ((b2 & 0x3F) << 6) | (b3 & 0x3F));
+                        index += 4;
+                        continue;
+                    }
+                }
+
+                appendByteFallback();
+            }
+
+            return codepoints;
+        }
+
+        StrokeGlyph baseGlyphForCodepoint(std::uint32_t c)
         {
             switch (c)
             {
-            // ── Whitespace ────────────────────────────────────────────────────────
             case ' ':
                 return kGlyphSpace;
-
-            // ── Punctuation / operators already defined ───────────────────────────
             case '!':
                 return {6, kExclamationStrokes, std::size(kExclamationStrokes)};
             case '"':
@@ -457,8 +588,6 @@ namespace bgi
                 return {8, kRightBracketStrokes, std::size(kRightBracketStrokes)};
             case '_':
                 return {10, kUnderscoreStrokes, std::size(kUnderscoreStrokes)};
-
-            // ── Newly added symbols ───────────────────────────────────────────────
             case '#':
                 return {12, kHashStrokes, std::size(kHashStrokes)};
             case '$':
@@ -485,8 +614,6 @@ namespace bgi
                 return {8, kRightBraceStrokes, std::size(kRightBraceStrokes)};
             case '~':
                 return {10, kTildeStrokes, std::size(kTildeStrokes)};
-
-            // ── Digits ────────────────────────────────────────────────────────────
             case '0':
                 return {12, kZeroStrokes, std::size(kZeroStrokes)};
             case '1':
@@ -507,8 +634,6 @@ namespace bgi
                 return {12, kEightStrokes, std::size(kEightStrokes)};
             case '9':
                 return {12, kNineStrokes, std::size(kNineStrokes)};
-
-            // ── Uppercase letters ─────────────────────────────────────────────────
             case 'A':
                 return {12, kAStrokes, std::size(kAStrokes)};
             case 'B':
@@ -561,8 +686,6 @@ namespace bgi
                 return {12, kYStrokes, std::size(kYStrokes)};
             case 'Z':
                 return {12, kZStrokes, std::size(kZStrokes)};
-
-            // ── Lowercase letters (distinct glyphs, not mapped to uppercase) ──────
             case 'a':
                 return {11, kLowerAStrokes, std::size(kLowerAStrokes)};
             case 'b':
@@ -615,12 +738,151 @@ namespace bgi
                 return {11, kLowerYStrokes, std::size(kLowerYStrokes)};
             case 'z':
                 return {10, kLowerZStrokes, std::size(kLowerZStrokes)};
-
+            case 0x00C6:
+                return {17, kUpperAEStrokes, std::size(kUpperAEStrokes)};
+            case 0x00E6:
+                return {16, kLowerAEStrokes, std::size(kLowerAEStrokes)};
+            case 0x00D0:
+                return {12, kUpperEthStrokes, std::size(kUpperEthStrokes)};
+            case 0x00F0:
+                return {11, kLowerEthStrokes, std::size(kLowerEthStrokes)};
+            case 0x00D8:
+                return {12, kUpperOslashStrokes, std::size(kUpperOslashStrokes)};
+            case 0x00F8:
+                return {11, kLowerOslashStrokes, std::size(kLowerOslashStrokes)};
+            case 0x00DE:
+                return {12, kUpperThornStrokes, std::size(kUpperThornStrokes)};
+            case 0x00FE:
+                return {11, kLowerThornStrokes, std::size(kLowerThornStrokes)};
+            case 0x00DF:
+                return {10, kEszettStrokes, std::size(kEszettStrokes)};
             default:
                 return kGlyphUnknown;
             }
         }
+
+        GlyphInfo glyphInfoForCodepoint(std::uint32_t c)
+        {
+            switch (c)
+            {
+            case 0x00C0: return {baseGlyphForCodepoint('A'), kAccentGraveStrokes, std::size(kAccentGraveStrokes)};
+            case 0x00C1: return {baseGlyphForCodepoint('A'), kAccentAcuteStrokes, std::size(kAccentAcuteStrokes)};
+            case 0x00C2: return {baseGlyphForCodepoint('A'), kAccentCircumflexStrokes, std::size(kAccentCircumflexStrokes)};
+            case 0x00C3: return {baseGlyphForCodepoint('A'), kAccentTildeStrokes, std::size(kAccentTildeStrokes)};
+            case 0x00C4: return {baseGlyphForCodepoint('A'), kAccentDiaeresisStrokes, std::size(kAccentDiaeresisStrokes)};
+            case 0x00C5: return {baseGlyphForCodepoint('A'), kAccentRingStrokes, std::size(kAccentRingStrokes)};
+            case 0x00E0: return {baseGlyphForCodepoint('a'), kAccentGraveStrokes, std::size(kAccentGraveStrokes)};
+            case 0x00E1: return {baseGlyphForCodepoint('a'), kAccentAcuteStrokes, std::size(kAccentAcuteStrokes)};
+            case 0x00E2: return {baseGlyphForCodepoint('a'), kAccentCircumflexStrokes, std::size(kAccentCircumflexStrokes)};
+            case 0x00E3: return {baseGlyphForCodepoint('a'), kAccentTildeStrokes, std::size(kAccentTildeStrokes)};
+            case 0x00E4: return {baseGlyphForCodepoint('a'), kAccentDiaeresisStrokes, std::size(kAccentDiaeresisStrokes)};
+            case 0x00E5: return {baseGlyphForCodepoint('a'), kAccentRingStrokes, std::size(kAccentRingStrokes)};
+            case 0x00C7: return {baseGlyphForCodepoint('C'), kAccentCedillaStrokes, std::size(kAccentCedillaStrokes)};
+            case 0x00E7: return {baseGlyphForCodepoint('c'), kAccentCedillaStrokes, std::size(kAccentCedillaStrokes)};
+            case 0x00C8: return {baseGlyphForCodepoint('E'), kAccentGraveStrokes, std::size(kAccentGraveStrokes)};
+            case 0x00C9: return {baseGlyphForCodepoint('E'), kAccentAcuteStrokes, std::size(kAccentAcuteStrokes)};
+            case 0x00CA: return {baseGlyphForCodepoint('E'), kAccentCircumflexStrokes, std::size(kAccentCircumflexStrokes)};
+            case 0x00CB: return {baseGlyphForCodepoint('E'), kAccentDiaeresisStrokes, std::size(kAccentDiaeresisStrokes)};
+            case 0x00E8: return {baseGlyphForCodepoint('e'), kAccentGraveStrokes, std::size(kAccentGraveStrokes)};
+            case 0x00E9: return {baseGlyphForCodepoint('e'), kAccentAcuteStrokes, std::size(kAccentAcuteStrokes)};
+            case 0x00EA: return {baseGlyphForCodepoint('e'), kAccentCircumflexStrokes, std::size(kAccentCircumflexStrokes)};
+            case 0x00EB: return {baseGlyphForCodepoint('e'), kAccentDiaeresisStrokes, std::size(kAccentDiaeresisStrokes)};
+            case 0x00CC: return {baseGlyphForCodepoint('I'), kAccentGraveStrokes, std::size(kAccentGraveStrokes)};
+            case 0x00CD: return {baseGlyphForCodepoint('I'), kAccentAcuteStrokes, std::size(kAccentAcuteStrokes)};
+            case 0x00CE: return {baseGlyphForCodepoint('I'), kAccentCircumflexStrokes, std::size(kAccentCircumflexStrokes)};
+            case 0x00CF: return {baseGlyphForCodepoint('I'), kAccentDiaeresisStrokes, std::size(kAccentDiaeresisStrokes)};
+            case 0x00EC: return {baseGlyphForCodepoint('i'), kAccentGraveStrokes, std::size(kAccentGraveStrokes)};
+            case 0x00ED: return {baseGlyphForCodepoint('i'), kAccentAcuteStrokes, std::size(kAccentAcuteStrokes)};
+            case 0x00EE: return {baseGlyphForCodepoint('i'), kAccentCircumflexStrokes, std::size(kAccentCircumflexStrokes)};
+            case 0x00EF: return {baseGlyphForCodepoint('i'), kAccentDiaeresisStrokes, std::size(kAccentDiaeresisStrokes)};
+            case 0x00D1: return {baseGlyphForCodepoint('N'), kAccentTildeStrokes, std::size(kAccentTildeStrokes)};
+            case 0x00F1: return {baseGlyphForCodepoint('n'), kAccentTildeStrokes, std::size(kAccentTildeStrokes)};
+            case 0x00D2: return {baseGlyphForCodepoint('O'), kAccentGraveStrokes, std::size(kAccentGraveStrokes)};
+            case 0x00D3: return {baseGlyphForCodepoint('O'), kAccentAcuteStrokes, std::size(kAccentAcuteStrokes)};
+            case 0x00D4: return {baseGlyphForCodepoint('O'), kAccentCircumflexStrokes, std::size(kAccentCircumflexStrokes)};
+            case 0x00D5: return {baseGlyphForCodepoint('O'), kAccentTildeStrokes, std::size(kAccentTildeStrokes)};
+            case 0x00D6: return {baseGlyphForCodepoint('O'), kAccentDiaeresisStrokes, std::size(kAccentDiaeresisStrokes)};
+            case 0x00F2: return {baseGlyphForCodepoint('o'), kAccentGraveStrokes, std::size(kAccentGraveStrokes)};
+            case 0x00F3: return {baseGlyphForCodepoint('o'), kAccentAcuteStrokes, std::size(kAccentAcuteStrokes)};
+            case 0x00F4: return {baseGlyphForCodepoint('o'), kAccentCircumflexStrokes, std::size(kAccentCircumflexStrokes)};
+            case 0x00F5: return {baseGlyphForCodepoint('o'), kAccentTildeStrokes, std::size(kAccentTildeStrokes)};
+            case 0x00F6: return {baseGlyphForCodepoint('o'), kAccentDiaeresisStrokes, std::size(kAccentDiaeresisStrokes)};
+            case 0x00D9: return {baseGlyphForCodepoint('U'), kAccentGraveStrokes, std::size(kAccentGraveStrokes)};
+            case 0x00DA: return {baseGlyphForCodepoint('U'), kAccentAcuteStrokes, std::size(kAccentAcuteStrokes)};
+            case 0x00DB: return {baseGlyphForCodepoint('U'), kAccentCircumflexStrokes, std::size(kAccentCircumflexStrokes)};
+            case 0x00DC: return {baseGlyphForCodepoint('U'), kAccentDiaeresisStrokes, std::size(kAccentDiaeresisStrokes)};
+            case 0x00F9: return {baseGlyphForCodepoint('u'), kAccentGraveStrokes, std::size(kAccentGraveStrokes)};
+            case 0x00FA: return {baseGlyphForCodepoint('u'), kAccentAcuteStrokes, std::size(kAccentAcuteStrokes)};
+            case 0x00FB: return {baseGlyphForCodepoint('u'), kAccentCircumflexStrokes, std::size(kAccentCircumflexStrokes)};
+            case 0x00FC: return {baseGlyphForCodepoint('u'), kAccentDiaeresisStrokes, std::size(kAccentDiaeresisStrokes)};
+            case 0x00DD: return {baseGlyphForCodepoint('Y'), kAccentAcuteStrokes, std::size(kAccentAcuteStrokes)};
+            case 0x00FD: return {baseGlyphForCodepoint('y'), kAccentAcuteStrokes, std::size(kAccentAcuteStrokes)};
+            case 0x00FF: return {baseGlyphForCodepoint('y'), kAccentDiaeresisStrokes, std::size(kAccentDiaeresisStrokes)};
+            default:
+                return {baseGlyphForCodepoint(c), nullptr, 0};
+            }
+        }
     } // namespace
+
+    bool isKnownFont(int fontId)
+    {
+        switch (fontId)
+        {
+        case DEFAULT_FONT:
+        case TRIPLEX_FONT:
+        case SMALL_FONT:
+        case SANS_SERIF_FONT:
+        case GOTHIC_FONT:
+            return true;
+        default:
+            return isOutlineFont(fontId);
+        }
+    }
+
+    const char *fontName(int fontId)
+    {
+        switch (fontId)
+        {
+        case DEFAULT_FONT: return "Default";
+        case TRIPLEX_FONT: return "Triplex";
+        case SMALL_FONT: return "Small";
+        case SANS_SERIF_FONT: return "Sans Serif";
+        case GOTHIC_FONT: return "Gothic";
+        default:
+            return outlineFontName(fontId);
+        }
+    }
+
+    int fontIdFromName(const std::string &name)
+    {
+        const std::string normalized = normalizeFontName(name);
+        if (normalized == "default")
+        {
+            return DEFAULT_FONT;
+        }
+        if (normalized == "triplex")
+        {
+            return TRIPLEX_FONT;
+        }
+        if (normalized == "small")
+        {
+            return SMALL_FONT;
+        }
+        if (normalized == "sansserif")
+        {
+            return SANS_SERIF_FONT;
+        }
+        if (normalized == "gothic")
+        {
+            return GOTHIC_FONT;
+        }
+        return outlineFontIdFromName(name);
+    }
+
+    int fontCount()
+    {
+        return 8;
+    }
 
     int currentTextScaleX()
     {
@@ -645,11 +907,22 @@ namespace bgi
             return {0, 0};
         }
 
+        const auto codepoints = decodeText(text);
+        if (isOutlineFont(gState.textSettings.font))
+        {
+            return measureOutlineText(
+                gState.textSettings.font,
+                codepoints,
+                effectiveScaleX(),
+                effectiveScaleY(),
+                gState.textSettings.direction == VERT_DIR);
+        }
+
         int totalAdvance = 0;
         int maxAdvance = 0;
-        for (unsigned char ch : text)
+        for (std::uint32_t codepoint : codepoints)
         {
-            const StrokeGlyph glyph = glyphForChar(ch);
+            const StrokeGlyph glyph = glyphInfoForCodepoint(codepoint).glyph;
             const int advance = glyphAdvance(glyph);
             totalAdvance += advance;
             maxAdvance = std::max(maxAdvance, advance);
@@ -666,28 +939,42 @@ namespace bgi
         return {std::max(glyphWidth, totalAdvance - std::max(0, currentFontProfile().extraAdvance)), std::max(glyphHeight, maxAdvance)};
     }
 
-    void drawGlyph(int x, int y, unsigned char c, int color)
+    void drawGlyph(int x, int y, std::uint32_t codepoint, int color)
     {
-        const StrokeGlyph glyph = glyphForChar(c);
         const int thickness = std::max(1, currentFontProfile().thickness * std::max(currentTextScaleX(), currentTextScaleY()));
-        for (std::size_t index = 0; index < glyph.count; ++index)
+        const auto info = glyphInfoForCodepoint(codepoint);
+        drawStrokeGlyph(x, y, info.glyph, color, thickness);
+        if (info.accentStrokes != nullptr && info.accentCount > 0)
         {
-            const auto &stroke = glyph.strokes[index];
-            const auto start = transformPoint(x, y, stroke.x1, stroke.y1);
-            const auto finish = transformPoint(x, y, stroke.x2, stroke.y2);
-            drawStrokeLine(start, finish, color, thickness);
+            drawStrokeGlyph(x, y, {info.glyph.advance, info.accentStrokes, info.accentCount}, color, thickness);
         }
     }
 
     void drawText(int x, int y, const std::string &text, int color)
     {
+        const auto codepoints = decodeText(text);
+        if (isOutlineFont(gState.textSettings.font))
+        {
+            drawOutlineText(
+                x,
+                y,
+                gState.textSettings.font,
+                codepoints,
+                color,
+                effectiveScaleX(),
+                effectiveScaleY(),
+                gState.textSettings.direction == VERT_DIR);
+            return;
+        }
+
         int penX = x;
         int penY = y;
 
-        for (unsigned char ch : text)
+        for (std::uint32_t codepoint : codepoints)
         {
-            drawGlyph(penX, penY, ch, color);
-            const int advance = glyphAdvance(glyphForChar(ch));
+            const auto info = glyphInfoForCodepoint(codepoint);
+            drawGlyph(penX, penY, codepoint, color);
+            const int advance = glyphAdvance(info.glyph);
             if (gState.textSettings.direction == VERT_DIR)
             {
                 penY += advance;

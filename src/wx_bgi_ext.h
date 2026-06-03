@@ -21,6 +21,33 @@
  * This returns 1 when a window/context exists and has not been closed, or 0 otherwise.
  */
 BGI_API int BGI_CALL wxbgi_is_ready(void);
+
+/**
+ * @defgroup wxbgi_font_api Embedded Font Query API
+ * @brief Functions for discovering and selecting bundled classic and modern fonts.
+ * @{
+ */
+
+/** @brief Returns the number of built-in fonts known to the library. */
+BGI_API int BGI_CALL wxbgi_font_count(void);
+
+/**
+ * @brief Returns the display name for a built-in font id.
+ *
+ * Returns NULL when @p fontId is unknown.
+ */
+BGI_API const char *BGI_CALL wxbgi_font_name(int fontId);
+
+/**
+ * @brief Resolves a built-in font name to its font id.
+ *
+ * Name matching ignores case, spaces, hyphens, and underscores.
+ * Returns -1 when the name is not recognized.
+ */
+BGI_API int BGI_CALL wxbgi_font_id(const char *name);
+
+/** @} */
+
 /**
  * @brief Pumps pending OS/window events.
  *

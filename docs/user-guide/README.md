@@ -11,6 +11,7 @@ This guide is for programmers who want to build, run, and use
 |---|---|
 | **[Getting Started](./getting-started.md)** | Project overview, supported platforms, dependencies, and the fastest path to a successful build/run |
 | **[Tutorial.md](./Tutorial.md)** | Double-buffering, page management, and smooth animation with the classic BGI API |
+| **[Fonts.md](./Fonts.md)** | Classic stroke fonts, embedded Google fonts, UTF-8 Latin text, and font-selection APIs |
 | **[WxWidgets.md](../WxWidgets.md)** | Embedding the rendering surface inside a wxWidgets application |
 | **[OpenLB-Support.md](./OpenLB-Support.md)** | OpenLB live-view workflow and optional build integration |
 

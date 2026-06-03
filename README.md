@@ -26,6 +26,7 @@ solids, embedded wxWidgets canvases, and optional OpenLB-oriented live viewing.
 - Retained DDS/CHDOP scene graph with JSON/YAML serialization via `src/wx_bgi_dds.h`
 - Retained affine transforms, set operations, and exact 3D Manifold booleans
 - 3D solid primitives, surfaces, overlays, and wxWidgets embedded canvas support
+- Classic stroke fonts plus embedded Roboto, Playfair Display, and Handjet text rendering
 - Optional OpenLB live-visualization and DDS material-bridge support
 
 ## Dependencies
@@ -88,6 +89,7 @@ generated.
 
 - New users should begin with **[Getting Started](./docs/user-guide/getting-started.md)**.
 - For animation/page-buffer workflow, read **[Tutorial.md](./docs/user-guide/Tutorial.md)**.
+- For classic and embedded font usage, read **[Fonts.md](./docs/user-guide/Fonts.md)**.
 - For retained scenes and composition, read **[DDS.md](./docs/DDS.md)** and
   **[Object-Operation.md](./docs/Object-Operation.md)**.
 - For DDS-to-OpenLB authoring and viewer integration, read

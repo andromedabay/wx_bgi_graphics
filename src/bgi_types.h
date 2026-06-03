@@ -214,6 +214,9 @@ namespace bgi
     constexpr int SMALL_FONT = 2;
     constexpr int SANS_SERIF_FONT = 4;
     constexpr int GOTHIC_FONT = 8;
+    constexpr int MODERN_ROBOTO_FONT = 16;
+    constexpr int MODERN_PLAYFAIR_DISPLAY_FONT = 17;
+    constexpr int MODERN_HANDJET_FONT = 18;
     constexpr int HORIZ_DIR = 0;
     constexpr int VERT_DIR = 1;
 
