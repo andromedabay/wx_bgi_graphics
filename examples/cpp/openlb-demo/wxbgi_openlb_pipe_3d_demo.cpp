@@ -755,6 +755,7 @@ void drawHud(int sliceZ,
 {
     const int lineStep = 22;
     int lineY = hudTop;
+    settextstyle(MODERN_HANDJET_FONT, HORIZ_DIR, 2);
     auto drawBullet = [&](const char *text, int color = LIGHTGRAY)
     {
         setcolor(color);
