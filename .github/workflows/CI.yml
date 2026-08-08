@@ -283,6 +283,36 @@ jobs:
           path: wx_bgi_opengl-macos-x64.tar.gz
           if-no-files-found: error
 
+      - name: Upload headers artifact (Windows)
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-headers-windows
+          path:
+            - build/artifacts/wx_bgi_headers.zip
+            - build/artifacts/wx_bgi_headers.tar.gz
+          if-no-files-found: error
+
+      - name: Upload headers artifact (Linux)
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-headers-linux
+          path:
+            - build-rel/artifacts/wx_bgi_headers.zip
+            - build-rel/artifacts/wx_bgi_headers.tar.gz
+          if-no-files-found: error
+
+      - name: Upload headers artifact (macOS)
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-headers-macos
+          path:
+            - build-rel/artifacts/wx_bgi_headers.zip
+            - build-rel/artifacts/wx_bgi_headers.tar.gz
+          if-no-files-found: error
+
   release-docs-archives:
     name: Release Docs Archives
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
@@ -419,6 +449,12 @@ jobs:
             dist/release-binary-windows/wx_bgi_opengl-windows-x64.zip
             dist/release-binary-linux/wx_bgi_opengl-linux-x64.tar.gz
             dist/release-binary-macos/wx_bgi_opengl-macos-x64.tar.gz
+            dist/release-headers-windows/wx_bgi_headers.zip
+            dist/release-headers-windows/wx_bgi_headers.tar.gz
+            dist/release-headers-linux/wx_bgi_headers.zip
+            dist/release-headers-linux/wx_bgi_headers.tar.gz
+            dist/release-headers-macos/wx_bgi_headers.zip
+            dist/release-headers-macos/wx_bgi_headers.tar.gz
             dist/release-docs-zip/api-docs.zip
             dist/release-docs-targz/api-docs.tar.gz
           fail_on_unmatched_files: true
