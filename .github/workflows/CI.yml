@@ -288,9 +288,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: release-headers-windows
-          path:
-            - build/artifacts/wx_bgi_headers.zip
-            - build/artifacts/wx_bgi_headers.tar.gz
+          path: |
+            build/artifacts/wx_bgi_headers.zip
+            build/artifacts/wx_bgi_headers.tar.gz
           if-no-files-found: error
 
       - name: Upload headers artifact (Linux)
@@ -298,9 +298,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: release-headers-linux
-          path:
-            - build-rel/artifacts/wx_bgi_headers.zip
-            - build-rel/artifacts/wx_bgi_headers.tar.gz
+          path: |
+            build-rel/artifacts/wx_bgi_headers.zip
+            build-rel/artifacts/wx_bgi_headers.tar.gz
           if-no-files-found: error
 
       - name: Upload headers artifact (macOS)
@@ -308,9 +308,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: release-headers-macos
-          path:
-            - build-rel/artifacts/wx_bgi_headers.zip
-            - build-rel/artifacts/wx_bgi_headers.tar.gz
+          path: |
+            build-rel/artifacts/wx_bgi_headers.zip
+            build-rel/artifacts/wx_bgi_headers.tar.gz
           if-no-files-found: error
 
   release-docs-archives:
