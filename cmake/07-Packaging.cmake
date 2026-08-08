@@ -34,7 +34,7 @@ add_custom_target(wx_bgi_headers_package ALL
             "${WXBGI_LIB_DIR}"
             "${WXBGI_DOCS_DIR}"
     COMMAND ${CMAKE_COMMAND} -E echo "Staging public headers for packaging"
-    COMMAND ${CMAKE_COMMAND} -DROOT_SOURCE_DIR=${CMAKE_SOURCE_DIR} -DHEADER_STAGING_DIR=${WXBGI_HEADER_STAGING_DIR} -P ${CMAKE_SOURCE_DIR}/cmake/StageHeaders.cmake
+    COMMAND ${CMAKE_COMMAND} -DROOT_SOURCE_DIR=${CMAKE_SOURCE_DIR} -DHEADER_STAGING_DIR=${WXBGI_HEADER_STAGING_DIR} -P ${CMAKE_SOURCE_DIR}/cmake/07-zz01-StageHeaders.cmake
     COMMAND ${CMAKE_COMMAND} -E echo "Creating wx_bgi_headers.zip"
     COMMAND ${CMAKE_COMMAND} -E chdir "${WXBGI_HEADER_STAGING_DIR}" ${CMAKE_COMMAND} -E tar "cf" "${WXBGI_HEADERS_ZIP}" --format=zip -- .
     COMMAND ${CMAKE_COMMAND} -E echo "Creating wx_bgi_headers.tar.gz"
