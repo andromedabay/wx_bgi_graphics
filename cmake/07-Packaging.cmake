@@ -35,8 +35,6 @@ add_custom_target(wx_bgi_headers_package ALL
             "${WXBGI_DOCS_DIR}"
     COMMAND ${CMAKE_COMMAND} -E echo "Staging public headers for packaging"
     COMMAND ${CMAKE_COMMAND} -DROOT_SOURCE_DIR=${CMAKE_SOURCE_DIR} -DHEADER_STAGING_DIR=${WXBGI_HEADER_STAGING_DIR} -P ${CMAKE_SOURCE_DIR}/cmake/07-zz01-StageHeaders.cmake
-    COMMAND ${CMAKE_COMMAND} -E echo "Creating wx_bgi_headers.zip"
-    COMMAND ${CMAKE_COMMAND} -E chdir "${WXBGI_HEADER_STAGING_DIR}" ${CMAKE_COMMAND} -E tar "cf" "${WXBGI_HEADERS_ZIP}" --format=zip -- .
     COMMENT "Packaging public headers, binaries, and docs into the build artifacts directory"
     VERBATIM
 )
@@ -86,7 +84,14 @@ foreach(_target IN LISTS WXBGI_PACKAGE_DEPS)
     endif()
 endforeach()
 
-# TAR.GZ must run AFTER all POST_BUILD copies
+# HEADERS.ZIP must run AFTER all POST_BUILD copies
+message(STATUS "Creating wx_bgi_headers.zip")
+add_custom_command(TARGET wx_bgi_headers_package POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E chdir "${WXBGI_HEADER_STAGING_DIR}"
+            ${CMAKE_COMMAND} -E tar "cf" "${WXBGI_HEADERS_ZIP}" --format=zip -- .
+)
+
+# HEADERS.TAR.GZ must run AFTER all POST_BUILD copies
 message(STATUS "Creating wx_bgi_headers.tar.gz")
 add_custom_command(TARGET wx_bgi_headers_package POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E chdir "${WXBGI_HEADER_STAGING_DIR}"
