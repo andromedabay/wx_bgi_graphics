@@ -55,6 +55,9 @@ cmake -S . -B build
 # Build Debug
 cmake --build build -j --config Debug
 
+# Run Automated Tests
+ctest --test-dir build
+
 # Build Release
 cmake --build build -j --config Release
 ```
@@ -67,6 +70,9 @@ cmake -S . -B build -DWXBGI_ENABLE_WX=OFF
 
 # Enable keyboard injection test seams (CI / testing only)
 cmake -S . -B build -DWXBGI_ENABLE_TEST_SEAMS=ON
+
+# Run Automated Tests
+ctest --test-dir build
 
 # Stage OpenLB bridge assets (requires a local OpenLB tree)
 cmake -S . -B build `
@@ -85,6 +91,9 @@ cached per scene revision for redraw performance.
 # Debug
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
 cmake --build build -j
+# Run Automated Tests
+ctest --test-dir build
+
 
 # Release
 cmake -S . -B build-rel -DCMAKE_BUILD_TYPE=Release
@@ -96,6 +105,9 @@ cmake -S . -B build \
   -DWXBGI_ENABLE_OPENLB=ON \
   -DOPENLB_ROOT=/path/to/openlb/release
 cmake --build build --target openlb_bridge_package -j
+
+# Running OpenLB Demo Program
+./examples/cpp/openlb-demo/run_openlb_pipe_3d_wx_slider_demo.sh
 ```
 
 ### macOS (Clang, single-config)
@@ -103,6 +115,11 @@ cmake --build build --target openlb_bridge_package -j
 ```bash
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
 cmake --build build -j
+# Run Automated Tests
+ctest --test-dir build
+
+# Running OpenLB Dmo Program
+./examples/cpp/openlb-demo/run_openlb_pipe_3d_wx_slider_demo_macos.sh
 ```
 
 > **Apple Silicon / macOS 15+:** see the [macOS-specific notes](#macos-apple-silicon--retina-displays) section below for required extra flags.

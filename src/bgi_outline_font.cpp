@@ -6,7 +6,7 @@
 #include "bgi_types.h"
 
 #define STB_TRUETYPE_IMPLEMENTATION
-#include <stb_truetype.h>
+#include <stb/stb_truetype.h>
 
 #include <algorithm>
 #include <cctype>

@@ -5,4 +5,4 @@
  *
  * Include this header AFTER wxWidgets headers in your application.
  */
-#include "src/wx/wx_bgi_canvas.h"
+#include "wx_bgi/wx_bgi_canvas.h"

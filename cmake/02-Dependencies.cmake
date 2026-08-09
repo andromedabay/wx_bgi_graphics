@@ -121,6 +121,12 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(stb)
 
+# Create include prefix "stb/"
+set(STB_INCLUDE_DIR ${FETCHCONTENT_BASE_DIR}/include_external/stb)
+file(MAKE_DIRECTORY ${STB_INCLUDE_DIR})
+# Copy the entire stb directory recursively
+file(COPY ${stb_SOURCE_DIR}/ DESTINATION ${STB_INCLUDE_DIR})
+
 # ---------------------------------------------------------------------------
 # wxWidgets — unified interface target `wx_bgi_wx_iface`
 #

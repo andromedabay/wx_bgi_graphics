@@ -249,14 +249,16 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           mkdir -p out
-          cp build-rel/libwx_bgi_opengl.so out/
+          if [ -f build-rel/libwx_bgi_opengl.so ]; then cp build-rel/libwx_bgi_opengl.so out/; fi
+          if [ -f build-rel/libwx_bgi_opengl.a ]; then cp build-rel/libwx_bgi_opengl.a out/; fi
           tar -czf wx_bgi_opengl-linux-x64.tar.gz -C out .
 
       - name: Package binary (macOS)
         if: runner.os == 'macOS'
         run: |
           mkdir -p out
-          cp build-rel/libwx_bgi_opengl.dylib out/
+          if [ -f build-rel/libwx_bgi_opengl.dylib ]; then cp build-rel/libwx_bgi_opengl.dylib out/; fi
+          if [ -f build-rel/libwx_bgi_opengl.a ]; then cp build-rel/libwx_bgi_opengl.a out/; fi
           tar -czf wx_bgi_opengl-macos-x64.tar.gz -C out .
 
       - name: Upload binary artifact (Windows)

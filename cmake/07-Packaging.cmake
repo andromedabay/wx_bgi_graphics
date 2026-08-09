@@ -55,6 +55,15 @@ add_custom_command(TARGET wx_bgi_headers_package POST_BUILD
     VERBATIM
 )
 
+if(EXISTS "${CMAKE_BINARY_DIR}/libwx_bgi_opengl.so")
+    add_custom_command(TARGET wx_bgi_headers_package POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${CMAKE_BINARY_DIR}/libwx_bgi_opengl.so"
+                "${WXBGI_LIB_DIR}/libwx_bgi_opengl.so"
+        VERBATIM
+    )
+endif()
+
 file(GLOB_RECURSE WXBGI_PDF_DOCS CONFIGURE_DEPENDS "${CMAKE_BINARY_DIR}/**/*.pdf")
 foreach(_pdf_doc IN LISTS WXBGI_PDF_DOCS)
     file(RELATIVE_PATH _pdf_rel_path "${CMAKE_BINARY_DIR}" "${_pdf_doc}")
