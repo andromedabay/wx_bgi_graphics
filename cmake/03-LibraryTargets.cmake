@@ -112,6 +112,30 @@ target_include_directories(wx_bgi_opengl PUBLIC src)
 ##target_include_directories(wx_bgi_opengl PRIVATE ${stb_SOURCE_DIR})
 target_include_directories(wx_bgi_opengl PRIVATE ${FETCHCONTENT_BASE_DIR}/include_external)
 target_compile_definitions(wx_bgi_opengl PRIVATE GLEW_STATIC)
+
+if(WXBGI_ENABLE_WX)
+    # Build a static wxWidgets library from fetched sources to keep the build self-contained.
+    add_library(wxwidgets_static STATIC ${glew_SOURCE_DIR}/src/glew.c)
+    add_library(GLEW::GLEW ALIAS glew_static)
+
+    set_target_properties(glew_static PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+    target_include_directories(glew_static
+        PUBLIC
+            ${glew_SOURCE_DIR}/include
+    )
+
+    target_compile_definitions(glew_static
+        PUBLIC
+            GLEW_STATIC
+    )
+
+    target_link_libraries(glew_static
+        PUBLIC
+            OpenGL::GL
+    )
+endif()
+
 # Propagate core link dependencies to consumers so targets that link
 # against `wx_bgi_opengl` automatically get the required libraries.
 target_link_libraries(wx_bgi_opengl PUBLIC GLEW::GLEW glfw OpenGL::GL glm::glm nlohmann_json::nlohmann_json yaml-cpp::yaml-cpp manifold)

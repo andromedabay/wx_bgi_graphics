@@ -39,6 +39,8 @@ add_custom_target(wx_bgi_headers_package ALL
     VERBATIM
 )
 
+#add_dependencies(wx_bgi_headers_package wxwidgets_install)
+
 if(TARGET api_docs)
     add_dependencies(wx_bgi_headers_package api_docs)
 endif()

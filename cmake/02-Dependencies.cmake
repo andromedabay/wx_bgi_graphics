@@ -181,9 +181,35 @@ Enable on Linux/macOS CI after installing libwxgtk3.2-dev / brew wxwidgets."
             wxWidgets
             GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets.git
             GIT_TAG        v3.2.5
-            GIT_SHALLOW    ON
+            GIT_SHALLOW    OFF
         )
         FetchContent_MakeAvailable(wxWidgets)
         target_link_libraries(wx_bgi_wx_iface INTERFACE wxcore wxgl wxbase)
+
+        # After FetchContent_MakeAvailable(wxWidgets)
+
+        # Choose a predictable staging directory
+        set(WX_INSTALL_DIR ${CMAKE_BINARY_DIR}/_wx_install)
+
+        # Ensure the directory exists
+        file(MAKE_DIRECTORY ${WX_INSTALL_DIR})
+
+        # Add a custom target that performs the wxWidgets install step
+        add_custom_target(wxwidgets_install 
+            DEPENDS wxcore wxbase wxgl
+            COMMAND ${CMAKE_COMMAND}
+                --install ${wxWidgets_BINARY_DIR}
+                --prefix ${WX_INSTALL_DIR}
+            COMMENT "Installing wxWidgets into ${WX_INSTALL_DIR}"
+        )
+
+        # Make your interface target depend on the install step
+        add_dependencies(wx_bgi_wx_iface wxwidgets_install)
+
+        # Export the include directory so your packaging step can use it
+        target_include_directories(wx_bgi_wx_iface INTERFACE
+            ${WX_INSTALL_DIR}/include
+        )
+
     endif()
 endif()
