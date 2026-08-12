@@ -18,3 +18,4 @@ libimp*.a
 *.res
 **/tmp
 **/\@DOXYGEN_OUTPUT_DIR\@
+*/third_party/installed/*
