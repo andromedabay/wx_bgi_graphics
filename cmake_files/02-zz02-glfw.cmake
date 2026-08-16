@@ -15,7 +15,7 @@ else()
     set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
     set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
     set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-    set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
+    set(GLFW_INSTALL ON CACHE BOOL "" FORCE)
 
     # FetchContent_Declare(
     #    glfw
@@ -40,7 +40,12 @@ else()
 
     FetchContent_Declare(
        glfw
-        URL https://github.com/glfw/glfw/archive/refs/tags/3.5.1.tar.gz
+        # # Download Source Code - GLFW
+        # URL https://github.com/glfw/glfw/archive/refs/tags/3.5.1.tar.gz
+        # GIT PULL UPSTREAM - GLFW
+        GIT_REPOSITORY ${GIT_URL_GLFW}
+        GIT_TAG        ${GIT_TAG_GLFW}
+        GIT_SHALLOW    OFF           
         DOWNLOAD_EXTRACT_TIMESTAMP TRUE
         UPDATE_COMMAND
         ""
@@ -49,7 +54,6 @@ else()
         INSTALL_DIR ${EP_INSTALL_GLFW}        
     )
     FetchContent_MakeAvailable(glfw)
-
 
     # Apple Clang 16 (Xcode 16.x) tightened C conformance in Objective-C
     # translation units (.m files) and now treats implicit void*→typed-pointer
