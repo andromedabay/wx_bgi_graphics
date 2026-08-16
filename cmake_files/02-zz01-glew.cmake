@@ -46,6 +46,6 @@ FetchContent_Declare(
       ""
    PREFIX ${EP_BUILD_GLEW}
    SOURCE_DIR ${EP_BASE_GLEW}
-   INSTALL_DIR ${EP_INSTALL_GLEW}      
+   BINARY_DIR ${EP_INSTALL_GLEW}      
 )
 FetchContent_MakeAvailable(glew)

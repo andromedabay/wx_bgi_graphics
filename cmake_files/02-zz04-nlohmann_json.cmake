@@ -23,6 +23,6 @@ FetchContent_Declare(
     ""
     PREFIX ${EP_BUILD_NLOHMANN_JSON}
     SOURCE_DIR ${EP_BASE_NLOHMANN_JSON}
-    INSTALL_DIR ${EP_INSTALL_NLOHMANN_JSON}         
+    BINARY_DIR ${EP_INSTALL_NLOHMANN_JSON}         
 )
 FetchContent_MakeAvailable(nlohmann_json)

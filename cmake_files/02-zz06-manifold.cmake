@@ -31,6 +31,6 @@ FetchContent_Declare(
     ""
     PREFIX ${EP_BUILD_MANIFOLD}
     SOURCE_DIR ${EP_BASE_MANIFOLD}
-    INSTALL_DIR ${EP_INSTALL_MANIFOLD}            
+    BINARY_DIR ${EP_INSTALL_MANIFOLD}            
 )
 FetchContent_MakeAvailable(manifold)

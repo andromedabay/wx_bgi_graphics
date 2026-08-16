@@ -68,7 +68,7 @@ Enable on Linux/macOS CI after installing libwxgtk3.2-dev / brew wxwidgets."
             ""
             PREFIX ${EP_BUILD_WXWIDGETS}
             SOURCE_DIR ${EP_BASE_WXWIDGETS}
-            INSTALL_DIR ${EP_INSTALL_WXWIDGETS}                   
+            BINARY_DIR ${EP_INSTALL_WXWIDGETS}                   
         )
         FetchContent_MakeAvailable(wxWidgets)
 

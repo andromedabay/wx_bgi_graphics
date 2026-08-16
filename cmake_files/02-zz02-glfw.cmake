@@ -51,8 +51,9 @@ else()
         ""
         PREFIX ${EP_BUILD_GLFW}
         SOURCE_DIR ${EP_BASE_GLFW}
-        INSTALL_DIR ${EP_INSTALL_GLFW}        
+        BINARY_DIR ${EP_INSTALL_GLFW}
     )
+
     FetchContent_MakeAvailable(glfw)
 
     # Apple Clang 16 (Xcode 16.x) tightened C conformance in Objective-C

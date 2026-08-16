@@ -20,7 +20,7 @@ FetchContent_Declare(
     ""
     PREFIX ${EP_BUILD_STB}
     SOURCE_DIR ${EP_BASE_STB}
-    INSTALL_DIR ${EP_INSTALL_STB}      
+    BINARY_DIR ${EP_INSTALL_STB}      
 )
 FetchContent_MakeAvailable(stb)
 

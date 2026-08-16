@@ -21,6 +21,6 @@ FetchContent_Declare(
         ""
         PREFIX ${EP_BUILD_GLM}
         SOURCE_DIR ${EP_BASE_GLM}
-        INSTALL_DIR ${EP_INSTALL_GLM}     
+        BINARY_DIR ${EP_INSTALL_GLM}     
 )
 FetchContent_MakeAvailable(glm)

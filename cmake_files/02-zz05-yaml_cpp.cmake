@@ -38,6 +38,6 @@ FetchContent_Declare(
     ""
     PREFIX ${EP_BUILD_YAML_CPP}
     SOURCE_DIR ${EP_BASE_YAML_CPP}
-    INSTALL_DIR ${EP_INSTALL_YAML_CPP}         
+    BINARY_DIR ${EP_INSTALL_YAML_CPP}         
 )
 FetchContent_MakeAvailable(yaml_cpp)
