@@ -46,6 +46,7 @@ Enable on Linux/macOS CI after installing libwxgtk3.2-dev / brew wxwidgets."
         set(wxBUILD_TESTS   OFF CACHE STRING "" FORCE)
         set(wxBUILD_SAMPLES OFF CACHE STRING "" FORCE)
         set(wxBUILD_DEMOS   OFF CACHE STRING "" FORCE)
+        set(wxBUILD_INSTALL_LOCALE OFF CACHE BOOL "" FORCE)
 
         if(APPLE)
             # wxWidgets 3.2.x bundles libpng which includes <fp.h>. That header was
@@ -104,7 +105,8 @@ Enable on Linux/macOS CI after installing libwxgtk3.2-dev / brew wxwidgets."
         file(MAKE_DIRECTORY ${WX_INSTALL_DIR})
 
         ## include_directories(${CMAKE_BINARY_DIR}/_deps_fc/glew-src/include)
-        include_directories(${EP_BASE_GLEW}/auto/src)
+        #include_directories(${EP_BASE_GLEW}/auto/src)
+        include_directories(${glew_SOURCE_DIR}/include)
 
         # # Add a custom target that performs the wxWidgets install step
         # add_custom_target(wxwidgets_install ALL
@@ -143,7 +145,19 @@ Enable on Linux/macOS CI after installing libwxgtk3.2-dev / brew wxwidgets."
         )
 
         # Make sure wxWidgets is actually built before we try to install it
-        add_dependencies(wxwidgets_install wxcore wxgl wxbase)
+        ##add_dependencies(wxwidgets_install wxcore wxgl wxbase)
+
+        add_dependencies(wxwidgets_install
+            wxbase
+            wxcore
+            wxnet
+            wxxml
+            wxhtml
+            wxgl
+            wxpropgrid
+            wxrichtext
+        )
+
         ## End---
 
         # Make your interface target depend on the install step
