@@ -113,6 +113,14 @@ target_include_directories(wx_bgi_opengl PUBLIC src)
 ##target_include_directories(wx_bgi_opengl PRIVATE ${stb_SOURCE_DIR})
 target_include_directories(wx_bgi_opengl PRIVATE ${FETCHCONTENT_BASE_DIR}/include_external)
 target_compile_definitions(wx_bgi_opengl PRIVATE GLEW_STATIC)
+target_include_directories(wx_bgi_opengl PRIVATE
+    ${EP_BASE_YAML_CPP}/include
+    ${EP_BASE_MANIFOLD}/include
+    ${EP_BASE_GLM}/glm
+    ${EP_BASE_NLOHMANN_JSON}/include
+    ${EP_BASE_STB}
+)
+
 
 if(WXBGI_ENABLE_WX)
     # Build a static wxWidgets library from fetched sources to keep the build self-contained.
@@ -139,7 +147,7 @@ endif()
 
 # Propagate core link dependencies to consumers so targets that link
 # against `wx_bgi_opengl` automatically get the required libraries.
-target_link_libraries(wx_bgi_opengl PUBLIC GLEW::GLEW glfw OpenGL::GL glm::glm nlohmann_json::nlohmann_json yaml_cpp manifold)
+target_link_libraries(wx_bgi_opengl PUBLIC GLEW::GLEW glfw OpenGL::GL glm::glm nlohmann_json::nlohmann_json yaml-cpp manifold)
 
 if(WXBGI_ENABLE_WX)
     target_link_libraries(wx_bgi_opengl PRIVATE wx_bgi_wx_iface)
