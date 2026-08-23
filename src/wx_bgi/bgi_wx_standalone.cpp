@@ -16,6 +16,7 @@
 #include <wx/wx.h>
 #include <wx/timer.h>
 #include <wx/glcanvas.h>
+#include <wx/sysopt.h>
 #include "wx_bgi_canvas.h"
 #include "wx_bgi_ext.h"
 
