@@ -98,6 +98,7 @@ generated.
 ## Quick Orientation
 
 - New users should begin with **[Getting Started](./user-guide/getting-started.md)**.
+- For CMake build and CTest usage, read **[Using-CMAKE.md](../Using-CMAKE.md)**.
 - For animation/page-buffer workflow, read **[Tutorial.md](./user-guide/Tutorial.md)**.
 - For classic and embedded font usage, read **[Fonts.md](./user-guide/Fonts.md)**.
 - For retained scenes and composition, read **[DDS.md](./DDS.md)** and

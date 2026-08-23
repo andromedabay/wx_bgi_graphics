@@ -91,6 +91,138 @@ cmake -S . -B build-no-install-docs -DWXBGI_INSTALL_DOCS=OFF
 
 This skips installation of generated documentation to the install tree.
 
+## Build and run CMake tests
+
+This repository uses CTest (`add_test` in `cmake_files/07-Tests.cmake`) for automated checks.
+
+### 1) Configure a test build
+
+Linux/macOS:
+
+```bash
+cmake -S . -B build-test -DCMAKE_BUILD_TYPE=Debug -DWXBGI_ENABLE_TEST_SEAMS=ON
+```
+
+Windows (multi-config generators such as Visual Studio):
+
+```powershell
+cmake -S . -B build-test -DWXBGI_ENABLE_TEST_SEAMS=ON
+```
+
+Notes:
+
+- `WXBGI_ENABLE_TEST_SEAMS=ON` is required for seam-dependent tests such as `test_input_hooks` and `test_input_bypass`.
+- Tests that are demos/interactive apps are intentionally not registered in CTest.
+
+### 2) Build test executables
+
+Linux/macOS:
+
+```bash
+cmake --build build-test -j
+```
+
+Windows:
+
+```powershell
+cmake --build build-test -j --config Debug
+```
+
+### 3) List available tests
+
+Linux/macOS:
+
+```bash
+ctest --test-dir build-test -N
+```
+
+Windows:
+
+```powershell
+ctest --test-dir build-test -C Debug -N
+```
+
+### 4) Run all tests
+
+Linux:
+
+```bash
+xvfb-run -a ctest --test-dir build-test --output-on-failure --timeout 90
+```
+
+macOS (headless CI runners):
+
+```bash
+ctest --test-dir build-test --output-on-failure --timeout 90 -E "wx_bgi_|wxbgi_"
+```
+
+Windows:
+
+```powershell
+ctest --test-dir build-test -C Debug --output-on-failure --timeout 90
+```
+
+Important timeout behavior:
+
+- `ctest --timeout 90` sets the default timeout only.
+- Per-test `TIMEOUT` properties in `cmake_files/07-Tests.cmake` override that default.
+- Some run-phase tests intentionally use shorter kill timeouts (for example, 20s) to avoid hangs.
+
+### 5) Run a subset during development
+
+Run one test by exact name:
+
+```bash
+ctest --test-dir build-test -R "^test_dds_csg$" --output-on-failure
+```
+
+Exclude known long or optional groups:
+
+```bash
+ctest --test-dir build-test --output-on-failure -E "openlb|pascal"
+```
+
+### 6) Test seams ON vs OFF
+
+Seams ON build (includes seam-only tests):
+
+```bash
+cmake -S . -B build-test-seams -DCMAKE_BUILD_TYPE=Debug -DWXBGI_ENABLE_TEST_SEAMS=ON
+cmake --build build-test-seams -j
+ctest --test-dir build-test-seams --output-on-failure
+```
+
+Release-like seams OFF build:
+
+```bash
+cmake -S . -B build-test-release -DCMAKE_BUILD_TYPE=Release -DWXBGI_ENABLE_TEST_SEAMS=OFF
+cmake --build build-test-release -j
+ctest --test-dir build-test-release --output-on-failure
+```
+
+### 7) Typical CI-friendly configs
+
+Linux system packages for wxWidgets/GLFW:
+
+```bash
+cmake -S . -B build-ci \
+	-DCMAKE_BUILD_TYPE=Debug \
+	-DWXBGI_ENABLE_TEST_SEAMS=ON \
+	-DWXBGI_SYSTEM_WX=ON \
+	-DWXBGI_SYSTEM_GLFW=ON \
+	-DGLFW_BUILD_WAYLAND=OFF
+```
+
+macOS system packages for wxWidgets/GLFW:
+
+```bash
+cmake -S . -B build-ci \
+	-DCMAKE_BUILD_TYPE=Debug \
+	-DWXBGI_ENABLE_TEST_SEAMS=ON \
+	-DWXBGI_SYSTEM_WX=ON \
+	-DWXBGI_SYSTEM_GLFW=ON
+```
+
 ## Doxygen documentation
 
 Documentation is generated through Doxygen whenever it is available.
