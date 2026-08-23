@@ -26,7 +26,7 @@ foreach(_target IN LISTS WXBGI_ALL_TARGETS)
 endforeach()
 list(REMOVE_DUPLICATES WXBGI_PACKAGE_DEPS)
 
-add_custom_target(wx_bgi_headers_package ALL
+add_custom_target(wx_bgi_headers_package
     COMMAND ${CMAKE_COMMAND} -E rm -rf "${WXBGI_PACKAGE_ROOT}"
     COMMAND ${CMAKE_COMMAND} -E make_directory
             "${WXBGI_HEADER_STAGING_DIR}"
@@ -41,7 +41,7 @@ add_custom_target(wx_bgi_headers_package ALL
 
 #add_dependencies(wx_bgi_headers_package wxwidgets_install)
 
-if(TARGET api_docs)
+if(WXBGI_INSTALL_DOCS AND TARGET api_docs)
     add_dependencies(wx_bgi_headers_package api_docs)
 endif()
 add_dependencies(wx_bgi_headers_package ${WXBGI_PACKAGE_DEPS})

@@ -7,7 +7,7 @@ set(EP_INSTALL_NLOHMANN_JSON ${EP_INSTALL_PREFIX}/nlohmann_json)
 message(STATUS "Fetching nlohmann/json...")
 
 set(JSON_BuildTests OFF CACHE BOOL "" FORCE)
-set(JSON_Install    OFF CACHE BOOL "" FORCE)
+set(JSON_Install    ON CACHE BOOL "" FORCE)
 FetchContent_Declare(
     nlohmann_json
     # # DOWNLOAD BINARY - nlohmann_json
@@ -26,3 +26,15 @@ FetchContent_Declare(
     BINARY_DIR ${EP_INSTALL_NLOHMANN_JSON}         
 )
 FetchContent_MakeAvailable(nlohmann_json)
+
+if(NOT TARGET nlohmann_json::nlohmann_json)
+    if(TARGET nlohmann_json)
+        add_library(nlohmann_json::nlohmann_json ALIAS nlohmann_json)
+    else()
+        add_library(nlohmann_json::nlohmann_json INTERFACE IMPORTED GLOBAL)
+        set_target_properties(nlohmann_json::nlohmann_json PROPERTIES
+            INTERFACE_INCLUDE_DIRECTORIES
+                "${nlohmann_json_SOURCE_DIR}/include;${nlohmann_json_SOURCE_DIR}/single_include"
+        )
+    endif()
+endif()

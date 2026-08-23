@@ -111,6 +111,14 @@ foreach(hdr ${WXBGI_PUBLIC_HEADERS})
         continue()
     endif()    
 
+    # --- nlohmann/json headers: preserve structure ---
+    if(hdr MATCHES "^${nlohmann_headers}/")
+        file(RELATIVE_PATH rel_src "${nlohmann_headers}" "${hdr}")
+        set(rel_dst "${rel_src}")
+        list(APPEND REL_HEADERS "${rel_src}|${rel_dst}")
+        continue()
+    endif()
+
     # --- YAML-CPP headers: preserve structure ---
     if(hdr MATCHES "^${yaml-cpp_headers}/")
         get_filename_component(filename "${CMAKE_BINARY_DIR}" NAME)

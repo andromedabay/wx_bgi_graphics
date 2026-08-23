@@ -1,5 +1,9 @@
 # Project-wide options and core CMake configuration.
 
+if(WXBGI_ENABLE_CLEAN_TARGET)
+    return()
+endif()
+
 if(APPLE)
     enable_language(OBJCXX)
 endif()
@@ -12,6 +16,22 @@ find_package(OpenGL REQUIRED)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+option(WXBGI_BUILD_SHARED
+    "Build wx_bgi_graphics as a shared library (default: ON)."
+    ON
+)
+
+option(WXBGI_INSTALL_HEADERS
+    "Install the public headers alongside the library output."
+    ON
+)
+
+option(WXBGI_INSTALL_DOCS
+    "Install generated Doxygen documentation alongside the library output."
+    ON
+)
 
 # Internal test seams are intentionally OFF by default so release/shared binaries
 # do not expose synthetic input injection entry points.
@@ -23,6 +43,11 @@ option(
 option(
     WXBGI_ENABLE_OPENLB
     "Stage optional OpenLB bridge helpers and live-loop demo assets."
+    OFF
+)
+option(
+    WXBGI_ENABLE_CLEAN_TARGET
+    "Add an opt-in clean target that removes build* directories and third_party/installed contents except .gitignore."
     OFF
 )
 set(OPENLB_ROOT "" CACHE PATH "Path to a local OpenLB release tree (used only when WXBGI_ENABLE_OPENLB=ON)")

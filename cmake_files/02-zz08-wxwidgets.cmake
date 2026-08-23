@@ -73,100 +73,18 @@ Enable on Linux/macOS CI after installing libwxgtk3.2-dev / brew wxwidgets."
         )
         FetchContent_MakeAvailable(wxWidgets)
 
-        # # START - Remove all within-target .git subfolders...
-        # execute_process(
-        #     COMMAND ${CMAKE_COMMAND} -E remove_directory ${EP_BASE_WXWIDGETS}/.git
-        # )
-        # # Remove any submodule .git directories
-        # execute_process(
-        #     COMMAND ${CMAKE_COMMAND} -E remove_directory ${EP_BASE_WXWIDGETS}/.git/modules
-        # )
-        # # Recursively remove any stray .git folders (submodules, nested repos)
-        # file(GLOB_RECURSE GIT_DIRS
-        #     "${EP_BASE_WXWIDGETS}/*/.git"
-        # )
-        # foreach(GITDIR ${GIT_DIRS})
-        #     message(STATUS "Removing Git metadata: ${GITDIR}")
-        #     execute_process(
-        #         COMMAND ${CMAKE_COMMAND} -E remove_directory ${GITDIR}
-        #     )
-        # endforeach()
-        # # END - Remove all within-target .git subfolders
-
         target_link_libraries(wx_bgi_wx_iface INTERFACE wxcore wxgl wxbase)
 
-        # After FetchContent_MakeAvailable(wxWidgets)
-
-        # Choose a predictable staging directory
-        ## set(WX_INSTALL_DIR ${CMAKE_BINARY_DIR}/_wx_install)
-        set(WX_INSTALL_DIR ${EP_INSTALL_WXWIDGETS})
-
-        # Ensure the directory exists
-        file(MAKE_DIRECTORY ${WX_INSTALL_DIR})
-
-        ## include_directories(${CMAKE_BINARY_DIR}/_deps_fc/glew-src/include)
-        #include_directories(${EP_BASE_GLEW}/auto/src)
-        include_directories(${glew_SOURCE_DIR}/include)
-
-        # # Add a custom target that performs the wxWidgets install step
-        # add_custom_target(wxwidgets_install ALL
-        #     #DEPENDS wxcore wxbase wxgl
-        #     COMMAND ${CMAKE_COMMAND}
-        #         -DCMAKE_CURRENT_SOURCE_DIR=${FETCHCONTENT_BASE_DIR}/wxwidgets-src
-        #         -S${wxwidgets_SOURCE_DIR}
-        #         -DCMAKE_CURRENT_BINARY_DIR=${wxwidgets_BINARY_DIR}
-        #         -B${wxwidgets_BINARY_DIR}
-        #         -DwxBUILD_SHARED=OFF
-        #         -DwxBUILD_TESTS=OFF
-        #         -DwxBUILD_SAMPLES=OFF
-        #         -DwxBUILD_DEMOS=OFF
-        #         -DwxBUILD_STATIC=ON
-        #         -DwxUSE_BASE=ON
-        #         -DwxUSE_BASE=ON
-        #         -DwxUSE_GUI=ON
-        #         -DwxUSE_UNICODE=ON
-        #         -DwxBUILD_INSTALL=ON
-        #         -DwxBUILD_INSTALL_PREFIX=${WX_INSTALL_DIR}
-        #         # --install ${wxWidgets_BINARY_DIR}
-        #     COMMENT "Installing wxWidgets into ${WX_INSTALL_DIR}"
-        # )
-
-        ## Start---
-        # Choose a predictable staging directory
-        # set(WX_INSTALL_DIR ${CMAKE_BINARY_DIR}/_wx_install)
-        # file(MAKE_DIRECTORY ${WX_INSTALL_DIR})
-
-        # Custom target that just runs the install step on the existing wxWidgets build
-        add_custom_target(wxwidgets_install
-            COMMAND ${CMAKE_COMMAND}
-                --install ${wxWidgets_BINARY_DIR}
-                --prefix ${WX_INSTALL_DIR}
-            COMMENT "Installing wxWidgets into ${WX_INSTALL_DIR}"
-        )
-
-        # Make sure wxWidgets is actually built before we try to install it
-        ##add_dependencies(wxwidgets_install wxcore wxgl wxbase)
-
-        add_dependencies(wxwidgets_install
-            wxbase
-            wxcore
-            wxnet
-            wxxml
-            wxhtml
-            wxgl
-            wxpropgrid
-            wxrichtext
-        )
-
-        ## End---
-
-        # Make your interface target depend on the install step
-        add_dependencies(wx_bgi_wx_iface wxwidgets_install)
-
-        # Export the include directory so your packaging step can use it
+        # Do not force a full wxWidgets install for the fetched build. The
+        # install step tries to package locale files that are not generated in
+        # this configuration, and the library only needs the built targets and
+        # their include paths.
         target_include_directories(wx_bgi_wx_iface INTERFACE
-            ${WX_INSTALL_DIR}/include
+            ${wxWidgets_SOURCE_DIR}/include
+            ${wxWidgets_BINARY_DIR}/include
         )
+
+        include_directories(${glew_SOURCE_DIR}/include)
 
     endif()
 endif()
