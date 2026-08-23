@@ -45,6 +45,7 @@ if(DOXYGEN_FOUND)
 
     add_custom_target(
         api_docs
+        COMMAND ${CMAKE_COMMAND} -E rm -rf ${DOXYGEN_OUTPUT_DIR}
         COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_CONFIG_FILE}
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         DEPENDS copy_doc_images
@@ -66,6 +67,7 @@ if(DOXYGEN_FOUND)
         if(WIN32)
             add_custom_target(
                 api_docs_pdf
+                COMMAND ${CMAKE_COMMAND} -E rm -rf ${DOXYGEN_OUTPUT_DIR}
                 COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_PDF_CONFIG_FILE}
                 COMMAND ${CMAKE_COMMAND} -E chdir ${DOXYGEN_OUTPUT_DIR}/latex make.bat
                 DEPENDS copy_doc_images copy_topics_tex
@@ -75,6 +77,7 @@ if(DOXYGEN_FOUND)
         else()
             add_custom_target(
                 api_docs_pdf
+                COMMAND ${CMAKE_COMMAND} -E rm -rf ${DOXYGEN_OUTPUT_DIR}
                 COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_PDF_CONFIG_FILE}
                 COMMAND ${CMAKE_COMMAND} -E chdir ${DOXYGEN_OUTPUT_DIR}/latex ${CMAKE_MAKE_PROGRAM}
                 DEPENDS copy_doc_images copy_topics_tex

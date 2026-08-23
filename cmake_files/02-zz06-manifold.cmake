@@ -1,0 +1,36 @@
+# GET Source and Build Dependency - manifold
+
+set(EP_BASE_MANIFOLD ${EP_BASE_PREFIX}/manifold)
+set(EP_BUILD_MANIFOLD ${EP_BUILD_PREFIX}/manifold)
+set(EP_INSTALL_MANIFOLD ${EP_INSTALL_PREFIX}/manifold)
+
+message(STATUS "Fetching Manifold...")
+
+set(MANIFOLD_CROSS_SECTION ON CACHE BOOL "" FORCE)
+set(MANIFOLD_TEST OFF CACHE BOOL "" FORCE)
+set(MANIFOLD_PYBIND OFF CACHE BOOL "" FORCE)
+set(MANIFOLD_CBIND OFF CACHE BOOL "" FORCE)
+set(MANIFOLD_JSBIND OFF CACHE BOOL "" FORCE)
+set(MANIFOLD_PAR OFF CACHE BOOL "" FORCE)
+set(MANIFOLD_DOWNLOADS ON CACHE BOOL "" FORCE)
+set(MANIFOLD_STRICT OFF CACHE BOOL "" FORCE)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+FetchContent_Declare(
+    manifold
+    # GIT_REPOSITORY https://github.com/elalish/manifold.git
+    # GIT_TAG        v3.4.1
+    # GIT_SHALLOW    ON
+    # # DOWNLOAD SOURCE TAR BALL - MANIFOLD
+    # URL https://github.com/elalish/manifold/archive/refs/tags/v3.5.2.tar.gz
+    # GIT PULL UPSTREAM - MANIFOLD
+    GIT_REPOSITORY ${GIT_URL_MANIFOLD}
+    GIT_TAG        ${GIT_TAG_MANIFOLD}
+    GIT_SHALLOW    OFF        
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+    UPDATE_COMMAND
+    ""
+    PREFIX ${EP_BUILD_MANIFOLD}
+    SOURCE_DIR ${EP_BASE_MANIFOLD}
+    BINARY_DIR ${EP_INSTALL_MANIFOLD}            
+)
+FetchContent_MakeAvailable(manifold)

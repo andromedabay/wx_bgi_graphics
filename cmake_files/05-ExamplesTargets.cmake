@@ -1,4 +1,4 @@
-include(cmake/04-zz01-Helpers.cmake)
+include(cmake_files/05-zz01-Helpers.cmake)
 
 add_executable(bgi_api_coverage_cpp examples/cpp/bgi_api_coverage.cpp)
 target_link_libraries(bgi_api_coverage_cpp PRIVATE wx_bgi_opengl)
