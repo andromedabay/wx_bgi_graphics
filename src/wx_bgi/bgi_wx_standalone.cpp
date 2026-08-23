@@ -177,6 +177,11 @@ BGI_API void BGI_CALL wxbgi_wx_app_create(void)
     if (wxTheApp) return;  // already created (guard against double init)
     s_app = new BgiStandaloneApp();
     wxApp::SetInstance(s_app);
+#ifdef _WIN32
+    // Keep CI/non-wx host executables from blocking on the manifest warning
+    // dialog when the app did not embed wx/msw/wx.rc resources.
+    wxSystemOptions::SetOption("msw.no-manifest-check", 1);
+#endif
     int argc = 0;
     wxInitialize(argc, static_cast<wxChar**>(nullptr));
 }

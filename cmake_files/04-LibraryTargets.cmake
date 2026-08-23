@@ -145,7 +145,9 @@ target_include_directories(${WXBGI_LIB_TARGET} PRIVATE
 target_link_libraries(${WXBGI_LIB_TARGET} PUBLIC GLEW::GLEW glfw OpenGL::GL glm::glm nlohmann_json::nlohmann_json yaml-cpp manifold)
 
 if(WXBGI_ENABLE_WX)
-    target_link_libraries(${WXBGI_LIB_TARGET} PRIVATE wx_bgi_wx_iface)
+    # Keep wxWidgets usage requirements visible to consumers, especially when
+    # wx_bgi_graphics is built as a static library.
+    target_link_libraries(${WXBGI_LIB_TARGET} PUBLIC wx_bgi_wx_iface)
     target_include_directories(${WXBGI_LIB_TARGET} PRIVATE
         ${CMAKE_SOURCE_DIR}/src/wx
         ${glew_SOURCE_DIR}/include)

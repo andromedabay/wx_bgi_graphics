@@ -163,8 +163,6 @@ if(WXBGI_ENABLE_WX)
     if(WIN32)
         add_executable(wx_bgi_3d_orbit_test WIN32
             examples/wx/wx_bgi_3d_orbit_test.cpp
-            main.exe.manifest
-            resources.rc
         )
     elseif(APPLE)
         add_executable(wx_bgi_3d_orbit_test MACOSX_BUNDLE
@@ -180,8 +178,6 @@ if(WXBGI_ENABLE_WX)
     if(WIN32)
         add_executable(wx_bgi_canvas_coverage_test WIN32
             examples/wx/wx_bgi_canvas_coverage_test.cpp
-            main.exe.manifest
-            resources.rc
         )
     elseif(APPLE)
         add_executable(wx_bgi_canvas_coverage_test MACOSX_BUNDLE
@@ -198,8 +194,6 @@ if(WXBGI_ENABLE_WX)
     if(WIN32)
         add_executable(wx_bgi_app WIN32
             examples/wx/wx_bgi_app.cpp
-            main.exe.manifest
-            resources.rc
         )
     elseif(APPLE)
         add_executable(wx_bgi_app MACOSX_BUNDLE examples/wx/wx_bgi_app.cpp)
@@ -214,8 +208,6 @@ if(WXBGI_ENABLE_WX)
     if(WIN32)
         add_executable(wx_bgi_3d_app WIN32
             examples/wx/wx_bgi_3d_app.cpp
-            main.exe.manifest
-            resources.rc
         )
     elseif(APPLE)
         add_executable(wx_bgi_3d_app MACOSX_BUNDLE examples/wx/wx_bgi_3d_app.cpp)
@@ -230,8 +222,6 @@ if(WXBGI_ENABLE_WX)
     if(WIN32)
         add_executable(wx_multi_scene_demo WIN32
             examples/wx/wx_multi_scene_demo.cpp
-            main.exe.manifest
-            resources.rc
         )
     elseif(APPLE)
         add_executable(wx_multi_scene_demo MACOSX_BUNDLE
@@ -247,8 +237,6 @@ if(WXBGI_ENABLE_WX)
     if(WIN32)
         add_executable(wxbgi_camera_demo_cpp WIN32
             examples/cpp/wxbgi_camera_demo.cpp
-            main.exe.manifest
-            resources.rc
         )
     elseif(APPLE)
         add_executable(wxbgi_camera_demo_cpp MACOSX_BUNDLE
@@ -264,8 +252,6 @@ if(WXBGI_ENABLE_WX)
     if(WIN32)
         add_executable(wxbgi_set_operations_demo_cpp WIN32
             examples/cpp/wxbgi_set_operations_demo.cpp
-            main.exe.manifest
-            resources.rc
         )
     elseif(APPLE)
         add_executable(wxbgi_set_operations_demo_cpp MACOSX_BUNDLE
@@ -281,8 +267,6 @@ if(WXBGI_ENABLE_WX)
     if(WIN32)
         add_executable(wxbgi_affine_transform_demo_cpp WIN32
             examples/cpp/wxbgi_affine_transform_demo.cpp
-            main.exe.manifest
-            resources.rc
         )
     elseif(APPLE)
         add_executable(wxbgi_affine_transform_demo_cpp MACOSX_BUNDLE
