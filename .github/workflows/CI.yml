@@ -91,7 +91,13 @@ jobs:
       - name: Test (Windows Debug)
         if: runner.os == 'Windows'
         shell: pwsh
-        run: ctest --test-dir build -C Debug --output-on-failure
+        env:
+          LIBGL_ALWAYS_SOFTWARE: 1
+          MESA_LOADER_DRIVER_OVERRIDE: llvmpipe
+          GALLIUM_DRIVER: llvmpipe
+          MESA_GL_VERSION_OVERRIDE: 3.3
+          MESA_GLSL_VERSION_OVERRIDE: 330
+        run: ctest --test-dir build -C Debug --output-on-failure --timeout 90
 
       - name: Docs (Windows Debug)
         if: runner.os == 'Windows'
@@ -288,7 +294,12 @@ jobs:
         shell: pwsh
         env:
           BUILD_DIR: ${{ matrix.build_dir }}
-        run: ctest --test-dir $env:BUILD_DIR -C Release --output-on-failure
+          LIBGL_ALWAYS_SOFTWARE: 1
+          MESA_LOADER_DRIVER_OVERRIDE: llvmpipe
+          GALLIUM_DRIVER: llvmpipe
+          MESA_GL_VERSION_OVERRIDE: 3.3
+          MESA_GLSL_VERSION_OVERRIDE: 330
+        run: ctest --test-dir $env:BUILD_DIR -C Release --output-on-failure --timeout 90
 
       - name: Test
         if: runner.os == 'Linux'
