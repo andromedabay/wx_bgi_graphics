@@ -72,6 +72,7 @@ generated.
 - **[Architecture Overview](./docs/developer-guide/architecture-overview.md)**
 - **[OpenLB Bridge Plan](./docs/developer-guide/openlb-bridge-plan.md)**
 - **[Documentation Pipeline](./docs/developer-guide/documentation-pipeline.md)**
+- **[Using CMake to Build wx_bgi_graphics](./Using-CMAKE.md)**
 
 
 ## Public Headers
