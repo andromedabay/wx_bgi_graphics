@@ -5,7 +5,7 @@ This folder contains a port of Borland's old `BGIDemo` Pascal sample to the wx_B
 ## Files
 
 - `bgidemo.pas`: the original demo logic, adapted to use the local compatibility layer
-- `Graph.pas`: a FreePascal compatibility shim that maps classic Borland `Graph` unit calls onto `wx_bgi_opengl`
+- `Graph.pas`: a FreePascal compatibility shim that maps classic Borland `Graph` unit calls onto `wx_bgi_graphics`
 
 ## Build with CMake
 
@@ -21,7 +21,7 @@ cmake --build build --config Debug --target bgidemo_pascal_build
 Outputs:
 
 - `build/bgidemo_pascal/bgidemo.exe`
-- `build/bgidemo_pascal/wx_bgi_opengl.dll`
+- `build/bgidemo_pascal/wx_bgi_graphics.dll`
 
 ### Linux
 
@@ -33,7 +33,7 @@ cmake --build build --target bgidemo_pascal_build
 Outputs:
 
 - `build/bgidemo_pascal/bgidemo`
-- `build/bgidemo_pascal/libwx_bgi_opengl.so`
+- `build/bgidemo_pascal/libwx_bgi_graphics.so`
 
 ### macOS
 
@@ -45,7 +45,7 @@ cmake --build build --target bgidemo_pascal_build
 Outputs:
 
 - `build/bgidemo_pascal/bgidemo`
-- `build/bgidemo_pascal/libwx_bgi_opengl.dylib`
+- `build/bgidemo_pascal/libwx_bgi_graphics.dylib`
 
 ## Run
 

@@ -114,7 +114,7 @@ else()
     add_library(${WXBGI_LIB_TARGET} STATIC ${SRCS})
 endif()
 
-add_library(wx_bgi_opengl ALIAS ${WXBGI_LIB_TARGET})
+#add_library(wx_bgi_opengl ALIAS ${WXBGI_LIB_TARGET})
 
 set_target_properties(${WXBGI_LIB_TARGET} PROPERTIES
     OUTPUT_NAME "wx_bgi_graphics"

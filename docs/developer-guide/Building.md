@@ -199,9 +199,9 @@ After a successful build the library is at:
 
 | Platform | Debug | Release |
 |----------|-------|---------|
-| Windows | `build\Debug\wx_bgi_opengl.dll` | `build\Release\wx_bgi_opengl.dll` |
-| Linux | `build/libwx_bgi_opengl.so` | `build-rel/libwx_bgi_opengl.so` |
-| macOS | `build/libwx_bgi_opengl.dylib` | `build-rel/libwx_bgi_opengl.dylib` |
+| Windows | `build\Debug\wx_bgi_graphics.dll` | `build\Release\wx_bgi_graphics.dll` |
+| Linux | `build/libwx_bgi_graphics.so` | `build-rel/libwx_bgi_graphics.so` |
+| macOS | `build/libwx_bgi_graphics.dylib` | `build-rel/libwx_bgi_graphics.dylib` |
 
 Public headers installed under `build/install/include/`:
 
@@ -277,7 +277,7 @@ The Doxygen source is `docs/Doxyfile.in` — processed by CMake to substitute `@
 .\build\pascal_canvas_coverage\demo_bgi_canvas_coverage.exe
 
 # Python API coverage (pass DLL path as argument)
-python examples\python\bgi_api_coverage.py build\Debug\wx_bgi_opengl.dll
+python examples\python\bgi_api_coverage.py build\Debug\wx_bgi_graphics.dll
 ```
 
 ### Linux / macOS
@@ -294,8 +294,8 @@ export DYLD_LIBRARY_PATH="$PWD/build:$DYLD_LIBRARY_PATH"  # macOS
 ./build/wx_bgi_3d_orbit_test
 
 # Python test (pass the .dylib path on macOS)
-python3 examples/python/bgi_api_coverage.py build/libwx_bgi_opengl.dylib  # macOS
-python3 examples/python/bgi_api_coverage.py build/libwx_bgi_opengl.so     # Linux
+python3 examples/python/bgi_api_coverage.py build/libwx_bgi_graphics.dylib  # macOS
+python3 examples/python/bgi_api_coverage.py build/libwx_bgi_graphics.so     # Linux
 ```
 
 > **Note:** The camera demo also accepts `--test` (`wxbgi_camera_demo_cpp --test`) to render one frame and exit immediately — this is the mode used by CTest.

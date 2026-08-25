@@ -4,7 +4,7 @@
  *
  * Implements the wxbgi_wx_app_create / wxbgi_wx_frame_create /
  * wxbgi_wx_app_main_loop family modelled on wxPython's App/Frame/MainLoop
- * pattern.  Compiled into wx_bgi_opengl.dll when WXBGI_ENABLE_WX=ON so that
+ * pattern.  Compiled into wx_bgi_graphics.dll when WXBGI_ENABLE_WX=ON so that
  * ctypes (Python), cdecl extern (Pascal), and plain C programs can create a
  * wxWidgets window with an embedded WxBgiCanvas without writing any C++.
  *

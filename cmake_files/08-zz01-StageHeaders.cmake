@@ -49,7 +49,22 @@ function(wxbgi_stage_headers_from_root source_root destination_prefix label)
         "*.ipp"
     )
 
+
+
     if(NOT EXISTS "${source_root}")
+        if(label STREQUAL "GLFW")
+            if(${WXBGI_SYSTEM_GLFW} EQUAL 1)
+                message(STATUS "Header staging: ${label} is set to system-installed GLFW, skipping header staging.")
+                return()
+            endif()
+        endif()
+        if(label STREQUAL "wxWidgets")
+            if(NOT WXBGI_ENABLE_WX)
+                message(STATUS "Header staging: ${label} is disabled, skipping header staging.")
+                return()
+            endif()
+        endif()
+
         message(FATAL_ERROR "${label} source root does not exist: ${source_root}")
     endif()
 

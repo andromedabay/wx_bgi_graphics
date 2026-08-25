@@ -866,7 +866,7 @@ lib.closegraph()
 ```javascript
 const ffi = require('ffi-napi');
 
-const lib = ffi.Library('wx_bgi_opengl', {
+const lib = ffi.Library('wx_bgi_graphics', {
   initwindow:                  ['void', ['int', 'int', 'string']],
   wxbgi_poll_events:           ['int',  []],
   wxbgi_should_close:          ['int',  []],

@@ -14,14 +14,14 @@ uses
 
 {$IFDEF MSWINDOWS}
 const
-  BgiLib = 'wx_bgi_opengl.dll';
+  BgiLib = 'wx_bgi_graphics.dll';
 {$ELSE}
   {$IFDEF DARWIN}
 const
-  BgiLib = 'libwx_bgi_opengl.dylib';
+  BgiLib = 'libwx_bgi_graphics.dylib';
   {$ELSE}
 const
-  BgiLib = 'libwx_bgi_opengl.so';
+  BgiLib = 'libwx_bgi_graphics.so';
   {$ENDIF}
 {$ENDIF}
 

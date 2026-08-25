@@ -176,7 +176,7 @@ def configure_prototypes(lib):
 
 
 def main() -> int:
-    library_path = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parent / ("wx_bgi_opengl.dll" if os.name == "nt" else "libwx_bgi_opengl.so")
+    library_path = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parent / ("wx_bgi_graphics.dll" if os.name == "nt" else "libwx_bgi_graphics.so")
     lib = ctypes.CDLL(str(library_path))
     WxbgiFrameCallback = configure_prototypes(lib)
 

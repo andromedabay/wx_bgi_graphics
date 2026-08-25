@@ -52,9 +52,9 @@ tools include Doxygen, LaTeX/MiKTeX, FreePascal, and Python 3.
 ## Releases and Downloads
 
 - Latest release: https://github.com/Andromedabay/wx_bgi_graphics/releases/latest
-- Windows x64 binary zip: https://github.com/Andromedabay/wx_bgi_graphics/releases/latest/download/wx_bgi_opengl-windows-x64.zip
-- Linux x64 binary tar.gz: https://github.com/Andromedabay/wx_bgi_graphics/releases/latest/download/wx_bgi_opengl-linux-x64.tar.gz
-- macOS x64 binary tar.gz: https://github.com/Andromedabay/wx_bgi_graphics/releases/latest/download/wx_bgi_opengl-macos-x64.tar.gz
+- Windows x64 binary zip: https://github.com/Andromedabay/wx_bgi_graphics/releases/latest/download/wx_bgi_graphics-windows-x64.zip
+- Linux x64 binary tar.gz: https://github.com/Andromedabay/wx_bgi_graphics/releases/latest/download/wx_bgi_graphics-linux-x64.tar.gz
+- macOS x64 binary tar.gz: https://github.com/Andromedabay/wx_bgi_graphics/releases/latest/download/wx_bgi_graphics-macos-x64.tar.gz
 - Published API docs: https://andromedabay.github.io/wx_bgi_graphics/
 
 ## Documentation

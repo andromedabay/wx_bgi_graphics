@@ -114,7 +114,7 @@ int main(void) {
 import ctypes, os, sys
 from pathlib import Path
 
-lib = ctypes.CDLL(str(Path(__file__).parent / "wx_bgi_opengl.dll"))
+lib = ctypes.CDLL(str(Path(__file__).parent / "wx_bgi_graphics.dll"))
 # ... configure argtypes/restypes ...
 
 lib.wxbgi_wx_app_create()
@@ -133,7 +133,7 @@ lib.wxbgi_wx_app_main_loop()
 program PascalBGI;
 uses SysUtils;
 
-const BgiLib = 'wx_bgi_opengl.dll';
+const BgiLib = 'wx_bgi_graphics.dll';
 procedure wxbgi_wx_app_create; cdecl; external BgiLib;
 procedure wxbgi_wx_frame_create(w,h:Integer;t:PChar); cdecl; external BgiLib;
 procedure wxbgi_wx_app_main_loop; cdecl; external BgiLib;
@@ -241,7 +241,7 @@ cmake_minimum_required(VERSION 3.22)
 project(MyApp)
 
 # Point to your wx_bgi installation
-find_package(wx_bgi_opengl REQUIRED)
+find_package(wx_bgi_graphics REQUIRED)
 
 # Build with wx support enabled (ON by default)
 option(WXBGI_ENABLE_WX "Enable wxWidgets canvas" ON)
@@ -396,7 +396,7 @@ achieve this by:
 ### Architecture Note
 
 `WxBgiCanvas` is compiled into the **`wx_bgi_wx` STATIC library**, not the
-`wx_bgi_opengl.dll`.  This is critical on Windows:
+`wx_bgi_graphics.dll`.  This is critical on Windows:
 
 > When a DLL statically links wxWidgets it gets its **own private copy** of all
 > wx globals (`wxTheApp`, GL factory, timer factory, ...).  That copy has no
@@ -567,7 +567,7 @@ same context object.
 This design is required because:
 - VAO / VBO names are **per-context** on Windows OpenGL.  Using separate
   contexts per panel would invalidate the VBO objects created during `glewInit`.
-- The `wx_bgi_opengl.dll` has a single global GL state (`bgi::gState`). Using
+- The `wx_bgi_graphics.dll` has a single global GL state (`bgi::gState`). Using
   a single shared context keeps that state consistent.
 
 Each panel runs its own `PreBlit → wxbgi_wx_render_page_gl_vp → PostBlit`

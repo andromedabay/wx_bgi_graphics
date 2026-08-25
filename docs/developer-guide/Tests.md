@@ -14,7 +14,7 @@ The current suite contains **29** CTest targets.
 
 | # | Test Name | Category | Source File | Notes |
 |---|-----------|----------|-------------|-------|
-| 1 | `bgi_api_coverage_cpp` | C++ | `examples/cpp/bgi_api_coverage.cpp` | Classic BGI API coverage |
+| 1 | `bgi_api_coverage_cpp` | C++ | `examples/cpp/bgi_api_coverage.cpp` | Classic BGI API coverage, example dependency on `wxWidgets` |
 | 2 | `wxbgi_camera_demo_cpp` | C++ | `examples/cpp/wxbgi_camera_demo.cpp` | Camera/UCS/world demo — `--test` flag |
 | 3 | `test_field_vis` | C++ / field vis | `examples/cpp/test_field_vis.cpp` | Scalar grid, vector glyphs, legend helpers |
 | 4 | `wxbgi_openlb_live_demo` | C++ / wx standalone | `examples/cpp/wxbgi_openlb_live_demo.cpp` | OpenLB-style non-blocking live loop — `--test` flag |
@@ -52,7 +52,7 @@ Pascal tests (18–25) run only when a matching-architecture FreePascal compiler
 
 ### C++ Core Tests (1–17)
 
-These tests link directly against `wx_bgi_opengl` (the DLL/shared library) and exercise the full API surface through a real graphics window.
+These tests link directly against `wx_bgi_graphics` (the DLL/shared library) and exercise the full API surface through a real graphics window.
 
 | Test | What it checks |
 |------|----------------|
@@ -77,9 +77,9 @@ These tests link directly against `wx_bgi_opengl` (the DLL/shared library) and e
 ### Python Test (17)
 
 ```bash
-python examples/python/bgi_api_coverage.py build/Debug/wx_bgi_opengl.dll    # Windows
-python3 examples/python/bgi_api_coverage.py build/libwx_bgi_opengl.so       # Linux
-python3 examples/python/bgi_api_coverage.py build/libwx_bgi_opengl.dylib    # macOS
+python examples/python/bgi_api_coverage.py build/Debug/wx_bgi_graphics.dll    # Windows
+python3 examples/python/bgi_api_coverage.py build/libwx_bgi_graphics.so       # Linux
+python3 examples/python/bgi_api_coverage.py build/libwx_bgi_graphics.dylib    # macOS
 ```
 
 Exercises the full BGI API surface via Python `ctypes` — the same functions as the C++ coverage test.
@@ -287,9 +287,9 @@ The repository workflow file is `.github/workflows/CI.yml`.
 
 | Artifact | Description |
 |----------|-------------|
-| `wx_bgi_opengl-windows-x64.zip` | Windows x64 DLL + headers |
-| `wx_bgi_opengl-linux-x64.tar.gz` | Linux x64 shared library + headers |
-| `wx_bgi_opengl-macos-x64.tar.gz` | macOS x64 dylib + headers |
+| `wx_bgi_graphics-windows-x64.zip` | Windows x64 DLL + headers |
+| `wx_bgi_graphics-linux-x64.tar.gz` | Linux x64 shared library + headers |
+| `wx_bgi_graphics-macos-x64.tar.gz` | macOS x64 dylib + headers |
 | `api-docs.zip` / `api-docs.tar.gz` | Doxygen HTML documentation |
 
 Doxygen HTML docs are published to **GitHub Pages** on every release tag.

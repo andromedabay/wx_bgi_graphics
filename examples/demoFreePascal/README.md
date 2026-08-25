@@ -32,12 +32,12 @@ This folder contains a minimal FreePascal program that loads the shared library 
    cmake --build build64 -j
    ```
 
-2. Make sure `wx_bgi_opengl.dll` is next to `demo_bgi_wrapper.exe` (or available on `PATH`).
+2. Make sure `wx_bgi_graphics.dll` is next to `demo_bgi_wrapper.exe` (or available on `PATH`).
 
    The DLL is generated at:
 
-   - `build32/Debug/wx_bgi_opengl.dll`
-   - `build64/Debug/wx_bgi_opengl.dll`
+   - `build32/Debug/wx_bgi_graphics.dll`
+   - `build64/Debug/wx_bgi_graphics.dll`
 
 3. Compile demo.
 
@@ -99,11 +99,11 @@ This folder contains a minimal FreePascal program that loads the shared library 
 
 - Error `0xc000007b` almost always means 32-bit and 64-bit binaries are mixed.
 - Both console and GUI-subsystem demo variants are provided; subsystem choice does not cause `0xc000007b`.
-- The coverage example should be compiled with the same architecture as the `wx_bgi_opengl` library. On Windows, a 32-bit FreePascal executable cannot load a 64-bit DLL, and vice versa.
+- The coverage example should be compiled with the same architecture as the `wx_bgi_graphics` library. On Windows, a 32-bit FreePascal executable cannot load a 64-bit DLL, and vice versa.
 
 ## Linux/macOS
 
 - The program already maps library names automatically:
-  - `libwx_bgi_opengl.so` (Linux)
-  - `libwx_bgi_opengl.dylib` (macOS)
+  - `libwx_bgi_graphics.so` (Linux)
+  - `libwx_bgi_graphics.dylib` (macOS)
 - Ensure the library can be found via rpath or runtime library path (for example, `LD_LIBRARY_PATH` on Linux, `DYLD_LIBRARY_PATH` on macOS).

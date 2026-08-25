@@ -825,7 +825,7 @@ BGI_API int BGI_CALL wxbgi_export_png_camera_view(const char *camName,
  *
  *  These functions are used by @c WxBgiCanvas (and any custom GL canvas)
  *  to bridge the wx-side event handlers and the BGI state managed inside
- *  @c wx_bgi_opengl.dll.  All locking is handled internally.
+ *  @c wx_bgi_graphics.dll.  All locking is handled internally.
  *  @{
  */
 
@@ -836,7 +836,7 @@ BGI_API int BGI_CALL wxbgi_export_png_camera_view(const char *camName,
  * Allocates CPU page-buffers and registers the default camera/UCS.
  * The actual GL context must already be current before calling
  * @c wxbgi_wx_render_page_gl().
- */
+ */ 
 BGI_API void BGI_CALL wxbgi_wx_init_for_canvas(int width, int height);
 
 /**
