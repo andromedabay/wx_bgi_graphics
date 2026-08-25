@@ -1,10 +1,11 @@
 if(BUILD_TESTING)
-    add_test(NAME bgi_api_coverage_cpp COMMAND $<TARGET_FILE:bgi_api_coverage_cpp>)
-    set_tests_properties(bgi_api_coverage_cpp PROPERTIES TIMEOUT 90)
     add_test(NAME test_fonts COMMAND $<TARGET_FILE:test_fonts>)
     set_tests_properties(test_fonts PROPERTIES TIMEOUT 90)
 
     if(WXBGI_ENABLE_WX)
+        add_test(NAME bgi_api_coverage_cpp COMMAND $<TARGET_FILE:bgi_api_coverage_cpp>)
+        set_tests_properties(bgi_api_coverage_cpp PROPERTIES TIMEOUT 90)
+
         add_test(NAME wx_bgi_solids_test COMMAND $<TARGET_FILE:wx_bgi_solids_test>)
         set_tests_properties(wx_bgi_solids_test PROPERTIES TIMEOUT 15)
 
@@ -13,6 +14,18 @@ if(BUILD_TESTING)
 
         add_test(NAME wx_bgi_canvas_coverage_test COMMAND $<TARGET_FILE:wx_bgi_canvas_coverage_test>)
         set_tests_properties(wx_bgi_canvas_coverage_test PROPERTIES TIMEOUT 30)
+
+        add_test(NAME test_dds_external_attrs COMMAND $<TARGET_FILE:test_dds_external_attrs>)
+        set_tests_properties(test_dds_external_attrs PROPERTIES TIMEOUT 90)
+
+        add_test(NAME test_dds_cam3d_persp   COMMAND $<TARGET_FILE:test_dds_cam3d_persp>)
+        set_tests_properties(test_dds_cam3d_persp   PROPERTIES TIMEOUT 90)
+
+        add_test(NAME test_multi_scene       COMMAND $<TARGET_FILE:test_multi_scene>)
+        set_tests_properties(test_multi_scene       PROPERTIES TIMEOUT 90)
+
+        add_test(NAME test_solids            COMMAND $<TARGET_FILE:test_solids>)
+        set_tests_properties(test_solids            PROPERTIES TIMEOUT 90)
 
         # Demo executables stay out of CTest; keep only deterministic automation targets here.
         add_test(NAME test_field_vis COMMAND $<TARGET_FILE:test_field_vis>)
@@ -29,9 +42,6 @@ if(BUILD_TESTING)
     add_test(NAME test_dds_deserialize   COMMAND $<TARGET_FILE:test_dds_deserialize>)
     set_tests_properties(test_dds_deserialize   PROPERTIES TIMEOUT 90)
 
-    add_test(NAME test_dds_external_attrs COMMAND $<TARGET_FILE:test_dds_external_attrs>)
-    set_tests_properties(test_dds_external_attrs PROPERTIES TIMEOUT 90)
-
     add_test(NAME test_openlb_bridge_materialize_2d COMMAND $<TARGET_FILE:test_openlb_bridge_materialize_2d>)
     set_tests_properties(test_openlb_bridge_materialize_2d PROPERTIES TIMEOUT 90)
 
@@ -41,17 +51,8 @@ if(BUILD_TESTING)
     add_test(NAME test_dds_cam2d_yz      COMMAND $<TARGET_FILE:test_dds_cam2d_yz>)
     set_tests_properties(test_dds_cam2d_yz      PROPERTIES TIMEOUT 90)
 
-    add_test(NAME test_dds_cam3d_persp   COMMAND $<TARGET_FILE:test_dds_cam3d_persp>)
-    set_tests_properties(test_dds_cam3d_persp   PROPERTIES TIMEOUT 90)
-
     add_test(NAME test_dds_csg           COMMAND $<TARGET_FILE:test_dds_csg>)
     set_tests_properties(test_dds_csg           PROPERTIES TIMEOUT 90)
-
-    add_test(NAME test_multi_scene       COMMAND $<TARGET_FILE:test_multi_scene>)
-    set_tests_properties(test_multi_scene       PROPERTIES TIMEOUT 90)
-
-    add_test(NAME test_solids            COMMAND $<TARGET_FILE:test_solids>)
-    set_tests_properties(test_solids            PROPERTIES TIMEOUT 90)
 
     if(WXBGI_ENABLE_TEST_SEAMS)
         add_test(NAME test_input_hooks   COMMAND $<TARGET_FILE:test_input_hooks>)
