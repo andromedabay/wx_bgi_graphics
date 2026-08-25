@@ -53,7 +53,7 @@ function(wxbgi_stage_headers_from_root source_root destination_prefix label)
 
     if(NOT EXISTS "${source_root}")
         if(label STREQUAL "GLFW")
-            if(${WXBGI_SYSTEM_GLFW} EQUAL 1)
+            if(WXBGI_SYSTEM_GLFW)
                 message(STATUS "Header staging: ${label} is set to system-installed GLFW, skipping header staging.")
                 return()
             endif()
