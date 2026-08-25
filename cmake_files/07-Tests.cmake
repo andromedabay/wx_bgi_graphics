@@ -27,6 +27,24 @@ if(BUILD_TESTING)
         add_test(NAME test_solids            COMMAND $<TARGET_FILE:test_solids>)
         set_tests_properties(test_solids            PROPERTIES TIMEOUT 90)
 
+        add_test(NAME test_dds_serialize     COMMAND $<TARGET_FILE:test_dds_serialize>)
+        set_tests_properties(test_dds_serialize     PROPERTIES TIMEOUT 90)
+
+        add_test(NAME test_dds_deserialize   COMMAND $<TARGET_FILE:test_dds_deserialize>)
+        set_tests_properties(test_dds_deserialize   PROPERTIES TIMEOUT 90)
+
+        add_test(NAME test_openlb_bridge_materialize_2d COMMAND $<TARGET_FILE:test_openlb_bridge_materialize_2d>)
+        set_tests_properties(test_openlb_bridge_materialize_2d PROPERTIES TIMEOUT 90)
+
+        add_test(NAME test_dds_clear         COMMAND $<TARGET_FILE:test_dds_clear>)
+        set_tests_properties(test_dds_clear         PROPERTIES TIMEOUT 90)
+
+        add_test(NAME test_dds_cam2d_yz      COMMAND $<TARGET_FILE:test_dds_cam2d_yz>)
+        set_tests_properties(test_dds_cam2d_yz      PROPERTIES TIMEOUT 90)
+
+        add_test(NAME test_dds_csg           COMMAND $<TARGET_FILE:test_dds_csg>)
+        set_tests_properties(test_dds_csg           PROPERTIES TIMEOUT 90)
+
         # Demo executables stay out of CTest; keep only deterministic automation targets here.
         add_test(NAME test_field_vis COMMAND $<TARGET_FILE:test_field_vis>)
         set_tests_properties(test_field_vis PROPERTIES TIMEOUT 90)
@@ -36,23 +54,6 @@ if(BUILD_TESTING)
         endif()
     endif()
 
-    add_test(NAME test_dds_serialize     COMMAND $<TARGET_FILE:test_dds_serialize>)
-    set_tests_properties(test_dds_serialize     PROPERTIES TIMEOUT 90)
-
-    add_test(NAME test_dds_deserialize   COMMAND $<TARGET_FILE:test_dds_deserialize>)
-    set_tests_properties(test_dds_deserialize   PROPERTIES TIMEOUT 90)
-
-    add_test(NAME test_openlb_bridge_materialize_2d COMMAND $<TARGET_FILE:test_openlb_bridge_materialize_2d>)
-    set_tests_properties(test_openlb_bridge_materialize_2d PROPERTIES TIMEOUT 90)
-
-    add_test(NAME test_dds_clear         COMMAND $<TARGET_FILE:test_dds_clear>)
-    set_tests_properties(test_dds_clear         PROPERTIES TIMEOUT 90)
-
-    add_test(NAME test_dds_cam2d_yz      COMMAND $<TARGET_FILE:test_dds_cam2d_yz>)
-    set_tests_properties(test_dds_cam2d_yz      PROPERTIES TIMEOUT 90)
-
-    add_test(NAME test_dds_csg           COMMAND $<TARGET_FILE:test_dds_csg>)
-    set_tests_properties(test_dds_csg           PROPERTIES TIMEOUT 90)
 
     if(WXBGI_ENABLE_TEST_SEAMS)
         add_test(NAME test_input_hooks   COMMAND $<TARGET_FILE:test_input_hooks>)

@@ -8,6 +8,37 @@ if(WXBGI_ENABLE_WX)
     add_executable(wxbgi_keyboard_queue_cpp examples/cpp/wxbgi_keyboard_queue.cpp)
     target_link_libraries(wxbgi_keyboard_queue_cpp PRIVATE wx_bgi_graphics)
     wxbgi_copy_runtime(wxbgi_keyboard_queue_cpp)
+
+    # New Additions
+
+    add_executable(test_dds_cam2d_yz examples/cpp/test_dds_cam2d_yz.cpp)
+    target_link_libraries(test_dds_cam2d_yz PRIVATE wx_bgi_graphics)
+    wxbgi_copy_runtime(test_dds_cam2d_yz)
+
+    add_executable(test_dds_clear examples/cpp/test_dds_clear.cpp)
+    target_link_libraries(test_dds_clear PRIVATE wx_bgi_graphics)
+    wxbgi_copy_runtime(test_dds_clear)
+
+    add_executable(wxbgi_multi_scene_demo examples/cpp/wxbgi_multi_scene_demo.cpp)
+    target_link_libraries(wxbgi_multi_scene_demo PRIVATE wx_bgi_graphics)
+    wxbgi_copy_runtime(wxbgi_multi_scene_demo)
+
+    add_executable(test_dds_deserialize examples/cpp/test_dds_deserialize.cpp)
+    target_link_libraries(test_dds_deserialize PRIVATE wx_bgi_graphics)
+    wxbgi_copy_runtime(test_dds_deserialize)    
+
+    add_executable(test_dds_serialize examples/cpp/test_dds_serialize.cpp)
+    target_link_libraries(test_dds_serialize PRIVATE wx_bgi_graphics)
+    wxbgi_copy_runtime(test_dds_serialize)
+
+    add_executable(test_openlb_bridge_materialize_2d examples/cpp/test_openlb_bridge_materialize_2d.cpp)
+    target_link_libraries(test_openlb_bridge_materialize_2d PRIVATE wx_bgi_graphics glm)
+    wxbgi_copy_runtime(test_openlb_bridge_materialize_2d)
+
+    add_executable(test_dds_csg examples/cpp/test_dds_csg.cpp)
+    target_link_libraries(test_dds_csg PRIVATE wx_bgi_graphics)
+    wxbgi_copy_runtime(test_dds_csg)
+
 endif()
 
 add_executable(wxbgi_fonts_demo_cpp examples/cpp/wxbgi_fonts_demo.cpp)
@@ -90,27 +121,6 @@ add_executable(capture_screenshots tools/capture_screenshots.cpp)
 target_link_libraries(capture_screenshots PRIVATE wx_bgi_graphics glfw)
 wxbgi_copy_runtime(capture_screenshots)
 
-# Phase E tests ---------------------------------------------------------------
-
-add_executable(test_dds_serialize examples/cpp/test_dds_serialize.cpp)
-target_link_libraries(test_dds_serialize PRIVATE wx_bgi_graphics)
-wxbgi_copy_runtime(test_dds_serialize)
-
-add_executable(test_dds_deserialize examples/cpp/test_dds_deserialize.cpp)
-target_link_libraries(test_dds_deserialize PRIVATE wx_bgi_graphics)
-wxbgi_copy_runtime(test_dds_deserialize)
-
-add_executable(test_openlb_bridge_materialize_2d examples/cpp/test_openlb_bridge_materialize_2d.cpp)
-target_link_libraries(test_openlb_bridge_materialize_2d PRIVATE wx_bgi_graphics glm)
-wxbgi_copy_runtime(test_openlb_bridge_materialize_2d)
-
-add_executable(test_dds_clear examples/cpp/test_dds_clear.cpp)
-target_link_libraries(test_dds_clear PRIVATE wx_bgi_graphics)
-wxbgi_copy_runtime(test_dds_clear)
-
-add_executable(test_dds_cam2d_yz examples/cpp/test_dds_cam2d_yz.cpp)
-target_link_libraries(test_dds_cam2d_yz PRIVATE wx_bgi_graphics)
-wxbgi_copy_runtime(test_dds_cam2d_yz)
 
 if(WXBGI_ENABLE_WX)
     add_executable(test_dds_external_attrs examples/cpp/test_dds_external_attrs.cpp)
@@ -136,14 +146,6 @@ if(WXBGI_ENABLE_WX)
 
 endif()
 
-add_executable(test_dds_csg examples/cpp/test_dds_csg.cpp)
-target_link_libraries(test_dds_csg PRIVATE wx_bgi_graphics)
-wxbgi_copy_runtime(test_dds_csg)
-
-
-add_executable(wxbgi_multi_scene_demo examples/cpp/wxbgi_multi_scene_demo.cpp)
-target_link_libraries(wxbgi_multi_scene_demo PRIVATE wx_bgi_graphics)
-wxbgi_copy_runtime(wxbgi_multi_scene_demo)
 
 # Input hook automated test (Phase 2 requires WXBGI_ENABLE_TEST_SEAMS)
 if(WXBGI_ENABLE_TEST_SEAMS)
