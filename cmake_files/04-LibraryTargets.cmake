@@ -124,6 +124,13 @@ set_target_properties(${WXBGI_LIB_TARGET} PROPERTIES
     MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
 )
 
+if(APPLE AND WXBGI_BUILD_SHARED)
+    set_target_properties(${WXBGI_LIB_TARGET} PROPERTIES
+        MACOSX_RPATH ON
+        INSTALL_NAME_DIR "@rpath"
+    )
+endif()
+
 target_include_directories(${WXBGI_LIB_TARGET} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/wx_bgi_graphics>

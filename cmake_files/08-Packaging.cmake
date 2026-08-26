@@ -37,6 +37,55 @@ if(WXBGI_INSTALL_DOCS AND TARGET api_docs)
 endif()
 list(REMOVE_DUPLICATES WXBGI_PACKAGE_DEPENDENCIES)
 
+get_property(WXBGI_BUILD_TARGETS DIRECTORY PROPERTY BUILDSYSTEM_TARGETS)
+set(WXBGI_PACKAGE_BIN_BUNDLE_TARGETS)
+set(WXBGI_PACKAGE_BIN_RUNTIME_TARGET "")
+
+foreach(_wx_bgi_target IN LISTS WXBGI_BUILD_TARGETS)
+    get_target_property(_wx_bgi_target_type ${_wx_bgi_target} TYPE)
+    if(NOT _wx_bgi_target_type STREQUAL "EXECUTABLE")
+        continue()
+    endif()
+
+    list(APPEND WXBGI_PACKAGE_DEPENDENCIES ${_wx_bgi_target})
+
+    set(_wx_bgi_is_bundle FALSE)
+    if(APPLE)
+        get_target_property(_wx_bgi_is_bundle ${_wx_bgi_target} MACOSX_BUNDLE)
+    endif()
+
+    set(_wx_bgi_runtime_search_paths "$<TARGET_FILE_DIR:wx_bgi_graphics>")
+    if(APPLE)
+        if(_wx_bgi_is_bundle)
+            set(_wx_bgi_package_rpath "@loader_path/../../../../lib")
+        else()
+            set(_wx_bgi_package_rpath "@loader_path/../lib")
+        endif()
+    else()
+        set(_wx_bgi_package_rpath "$ORIGIN/../lib")
+    endif()
+
+    if(NOT _wx_bgi_package_rpath STREQUAL "")
+        set_target_properties(${_wx_bgi_target} PROPERTIES
+            BUILD_RPATH "${_wx_bgi_runtime_search_paths};${_wx_bgi_package_rpath}"
+            INSTALL_RPATH "${_wx_bgi_package_rpath}"
+        )
+    endif()
+
+    if(APPLE)
+        get_target_property(_wx_bgi_is_bundle ${_wx_bgi_target} MACOSX_BUNDLE)
+        if(_wx_bgi_is_bundle)
+            list(APPEND WXBGI_PACKAGE_BIN_BUNDLE_TARGETS ${_wx_bgi_target})
+        elseif(WXBGI_PACKAGE_BIN_RUNTIME_TARGET STREQUAL "")
+            set(WXBGI_PACKAGE_BIN_RUNTIME_TARGET ${_wx_bgi_target})
+        endif()
+    elseif(WXBGI_PACKAGE_BIN_RUNTIME_TARGET STREQUAL "")
+        set(WXBGI_PACKAGE_BIN_RUNTIME_TARGET ${_wx_bgi_target})
+    endif()
+endforeach()
+
+list(REMOVE_DUPLICATES WXBGI_PACKAGE_DEPENDENCIES)
+
 set(WXBGI_PROJECT_PUBLIC_ROOT "${CMAKE_SOURCE_DIR}/src")
 set(WXBGI_GLEW_INCLUDE_ROOT "${glew_SOURCE_DIR}/include")
 set(WXBGI_GLFW_STAGE_PREFIX "")
@@ -81,6 +130,23 @@ if(WXBGI_ENABLE_WX)
     set(WXBGI_WXWIDGETS_STAGE_ARG "-DWXWIDGETS_SOURCE_ROOT=${WXBGI_WXWIDGETS_SOURCE_ROOT}")
 endif()
 
+set(WXBGI_BIN_STAGE_COMMANDS)
+if(WXBGI_PACKAGE_BIN_RUNTIME_TARGET)
+    list(APPEND WXBGI_BIN_STAGE_COMMANDS
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+                "$<TARGET_FILE_DIR:${WXBGI_PACKAGE_BIN_RUNTIME_TARGET}>"
+                "${WXBGI_BIN_DIR}"
+    )
+endif()
+
+foreach(_wx_bgi_bundle_target IN LISTS WXBGI_PACKAGE_BIN_BUNDLE_TARGETS)
+    list(APPEND WXBGI_BIN_STAGE_COMMANDS
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+                "$<TARGET_BUNDLE_DIR:${_wx_bgi_bundle_target}>"
+                "${WXBGI_BIN_DIR}/${_wx_bgi_bundle_target}.app"
+    )
+endforeach()
+
 add_custom_command(
     OUTPUT "${WXBGI_PACKAGE_STAMP}"
     BYPRODUCTS ${WXBGI_PACKAGE_ARTIFACTS}
@@ -112,6 +178,8 @@ add_custom_command(
             ${CMAKE_COMMAND} -E tar "cf" "${WXBGI_HEADERS_ZIP}" --format=zip -- .
     COMMAND ${CMAKE_COMMAND} -E chdir "${WXBGI_HEADER_STAGING_DIR}"
             ${CMAKE_COMMAND} -E tar "czf" "${WXBGI_HEADERS_TAR_GZ}" --format=gnutar -- .
+        COMMAND ${CMAKE_COMMAND} -E echo "Packaging example, demo, and test binaries into ${WXBGI_BIN_DIR}"
+        ${WXBGI_BIN_STAGE_COMMANDS}
     COMMAND ${CMAKE_COMMAND} -E touch "${WXBGI_PACKAGE_STAMP}"
     DEPENDS ${WXBGI_PACKAGE_DEPENDENCIES}
     COMMENT "Packaging public headers, binaries, and docs into the build artifacts directory"
