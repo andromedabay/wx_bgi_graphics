@@ -39,7 +39,37 @@ list(REMOVE_DUPLICATES WXBGI_PACKAGE_DEPENDENCIES)
 
 set(WXBGI_PROJECT_PUBLIC_ROOT "${CMAKE_SOURCE_DIR}/src")
 set(WXBGI_GLEW_INCLUDE_ROOT "${glew_SOURCE_DIR}/include")
-set(WXBGI_GLFW_INCLUDE_ROOT "${glfw_SOURCE_DIR}/include")
+set(WXBGI_GLFW_STAGE_PREFIX "")
+if(WXBGI_SYSTEM_GLFW)
+    get_target_property(_glfw_include_dirs glfw INTERFACE_INCLUDE_DIRECTORIES)
+    if(NOT _glfw_include_dirs)
+        message(FATAL_ERROR "System GLFW is enabled but target glfw does not expose any include directories")
+    endif()
+
+    set(WXBGI_GLFW_INCLUDE_ROOT "")
+    foreach(_glfw_include_dir IN LISTS _glfw_include_dirs)
+        if(EXISTS "${_glfw_include_dir}/GLFW/glfw3.h")
+            set(WXBGI_GLFW_INCLUDE_ROOT "${_glfw_include_dir}/GLFW")
+            set(WXBGI_GLFW_STAGE_PREFIX "GLFW")
+            break()
+        endif()
+        if(EXISTS "${_glfw_include_dir}/glfw3.h")
+            set(WXBGI_GLFW_INCLUDE_ROOT "${_glfw_include_dir}")
+            set(WXBGI_GLFW_STAGE_PREFIX "GLFW")
+            break()
+        endif()
+    endforeach()
+
+    if(WXBGI_GLFW_INCLUDE_ROOT STREQUAL "")
+        list(GET _glfw_include_dirs 0 _glfw_include_dir)
+        message(FATAL_ERROR
+            "Could not locate GLFW headers under the imported target include directories: ${_glfw_include_dirs}. "
+            "Expected to find either GLFW/glfw3.h or glfw3.h under ${_glfw_include_dir}."
+        )
+    endif()
+else()
+    set(WXBGI_GLFW_INCLUDE_ROOT "${glfw_SOURCE_DIR}/include")
+endif()
 set(WXBGI_GLM_INCLUDE_ROOT "${glm_SOURCE_DIR}")
 set(WXBGI_MANIFOLD_INCLUDE_ROOT "${manifold_SOURCE_DIR}/include")
 set(WXBGI_NLOHMANN_JSON_INCLUDE_ROOT "${nlohmann_json_SOURCE_DIR}/include")
@@ -65,6 +95,7 @@ add_custom_command(
             -DPROJECT_PUBLIC_ROOT=${WXBGI_PROJECT_PUBLIC_ROOT}
             -DGLEW_INCLUDE_ROOT=${WXBGI_GLEW_INCLUDE_ROOT}
             -DGLFW_INCLUDE_ROOT=${WXBGI_GLFW_INCLUDE_ROOT}
+            -DGLFW_STAGE_PREFIX=${WXBGI_GLFW_STAGE_PREFIX}
             -DGLM_INCLUDE_ROOT=${WXBGI_GLM_INCLUDE_ROOT}
             -DMANIFOLD_INCLUDE_ROOT=${WXBGI_MANIFOLD_INCLUDE_ROOT}
             -DNLOHMANN_JSON_INCLUDE_ROOT=${WXBGI_NLOHMANN_JSON_INCLUDE_ROOT}
