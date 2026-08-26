@@ -48,10 +48,22 @@ if(BUILD_TESTING)
         # Demo executables stay out of CTest; keep only deterministic automation targets here.
         add_test(NAME test_field_vis COMMAND $<TARGET_FILE:test_field_vis>)
         set_tests_properties(test_field_vis PROPERTIES TIMEOUT 90)
+
         if(WXBGI_ENABLE_OPENLB)
             add_test(NAME wxbgi_openlb_coupled_smoke COMMAND $<TARGET_FILE:wxbgi_openlb_coupled_smoke> --test)
             set_tests_properties(wxbgi_openlb_coupled_smoke PROPERTIES TIMEOUT 20)
         endif()
+
+        if(Python3_Interpreter_FOUND)
+            add_test(
+                NAME bgi_api_coverage_python
+                COMMAND ${Python3_EXECUTABLE}
+                        ${CMAKE_SOURCE_DIR}/examples/python/bgi_api_coverage.py
+                        $<TARGET_FILE:wx_bgi_graphics>
+            )
+            set_tests_properties(bgi_api_coverage_python PROPERTIES TIMEOUT 90)
+        endif()        
+
     endif()
 
 
@@ -63,15 +75,6 @@ if(BUILD_TESTING)
         set_tests_properties(test_input_bypass  PROPERTIES TIMEOUT 90)
     endif()
 
-    if(Python3_Interpreter_FOUND)
-        add_test(
-            NAME bgi_api_coverage_python
-            COMMAND ${Python3_EXECUTABLE}
-                    ${CMAKE_SOURCE_DIR}/examples/python/bgi_api_coverage.py
-                    $<TARGET_FILE:wx_bgi_graphics>
-        )
-        set_tests_properties(bgi_api_coverage_python PROPERTIES TIMEOUT 90)
-    endif()
 
     if(FPC_COMPILER)
         file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/pascal_coverage)
