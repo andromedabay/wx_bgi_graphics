@@ -159,8 +159,8 @@ jobs:
             build_dir: build-wx
             artifact_prefix: wx_bgi_graphics
             enable_wx: ON
-            #system_wx: ON
-            system_wx: OFF
+            system_wx: ON
+            #system_wx: OFF
             system_glfw: ON
           - os: ubuntu-latest
             variant: no_wxwidgets
@@ -174,8 +174,8 @@ jobs:
             build_dir: build-wx
             artifact_prefix: wx_bgi_graphics
             enable_wx: ON
-            #system_wx: ON
-            system_wx: OFF
+            system_wx: ON
+            #system_wx: OFF
             system_glfw: ON
           - os: macos-latest
             variant: no_wxwidgets
