@@ -148,12 +148,12 @@ if(FPC_COMPILER)
         OUTPUT ${CMAKE_BINARY_DIR}/bgidemo_pascal/bgidemo${CMAKE_EXECUTABLE_SUFFIX}
         COMMAND ${FPC_COMPILER}
                 -Fu${CMAKE_SOURCE_DIR}/examples/bgidemo-pascal
-                -Fl$<TARGET_FILE_DIR:wx_bgi_graphics>
+                -Fl$<TARGET_FILE_DIR:phoenix_gi>
                 -FE${CMAKE_BINARY_DIR}/bgidemo_pascal
                 -FU${CMAKE_BINARY_DIR}/bgidemo_pascal
                 ${CMAKE_SOURCE_DIR}/examples/bgidemo-pascal/bgidemo.pas
         DEPENDS
-            wx_bgi_graphics
+            phoenix_gi
             ${CMAKE_SOURCE_DIR}/examples/bgidemo-pascal/bgidemo.pas
             ${CMAKE_SOURCE_DIR}/examples/bgidemo-pascal/Graph.pas
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
@@ -163,10 +163,10 @@ if(FPC_COMPILER)
     add_custom_target(
         bgidemo_pascal_build
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                $<TARGET_FILE:wx_bgi_graphics>
+                $<TARGET_FILE:phoenix_gi>
                 ${CMAKE_BINARY_DIR}/bgidemo_pascal
         DEPENDS
-            wx_bgi_graphics
+            phoenix_gi
             ${CMAKE_BINARY_DIR}/bgidemo_pascal/bgidemo${CMAKE_EXECUTABLE_SUFFIX}
     )
 
@@ -174,12 +174,12 @@ if(FPC_COMPILER)
         OUTPUT ${CMAKE_BINARY_DIR}/keyboard_queue_pascal/demo_wxbgi_keyboard_queue${CMAKE_EXECUTABLE_SUFFIX}
         COMMAND ${FPC_COMPILER}
                 -Fu${CMAKE_SOURCE_DIR}/examples/demoFreePascal
-                -Fl$<TARGET_FILE_DIR:wx_bgi_graphics>
+                -Fl$<TARGET_FILE_DIR:phoenix_gi>
                 -FE${CMAKE_BINARY_DIR}/keyboard_queue_pascal
                 -FU${CMAKE_BINARY_DIR}/keyboard_queue_pascal
                 ${CMAKE_SOURCE_DIR}/examples/demoFreePascal/demo_wxbgi_keyboard_queue.pas
         DEPENDS
-            wx_bgi_graphics
+            phoenix_gi
             ${CMAKE_SOURCE_DIR}/examples/demoFreePascal/demo_wxbgi_keyboard_queue.pas
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         VERBATIM
@@ -188,10 +188,10 @@ if(FPC_COMPILER)
     add_custom_target(
         wxbgi_keyboard_queue_pascal_build
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                $<TARGET_FILE:wx_bgi_graphics>
+                $<TARGET_FILE:phoenix_gi>
                 ${CMAKE_BINARY_DIR}/keyboard_queue_pascal
         DEPENDS
-            wx_bgi_graphics
+            phoenix_gi
             ${CMAKE_BINARY_DIR}/keyboard_queue_pascal/demo_wxbgi_keyboard_queue${CMAKE_EXECUTABLE_SUFFIX}
     )
 endif()

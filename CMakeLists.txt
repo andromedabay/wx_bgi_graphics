@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
-project(wx_bgi_graphics VERSION 1.0.0 LANGUAGES C CXX)
+project(phoenix_gi VERSION 1.0.0 LANGUAGES C CXX)
 
 include(GNUInstallDirs)
 

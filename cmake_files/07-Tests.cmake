@@ -59,7 +59,7 @@ if(BUILD_TESTING)
                 NAME bgi_api_coverage_python
                 COMMAND ${Python3_EXECUTABLE}
                         ${CMAKE_SOURCE_DIR}/examples/python/bgi_api_coverage.py
-                        $<TARGET_FILE:wx_bgi_graphics>
+                        $<TARGET_FILE:phoenix_gi>
             )
             set_tests_properties(bgi_api_coverage_python PROPERTIES TIMEOUT 90)
         endif()        
@@ -83,12 +83,12 @@ if(BUILD_TESTING)
             OUTPUT ${CMAKE_BINARY_DIR}/pascal_coverage/demo_bgi_api_coverage${CMAKE_EXECUTABLE_SUFFIX}
             COMMAND ${FPC_COMPILER}
                     -Fu${CMAKE_SOURCE_DIR}/examples/demoFreePascal
-                    -Fl$<TARGET_FILE_DIR:wx_bgi_graphics>
+                    -Fl$<TARGET_FILE_DIR:phoenix_gi>
                     -FE${CMAKE_BINARY_DIR}/pascal_coverage
                     -FU${CMAKE_BINARY_DIR}/pascal_coverage
                     ${CMAKE_SOURCE_DIR}/examples/demoFreePascal/demo_bgi_api_coverage.pas
             DEPENDS
-                wx_bgi_graphics
+                phoenix_gi
                 ${CMAKE_SOURCE_DIR}/examples/demoFreePascal/demo_bgi_api_coverage.pas
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM
@@ -97,10 +97,10 @@ if(BUILD_TESTING)
         add_custom_target(
             bgi_api_coverage_pascal_build
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                    $<TARGET_FILE:wx_bgi_graphics>
+                    $<TARGET_FILE:phoenix_gi>
                     ${CMAKE_BINARY_DIR}/pascal_coverage
             DEPENDS
-                wx_bgi_graphics
+                phoenix_gi
                 ${CMAKE_BINARY_DIR}/pascal_coverage/demo_bgi_api_coverage${CMAKE_EXECUTABLE_SUFFIX}
         )
 
@@ -114,7 +114,7 @@ if(BUILD_TESTING)
             add_test(
                 NAME bgi_api_coverage_pascal_run
                 COMMAND ${CMAKE_COMMAND} -E env
-                        "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/pascal_coverage:$<TARGET_FILE_DIR:wx_bgi_graphics>:$ENV{LD_LIBRARY_PATH}"
+                        "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/pascal_coverage:$<TARGET_FILE_DIR:phoenix_gi>:$ENV{LD_LIBRARY_PATH}"
                         ${CMAKE_BINARY_DIR}/pascal_coverage/demo_bgi_api_coverage${CMAKE_EXECUTABLE_SUFFIX}
             )
         else()
@@ -137,12 +137,12 @@ if(BUILD_TESTING)
             OUTPUT ${CMAKE_BINARY_DIR}/pascal_canvas_coverage/demo_bgi_canvas_coverage${CMAKE_EXECUTABLE_SUFFIX}
             COMMAND ${FPC_COMPILER}
                     -Fu${CMAKE_SOURCE_DIR}/examples/demoFreePascal
-                    -Fl$<TARGET_FILE_DIR:wx_bgi_graphics>
+                    -Fl$<TARGET_FILE_DIR:phoenix_gi>
                     -FE${CMAKE_BINARY_DIR}/pascal_canvas_coverage
                     -FU${CMAKE_BINARY_DIR}/pascal_canvas_coverage
                     ${CMAKE_SOURCE_DIR}/examples/demoFreePascal/demo_bgi_canvas_coverage.pas
             DEPENDS
-                wx_bgi_graphics
+                phoenix_gi
                 ${CMAKE_SOURCE_DIR}/examples/demoFreePascal/demo_bgi_canvas_coverage.pas
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM
@@ -151,10 +151,10 @@ if(BUILD_TESTING)
         add_custom_target(
             bgi_canvas_coverage_pascal_build
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                    $<TARGET_FILE:wx_bgi_graphics>
+                    $<TARGET_FILE:phoenix_gi>
                     ${CMAKE_BINARY_DIR}/pascal_canvas_coverage
             DEPENDS
-                wx_bgi_graphics
+                phoenix_gi
                 ${CMAKE_BINARY_DIR}/pascal_canvas_coverage/demo_bgi_canvas_coverage${CMAKE_EXECUTABLE_SUFFIX}
         )
 
@@ -168,7 +168,7 @@ if(BUILD_TESTING)
             add_test(
                 NAME bgi_canvas_coverage_pascal_run
                 COMMAND ${CMAKE_COMMAND} -E env
-                        "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/pascal_canvas_coverage:$<TARGET_FILE_DIR:wx_bgi_graphics>:$ENV{LD_LIBRARY_PATH}"
+                        "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/pascal_canvas_coverage:$<TARGET_FILE_DIR:phoenix_gi>:$ENV{LD_LIBRARY_PATH}"
                         ${CMAKE_BINARY_DIR}/pascal_canvas_coverage/demo_bgi_canvas_coverage${CMAKE_EXECUTABLE_SUFFIX}
             )
         else()
@@ -198,12 +198,12 @@ if(BUILD_TESTING)
                 COMMAND ${FPC_COMPILER}
                         ${WXBGI_FPC_SEAMS_FLAG}
                         -Fu${CMAKE_SOURCE_DIR}/examples/demoFreePascal
-                        -Fl$<TARGET_FILE_DIR:wx_bgi_graphics>
+                        -Fl$<TARGET_FILE_DIR:phoenix_gi>
                         -FE${CMAKE_BINARY_DIR}/pascal_input_hooks
                         -FU${CMAKE_BINARY_DIR}/pascal_input_hooks
                         ${CMAKE_SOURCE_DIR}/examples/demoFreePascal/test_input_hooks.pas
                 DEPENDS
-                    wx_bgi_graphics
+                    phoenix_gi
                     ${CMAKE_SOURCE_DIR}/examples/demoFreePascal/test_input_hooks.pas
                 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                 VERBATIM
@@ -212,10 +212,10 @@ if(BUILD_TESTING)
             add_custom_target(
                 test_input_hooks_pascal_build
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                        $<TARGET_FILE:wx_bgi_graphics>
+                        $<TARGET_FILE:phoenix_gi>
                         ${CMAKE_BINARY_DIR}/pascal_input_hooks
                 DEPENDS
-                    wx_bgi_graphics
+                    phoenix_gi
                     ${CMAKE_BINARY_DIR}/pascal_input_hooks/test_input_hooks${CMAKE_EXECUTABLE_SUFFIX}
             )
 
@@ -230,7 +230,7 @@ if(BUILD_TESTING)
                 add_test(
                     NAME test_input_hooks_pascal_run
                     COMMAND ${CMAKE_COMMAND} -E env
-                            "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/pascal_input_hooks:$<TARGET_FILE_DIR:wx_bgi_graphics>:$ENV{LD_LIBRARY_PATH}"
+                            "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/pascal_input_hooks:$<TARGET_FILE_DIR:phoenix_gi>:$ENV{LD_LIBRARY_PATH}"
                             ${CMAKE_BINARY_DIR}/pascal_input_hooks/test_input_hooks${CMAKE_EXECUTABLE_SUFFIX}
                 )
             else()
@@ -252,12 +252,12 @@ if(BUILD_TESTING)
             OUTPUT ${CMAKE_BINARY_DIR}/pascal_input_hooks/demo_input_hooks${CMAKE_EXECUTABLE_SUFFIX}
             COMMAND ${FPC_COMPILER}
                     -Fu${CMAKE_SOURCE_DIR}/examples/demoFreePascal
-                    -Fl$<TARGET_FILE_DIR:wx_bgi_graphics>
+                    -Fl$<TARGET_FILE_DIR:phoenix_gi>
                     -FE${CMAKE_BINARY_DIR}/pascal_input_hooks
                     -FU${CMAKE_BINARY_DIR}/pascal_input_hooks
                     ${CMAKE_SOURCE_DIR}/examples/demoFreePascal/demo_input_hooks.pas
             DEPENDS
-                wx_bgi_graphics
+                phoenix_gi
                 ${CMAKE_SOURCE_DIR}/examples/demoFreePascal/demo_input_hooks.pas
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM
@@ -266,10 +266,10 @@ if(BUILD_TESTING)
         add_custom_target(
             demo_input_hooks_pascal_build
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                    $<TARGET_FILE:wx_bgi_graphics>
+                    $<TARGET_FILE:phoenix_gi>
                     ${CMAKE_BINARY_DIR}/pascal_input_hooks
             DEPENDS
-                wx_bgi_graphics
+                phoenix_gi
                 ${CMAKE_BINARY_DIR}/pascal_input_hooks/demo_input_hooks${CMAKE_EXECUTABLE_SUFFIX}
         )
 
@@ -279,12 +279,12 @@ if(BUILD_TESTING)
                 COMMAND ${FPC_COMPILER}
                         ${WXBGI_FPC_SEAMS_FLAG}
                         -Fu${CMAKE_SOURCE_DIR}/examples/demoFreePascal
-                        -Fl$<TARGET_FILE_DIR:wx_bgi_graphics>
+                        -Fl$<TARGET_FILE_DIR:phoenix_gi>
                         -FE${CMAKE_BINARY_DIR}/pascal_input_hooks
                         -FU${CMAKE_BINARY_DIR}/pascal_input_hooks
                         ${CMAKE_SOURCE_DIR}/examples/demoFreePascal/test_input_bypass.pas
                 DEPENDS
-                    wx_bgi_graphics
+                    phoenix_gi
                     ${CMAKE_SOURCE_DIR}/examples/demoFreePascal/test_input_bypass.pas
                 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                 VERBATIM
@@ -293,10 +293,10 @@ if(BUILD_TESTING)
             add_custom_target(
                 test_input_bypass_pascal_build
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                        $<TARGET_FILE:wx_bgi_graphics>
+                        $<TARGET_FILE:phoenix_gi>
                         ${CMAKE_BINARY_DIR}/pascal_input_hooks
                 DEPENDS
-                    wx_bgi_graphics
+                    phoenix_gi
                     ${CMAKE_BINARY_DIR}/pascal_input_hooks/test_input_bypass${CMAKE_EXECUTABLE_SUFFIX}
             )
 
@@ -311,7 +311,7 @@ if(BUILD_TESTING)
                 add_test(
                     NAME test_input_bypass_pascal_run
                     COMMAND ${CMAKE_COMMAND} -E env
-                            "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/pascal_input_hooks:$<TARGET_FILE_DIR:wx_bgi_graphics>:$ENV{LD_LIBRARY_PATH}"
+                            "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/pascal_input_hooks:$<TARGET_FILE_DIR:phoenix_gi>:$ENV{LD_LIBRARY_PATH}"
                             ${CMAKE_BINARY_DIR}/pascal_input_hooks/test_input_bypass${CMAKE_EXECUTABLE_SUFFIX}
                 )
             else()
@@ -335,12 +335,12 @@ if(BUILD_TESTING)
             OUTPUT ${CMAKE_BINARY_DIR}/pascal_demos/demo_bgi_wrapper${CMAKE_EXECUTABLE_SUFFIX}
             COMMAND ${FPC_COMPILER}
                     -Fu${CMAKE_SOURCE_DIR}/examples/demoFreePascal
-                    -Fl$<TARGET_FILE_DIR:wx_bgi_graphics>
+                    -Fl$<TARGET_FILE_DIR:phoenix_gi>
                     -FE${CMAKE_BINARY_DIR}/pascal_demos
                     -FU${CMAKE_BINARY_DIR}/pascal_demos
                     ${CMAKE_SOURCE_DIR}/examples/demoFreePascal/demo_bgi_wrapper.pas
             DEPENDS
-                wx_bgi_graphics
+                phoenix_gi
                 ${CMAKE_SOURCE_DIR}/examples/demoFreePascal/demo_bgi_wrapper.pas
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM
@@ -349,10 +349,10 @@ if(BUILD_TESTING)
         add_custom_target(
             demo_bgi_wrapper_pascal_build
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                    $<TARGET_FILE:wx_bgi_graphics>
+                    $<TARGET_FILE:phoenix_gi>
                     ${CMAKE_BINARY_DIR}/pascal_demos
             DEPENDS
-                wx_bgi_graphics
+                phoenix_gi
                 ${CMAKE_BINARY_DIR}/pascal_demos/demo_bgi_wrapper${CMAKE_EXECUTABLE_SUFFIX}
         )
 
@@ -360,12 +360,12 @@ if(BUILD_TESTING)
             OUTPUT ${CMAKE_BINARY_DIR}/pascal_demos/demo_bgi_wrapper_gui${CMAKE_EXECUTABLE_SUFFIX}
             COMMAND ${FPC_COMPILER}
                     -Fu${CMAKE_SOURCE_DIR}/examples/demoFreePascal
-                    -Fl$<TARGET_FILE_DIR:wx_bgi_graphics>
+                    -Fl$<TARGET_FILE_DIR:phoenix_gi>
                     -FE${CMAKE_BINARY_DIR}/pascal_demos
                     -FU${CMAKE_BINARY_DIR}/pascal_demos
                     ${CMAKE_SOURCE_DIR}/examples/demoFreePascal/demo_bgi_wrapper_gui.pas
             DEPENDS
-                wx_bgi_graphics
+                phoenix_gi
                 ${CMAKE_SOURCE_DIR}/examples/demoFreePascal/demo_bgi_wrapper_gui.pas
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM
@@ -374,10 +374,10 @@ if(BUILD_TESTING)
         add_custom_target(
             demo_bgi_wrapper_gui_pascal_build
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                    $<TARGET_FILE:wx_bgi_graphics>
+                    $<TARGET_FILE:phoenix_gi>
                     ${CMAKE_BINARY_DIR}/pascal_demos
             DEPENDS
-                wx_bgi_graphics
+                phoenix_gi
                 ${CMAKE_BINARY_DIR}/pascal_demos/demo_bgi_wrapper_gui${CMAKE_EXECUTABLE_SUFFIX}
         )
     endif()

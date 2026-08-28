@@ -106,7 +106,7 @@ if(WXBGI_ENABLE_WX)
     )
 endif()
 
-set(WXBGI_LIB_TARGET wx_bgi_graphics)
+set(WXBGI_LIB_TARGET phoenix_gi)
 
 if(WXBGI_BUILD_SHARED)
     add_library(${WXBGI_LIB_TARGET} SHARED ${SRCS})
@@ -117,8 +117,8 @@ endif()
 #add_library(wx_bgi_opengl ALIAS ${WXBGI_LIB_TARGET})
 
 set_target_properties(${WXBGI_LIB_TARGET} PROPERTIES
-    OUTPUT_NAME "wx_bgi_graphics"
-    EXPORT_NAME "wx_bgi_graphics"
+    OUTPUT_NAME "phoenix_gi"
+    EXPORT_NAME "phoenix_gi"
     VERSION ${PROJECT_VERSION}
     SOVERSION ${PROJECT_VERSION_MAJOR}
     MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
@@ -133,7 +133,7 @@ endif()
 
 target_include_directories(${WXBGI_LIB_TARGET} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/wx_bgi_graphics>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/phoenix_gi>
 )
 
 target_include_directories(${WXBGI_LIB_TARGET} PRIVATE ${FETCHCONTENT_BASE_DIR}/include_external)
@@ -148,12 +148,12 @@ target_include_directories(${WXBGI_LIB_TARGET} PRIVATE
 )
 
 # Propagate core link dependencies to consumers so targets that link
-# against `wx_bgi_graphics` automatically get the required libraries.
+# against `phoenix_gi` automatically get the required libraries.
 target_link_libraries(${WXBGI_LIB_TARGET} PUBLIC GLEW::GLEW glfw OpenGL::GL glm::glm nlohmann_json::nlohmann_json yaml-cpp manifold)
 
 if(WXBGI_ENABLE_WX)
     # Keep wxWidgets usage requirements visible to consumers, especially when
-    # wx_bgi_graphics is built as a static library.
+    # phoenix_gi is built as a static library.
     target_link_libraries(${WXBGI_LIB_TARGET} PUBLIC wx_bgi_wx_iface)
     target_include_directories(${WXBGI_LIB_TARGET} PRIVATE
         ${CMAKE_SOURCE_DIR}/src/wx
@@ -191,19 +191,19 @@ if(WXBGI_INSTALL_HEADERS)
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/wx_bgi_graphics
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/phoenix_gi
     )
 
     install(
         DIRECTORY ${CMAKE_SOURCE_DIR}/src/
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/wx_bgi_graphics
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/phoenix_gi
         FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp" PATTERN "*.hh"
     )
 
     if(WXBGI_ENABLE_WX AND DEFINED wxwidgets_SOURCE_DIR)
         install(
             DIRECTORY ${wxwidgets_SOURCE_DIR}/include/
-            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/wx_bgi_graphics/wxWidgets
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/phoenix_gi/wxWidgets
             FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp" PATTERN "*.hh"
         )
     endif()

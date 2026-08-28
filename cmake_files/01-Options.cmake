@@ -19,7 +19,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 option(WXBGI_BUILD_SHARED
-    "Build wx_bgi_graphics as a shared library (default: ON)."
+    "Build phoenix_gi as a shared library (default: ON)."
     ON
 )
 

@@ -6,9 +6,9 @@ set(WXBGI_BIN_DIR "${WXBGI_PACKAGE_ROOT}/bin")
 set(WXBGI_LIB_DIR "${WXBGI_PACKAGE_ROOT}/lib")
 set(WXBGI_DOCS_DIR "${WXBGI_PACKAGE_ROOT}/docs")
 set(WXBGI_PACKAGE_STAMP "${WXBGI_PACKAGE_ROOT}/.package_stamp")
-get_target_property(_wx_bgi_output_name wx_bgi_graphics OUTPUT_NAME)
+get_target_property(_wx_bgi_output_name phoenix_gi OUTPUT_NAME)
 if(NOT _wx_bgi_output_name)
-    set(_wx_bgi_output_name "wx_bgi_graphics")
+    set(_wx_bgi_output_name "phoenix_gi")
 endif()
 if(WXBGI_BUILD_SHARED)
     set(_wx_bgi_lib_file "${_wx_bgi_output_name}${CMAKE_SHARED_LIBRARY_SUFFIX}")
@@ -30,7 +30,7 @@ file(MAKE_DIRECTORY
 )
 
 set(WXBGI_PACKAGE_DEPENDENCIES
-    wx_bgi_graphics
+    phoenix_gi
 )
 if(WXBGI_INSTALL_DOCS AND TARGET api_docs)
     list(APPEND WXBGI_PACKAGE_DEPENDENCIES api_docs)
@@ -54,7 +54,7 @@ foreach(_wx_bgi_target IN LISTS WXBGI_BUILD_TARGETS)
         get_target_property(_wx_bgi_is_bundle ${_wx_bgi_target} MACOSX_BUNDLE)
     endif()
 
-    set(_wx_bgi_runtime_search_paths "$<TARGET_FILE_DIR:wx_bgi_graphics>")
+    set(_wx_bgi_runtime_search_paths "$<TARGET_FILE_DIR:phoenix_gi>")
     if(APPLE)
         if(_wx_bgi_is_bundle)
             set(_wx_bgi_package_rpath "@loader_path/../../../../lib")
@@ -133,9 +133,10 @@ endif()
 set(WXBGI_BIN_STAGE_COMMANDS)
 if(WXBGI_PACKAGE_BIN_RUNTIME_TARGET)
     list(APPEND WXBGI_BIN_STAGE_COMMANDS
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-                "$<TARGET_FILE_DIR:${WXBGI_PACKAGE_BIN_RUNTIME_TARGET}>"
-                "${WXBGI_BIN_DIR}"
+        COMMAND ${CMAKE_COMMAND}
+                -DSOURCE_DIR=$<TARGET_FILE_DIR:${WXBGI_PACKAGE_BIN_RUNTIME_TARGET}>
+                -DDEST_DIR=${WXBGI_BIN_DIR}
+                -P ${CMAKE_SOURCE_DIR}/cmake_files/08-zz02-CopyTopLevelFilesOnly.cmake
     )
 endif()
 
@@ -171,7 +172,7 @@ add_custom_command(
                 -DWXBGI_ENABLE_WX=${WXBGI_ENABLE_WX}
             -P ${CMAKE_SOURCE_DIR}/cmake_files/08-zz01-StageHeaders.cmake
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "$<TARGET_FILE:wx_bgi_graphics>"
+            "$<TARGET_FILE:phoenix_gi>"
             "${WXBGI_LIB_DIR}/${_wx_bgi_lib_file}"
     COMMAND ${CMAKE_COMMAND} -E echo "Packaging public headers into zip and tar archives"
     COMMAND ${CMAKE_COMMAND} -E chdir "${WXBGI_HEADER_STAGING_DIR}"

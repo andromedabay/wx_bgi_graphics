@@ -142,64 +142,64 @@ jobs:
         include:
           - os: windows-latest
             variant: builtin_wxwidgets
-            build_dir: build-b
-            artifact_prefix: bgipack_b_wxwidg
+            build_dir: build_b
+            artifact_prefix: gipack_b_wxwidg
             enable_wx: ON
             system_wx: OFF
             system_glfw: OFF
           - os: windows-latest
             variant: system_wxwidgets
-            build_dir: build-s
-            artifact_prefix: bgipack_s_wxwidg
+            build_dir: build_s
+            artifact_prefix: gipack_s_wxwidg
             enable_wx: ON
             system_wx: ON
             system_glfw: ON
           - os: windows-latest
             variant: no_wxwidgets
-            build_dir: build-n
-            artifact_prefix: bgipack_n_wxwidg
+            build_dir: build_n
+            artifact_prefix: gipack_n_wxwidg
             enable_wx: OFF
             system_wx: OFF
             system_glfw: OFF
           - os: ubuntu-latest
             variant: builtin_wxwidgets
-            build_dir: build-b
-            artifact_prefix: bgipack_b_wxwidg
+            build_dir: build_b
+            artifact_prefix: gipack_b_wxwidg
             enable_wx: ON
             system_wx: OFF
             system_glfw: OFF
           - os: ubuntu-latest
             variant: system_wxwidgets
-            build_dir: build-s
-            artifact_prefix: bgipack_s_wxwidg
+            build_dir: build_s
+            artifact_prefix: gipack_s_wxwidg
             enable_wx: ON
             system_wx: ON
             system_glfw: ON
           - os: ubuntu-latest
             variant: no_wxwidgets
-            build_dir: build-n
-            artifact_prefix: bgipack_n_wxwidg
+            build_dir: build_n
+            artifact_prefix: gipack_n_wxwidg
             enable_wx: OFF
             system_wx: OFF
             system_glfw: OFF
           - os: macos-latest
             variant: builtin_wxwidgets
-            build_dir: build-b
-            artifact_prefix: bgipack_b_wxwidg
+            build_dir: build_b
+            artifact_prefix: gipack_b_wxwidg
             enable_wx: ON
             system_wx: OFF
             system_glfw: OFF
           - os: macos-latest
             variant: system_wxwidgets
-            build_dir: build-s
-            artifact_prefix: bgipack_s_wxwidg
+            build_dir: build_s
+            artifact_prefix: gipack_s_wxwidg
             enable_wx: ON
             system_wx: ON
             system_glfw: ON
           - os: macos-latest
             variant: no_wxwidgets
-            build_dir: build-n
-            artifact_prefix: bgipack_n_wxwidg
+            build_dir: build_n
+            artifact_prefix: gipack_n_wxwidg
             enable_wx: OFF
             system_wx: OFF
             system_glfw: OFF
@@ -221,7 +221,7 @@ jobs:
       - name: Install System wxWidgets (Windows)
         if: runner.os == 'Windows' && matrix.variant == 'system_wxwidgets'
         shell: pwsh
-        run: choco install wxwidgets -y
+        run: choco install wxwidgets glfw -y
 
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
