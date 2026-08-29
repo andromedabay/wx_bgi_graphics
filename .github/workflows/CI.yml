@@ -252,9 +252,9 @@ jobs:
         if: runner.os == 'macOS' && matrix.variant == 'system_wxwidgets'
         run: brew install wxwidgets
 
-      - name: Configure
+      - name: Configure (Windows, builtin_wxwidgets or no_wxwidgets)
         shell: pwsh
-        if: runner.os == 'Windows'
+        if: runner.os == 'Windows' && (matrix.variant == 'builtin_wxwidgets' || matrix.variant == 'no_wxwidgets')
         env:
           BUILD_DIR: ${{ matrix.build_dir }}
           ENABLE_WX: ${{ matrix.enable_wx }}
@@ -266,6 +266,26 @@ jobs:
             '-B', $env:BUILD_DIR,
             '-DWXBGI_ENABLE_TEST_SEAMS=OFF',
             "-DWXBGI_ENABLE_WX=$env:ENABLE_WX"
+          )
+          if ($env:SYSTEM_WX -eq 'ON') { $args += '-DWXBGI_SYSTEM_WX=ON' }
+          if ($env:SYSTEM_GLFW -eq 'ON') { $args += '-DWXBGI_SYSTEM_GLFW=ON' }
+          cmake @args
+
+      - name: Configure (Windows, system_wxwidgets)
+        shell: pwsh
+        if: runner.os == 'Windows' && matrix.variant == 'system_wxwidgets'
+        env:
+          BUILD_DIR: ${{ matrix.build_dir }}
+          ENABLE_WX: ${{ matrix.enable_wx }}
+          SYSTEM_WX: ${{ matrix.system_wx }}
+          SYSTEM_GLFW: ${{ matrix.system_glfw }}
+        run: |
+          $args = @(
+            '-S', '.',
+            '-B', $env:BUILD_DIR,
+            '-DWXBGI_ENABLE_TEST_SEAMS=OFF',
+            "-DWXBGI_ENABLE_WX=$env:ENABLE_WX",
+            '-DCMAKE_PREFIX_PATH="C:/ProgramData/chocolatey/lib/glfw3/tools"'
           )
           if ($env:SYSTEM_WX -eq 'ON') { $args += '-DWXBGI_SYSTEM_WX=ON' }
           if ($env:SYSTEM_GLFW -eq 'ON') { $args += '-DWXBGI_SYSTEM_GLFW=ON' }
