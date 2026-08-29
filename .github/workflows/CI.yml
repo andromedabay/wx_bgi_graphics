@@ -143,63 +143,63 @@ jobs:
           - os: windows-latest
             variant: builtin_wxwidgets
             build_dir: build_b
-            artifact_prefix: gipack_b_wxwidg
+            artifact_prefix: pack_b_wxwidg
             enable_wx: ON
             system_wx: OFF
             system_glfw: OFF
           - os: windows-latest
             variant: system_wxwidgets
             build_dir: build_s
-            artifact_prefix: gipack_s_wxwidg
+            artifact_prefix: pack_s_wxwidg
             enable_wx: ON
             system_wx: ON
-            system_glfw: ON
+            system_glfw: OFF
           - os: windows-latest
             variant: no_wxwidgets
             build_dir: build_n
-            artifact_prefix: gipack_n_wxwidg
+            artifact_prefix: pack_n_wxwidg
             enable_wx: OFF
             system_wx: OFF
             system_glfw: OFF
           - os: ubuntu-latest
             variant: builtin_wxwidgets
             build_dir: build_b
-            artifact_prefix: gipack_b_wxwidg
+            artifact_prefix: pack_b_wxwidg
             enable_wx: ON
             system_wx: OFF
             system_glfw: OFF
           - os: ubuntu-latest
             variant: system_wxwidgets
             build_dir: build_s
-            artifact_prefix: gipack_s_wxwidg
+            artifact_prefix: pack_s_wxwidg
             enable_wx: ON
             system_wx: ON
             system_glfw: ON
           - os: ubuntu-latest
             variant: no_wxwidgets
             build_dir: build_n
-            artifact_prefix: gipack_n_wxwidg
+            artifact_prefix: pack_n_wxwidg
             enable_wx: OFF
             system_wx: OFF
             system_glfw: OFF
           - os: macos-latest
             variant: builtin_wxwidgets
             build_dir: build_b
-            artifact_prefix: gipack_b_wxwidg
+            artifact_prefix: pack_b_wxwidg
             enable_wx: ON
             system_wx: OFF
             system_glfw: OFF
           - os: macos-latest
             variant: system_wxwidgets
             build_dir: build_s
-            artifact_prefix: gipack_s_wxwidg
+            artifact_prefix: pack_s_wxwidg
             enable_wx: ON
             system_wx: ON
             system_glfw: ON
           - os: macos-latest
             variant: no_wxwidgets
             build_dir: build_n
-            artifact_prefix: gipack_n_wxwidg
+            artifact_prefix: pack_n_wxwidg
             enable_wx: OFF
             system_wx: OFF
             system_glfw: OFF
@@ -219,7 +219,7 @@ jobs:
         run: choco install doxygen.install -y
 
       - name: Install System wxWidgets (Windows)
-        if: runner.os == 'Windows' && matrix.variant == 'system_wxwidgets'
+        if: runner.os == 'Windows' && matrix.system_glfw
         shell: pwsh
         run: choco install wxwidgets glfw3 -y
 
@@ -234,22 +234,22 @@ jobs:
             libgl1-mesa-dev libglu1-mesa-dev mesa-common-dev xvfb
 
       - name: Install System wxWidgets (Linux)
-        if: runner.os == 'Linux' && matrix.variant == 'system_wxwidgets'
+        if: runner.os == 'Linux' && matrix.system_wx
         run: sudo apt-get install -y libwxgtk3.2-dev
 
       - name: Install Additional Linux Dependencies
-        if: runner.os == 'Linux' && matrix.variant == 'builtin_wxwidgets'
+        if: runner.os == 'Linux' && !matrix.system_wx
         run: |
           sudo apt update
           sudo apt install -y build-essential libgtk-3-dev libgl1-mesa-dev \
-            libglu1-mesa-dev libwebkit2gtk-4.0-dev libcurl4-openssl-dev
+            libglu1-mesa-dev libwebkit2gtk-4.1-dev libcurl4-openssl-dev
 
       - name: Install Doxygen (macOS)
         if: runner.os == 'macOS'
         run: brew install doxygen glfw
 
       - name: Install System wxWidgets (macOS)
-        if: runner.os == 'macOS' && matrix.variant == 'system_wxwidgets'
+        if: runner.os == 'macOS' && matrix.system_wx
         run: brew install wxwidgets
 
       - name: Configure (Windows, builtin_wxwidgets or no_wxwidgets)
@@ -273,7 +273,7 @@ jobs:
 
       - name: Configure (Windows, system_wxwidgets)
         shell: pwsh
-        if: runner.os == 'Windows' && matrix.variant == 'system_wxwidgets'
+        if: runner.os == 'Windows' && matrix.system_glfw
         env:
           BUILD_DIR: ${{ matrix.build_dir }}
           ENABLE_WX: ${{ matrix.enable_wx }}
