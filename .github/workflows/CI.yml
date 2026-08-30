@@ -219,9 +219,14 @@ jobs:
         run: choco install doxygen.install -y
 
       - name: Install System wxWidgets (Windows)
-        if: runner.os == 'Windows' && (matrix.system_glfw || matrix.system_wx)
+        if: runner.os == 'Windows' && matrix.system_wx
         shell: pwsh
-        run: choco install wxwidgets glfw3 -y
+        run: choco install wxwidgets -y
+
+      - name: Install System GLFW (Windows)
+        if: runner.os == 'Windows' && matrix.system_glfw
+        shell: pwsh
+        run: choco install glfw3 -y
 
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
@@ -252,9 +257,9 @@ jobs:
         if: runner.os == 'macOS' && matrix.system_wx
         run: brew install wxwidgets
 
-      - name: Configure (Windows, builtin_wxwidgets or no_wxwidgets)
+      - name: Configure (Windows, !system_glfw)
         shell: pwsh
-        if: runner.os == 'Windows' && (matrix.variant == 'builtin_wxwidgets' || matrix.variant == 'no_wxwidgets')
+        if: runner.os == 'Windows' && !matrix.system_glfw
         env:
           BUILD_DIR: ${{ matrix.build_dir }}
           ENABLE_WX: ${{ matrix.enable_wx }}
@@ -271,7 +276,7 @@ jobs:
           if ($env:SYSTEM_GLFW -eq 'ON') { $args += '-DWXBGI_SYSTEM_GLFW=ON' }
           cmake @args
 
-      - name: Configure (Windows, system_wxwidgets)
+      - name: Configure (Windows, system_glfw)
         shell: pwsh
         if: runner.os == 'Windows' && matrix.system_glfw
         env:
