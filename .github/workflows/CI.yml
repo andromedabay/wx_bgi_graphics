@@ -219,7 +219,7 @@ jobs:
         run: choco install doxygen.install -y
 
       - name: Install System wxWidgets (Windows)
-        if: runner.os == 'Windows' && matrix.system_glfw
+        if: runner.os == 'Windows' && (matrix.system_glfw || matrix.system_wx)
         shell: pwsh
         run: choco install wxwidgets glfw3 -y
 
