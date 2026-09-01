@@ -219,12 +219,12 @@ jobs:
         run: choco install doxygen.install -y
 
       - name: Install System wxWidgets (Windows)
-        if: runner.os == 'Windows' && matrix.system_wx
+        if: runner.os == 'Windows' && matrix.system_wx == true
         shell: pwsh
         run: choco install wxwidgets -y
 
       - name: Install System GLFW (Windows)
-        if: runner.os == 'Windows' && matrix.system_glfw
+        if: runner.os == 'Windows' && matrix.system_glfw == true
         shell: pwsh
         run: choco install glfw3 -y
 
@@ -239,11 +239,11 @@ jobs:
             libgl1-mesa-dev libglu1-mesa-dev mesa-common-dev xvfb
 
       - name: Install System wxWidgets (Linux, system_wx)
-        if: runner.os == 'Linux' && matrix.system_wx
+        if: runner.os == 'Linux' && matrix.system_wx == true
         run: sudo apt-get install -y libwxgtk3.2-dev
 
       - name: Install Additional Linux Dependencies (Linux, !system_wx)
-        if: runner.os == 'Linux' && !matrix.system_wx
+        if: runner.os == 'Linux' && matrix.system_wx == false
         run: |
           sudo apt update
           sudo apt install -y build-essential libgtk-3-dev libgl1-mesa-dev \
@@ -254,38 +254,38 @@ jobs:
         run: brew install doxygen glfw
 
       - name: Install System wxWidgets (macOS)
-        if: runner.os == 'macOS' && matrix.system_wx
+        if: runner.os == 'macOS' && matrix.system_wx == true
         run: brew install wxwidgets
 
       - name: Set CMAKE_PREFIX_PATH (Windows, system_glfw)
         shell: pwsh
-        if: runner.os == 'Windows' && matrix.system_glfw
+        if: runner.os == 'Windows' && matrix.system_glfw == true
         run: |
-          $prefix="C:/ProgramData/chocolatey/lib/glfw3/tools"
+          $prefix="C:\\ProgramData\\chocolatey\\lib\\glfw3\\tools"
           if (  [String]::IsNullOrWhiteSpace($env:CMAKE_PREFIX_PATH) ) {
               Add-Content -Path $env:GITHUB_ENV -Value "CMAKE_PREFIX_PATH=$prefix"
           }
           else {
-              $newPath = Join-Path $env:CMAKE_PREFIX_PATH $prefix
+              $newPath = "$env:CMAKE_PREFIX_PATH;$prefix"
               Add-Content -Path $env:GITHUB_ENV -Value "CMAKE_PREFIX_PATH=$newPath"
           }
 
       - name: Set CMAKE_PREFIX_PATH (Windows, system_wx)
         shell: pwsh
-        if: runner.os == 'Windows' && matrix.system_wx
+        if: runner.os == 'Windows' && matrix.system_wx == true
         run: |
-          $prefix="C:/wxWidgets-3.3.1/"
+          $prefix="C:\\wxWidgets-3.3.1"
           if (  [String]::IsNullOrWhiteSpace($env:CMAKE_PREFIX_PATH) ) {
               Add-Content -Path $env:GITHUB_ENV -Value "CMAKE_PREFIX_PATH=$prefix"
           }
           else {
-              $newPath = Join-Path $env:CMAKE_PREFIX_PATH $prefix
+              $newPath = "$env:CMAKE_PREFIX_PATH;$prefix"
               Add-Content -Path $env:GITHUB_ENV -Value "CMAKE_PREFIX_PATH=$newPath"
           }
 
-      - name: Set CMAKE_PREFIX_PATH (Windows, !system_glfw, !system_wx)
+      - name: Set CMAKE_PREFIX_PATH (Windows, system_glfw == false, system_wx == false)
         shell: pwsh
-        if: runner.os == 'Windows' && !matrix.system_glfw && !matrix.system_wx
+        if: runner.os == 'Windows' && matrix.system_glfw == false && matrix.system_wx == false
         run: |
           if (  [String]::IsNullOrWhiteSpace($env:CMAKE_PREFIX_PATH) ) {
               Add-Content -Path $env:GITHUB_ENV -Value "CMAKE_PREFIX_PATH="
@@ -294,7 +294,7 @@ jobs:
       - name: Debug env (Windows)
         shell: pwsh
         if: runner.os == 'Windows'
-        run: echo "CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH"
+        run: echo "CMAKE_PREFIX_PATH=$env:CMAKE_PREFIX_PATH"
 
       - name: Configure (Windows)
         shell: pwsh
@@ -312,8 +312,8 @@ jobs:
             "-DWXBGI_ENABLE_WX=$env:ENABLE_WX",
             "-DCMAKE_PREFIX_PATH=$env:CMAKE_PREFIX_PATH"
           )
-          if ($env:SYSTEM_WX -eq 'ON') { $args += '-DWXBGI_SYSTEM_WX=ON' }
-          if ($env:SYSTEM_GLFW -eq 'ON') { $args += '-DWXBGI_SYSTEM_GLFW=ON' }
+          if ($env:SYSTEM_WX -eq 'true') { $args += '-DWXBGI_SYSTEM_WX=ON' }
+          if ($env:SYSTEM_GLFW -eq 'true') { $args += '-DWXBGI_SYSTEM_GLFW=ON' }
           cmake @args
 
       - name: Configure
