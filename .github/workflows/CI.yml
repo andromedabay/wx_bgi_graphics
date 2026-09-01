@@ -327,7 +327,7 @@ jobs:
         if: runner.os != 'Windows'
         env:
           BUILD_DIR: ${{ matrix.build_dir }}
-        run: cmake --build "$BUILD_DIR" -j
+        run: cmake --build "$BUILD_DIR" -j --config Release --target install
 
       - name: Install Mesa software renderer (Windows)
         if: runner.os == 'Windows'
