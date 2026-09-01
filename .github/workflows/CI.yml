@@ -261,34 +261,36 @@ jobs:
         shell: pwsh
         if: runner.os == 'Windows' && matrix.system_glfw
         run: |
-          if (  [String]::IsNullOrWhiteSpace($env:CMAKE_PREFIX_PATH) ) {  `
-              $env:CMAKE_PREFIX_PATH = "C:/ProgramData/chocolatey/lib/glfw3/tools"    `
-          }  `
-          else {  `
-              $env:CMAKE_PREFIX_PATH = Join-Path $env:CMAKE_PREFIX_PATH C:/ProgramData/chocolatey/lib/glfw3/tools  `
+          $prefix="C:/ProgramData/chocolatey/lib/glfw3/tools"
+          if (  [String]::IsNullOrWhiteSpace($env:CMAKE_PREFIX_PATH) ) {
+              Add-Content -Path $env:GITHUB_ENV -Value "CMAKE_PREFIX_PATH=$prefix"
+          }
+          else {
+              $newPath = Join-Path $env:CMAKE_PREFIX_PATH $prefix
+              Add-Content -Path $env:GITHUB_ENV -Value "CMAKE_PREFIX_PATH=$newPath"
           }
 
       - name: Set CMAKE_PREFIX_PATH (Windows, system_wx)
         shell: pwsh
         if: runner.os == 'Windows' && matrix.system_wx
         run: |
-          if (  [String]::IsNullOrWhiteSpace($env:CMAKE_PREFIX_PATH) ) {  `
-              $env:CMAKE_PREFIX_PATH = "C:/wxWidgets-3.3.1/"    `
-          }  `
-          else {  `
-              $env:CMAKE_PREFIX_PATH = Join-Path $env:CMAKE_PREFIX_PATH C:/wxWidgets-3.3.1  `
+          $prefix="C:/wxWidgets-3.3.1/"
+          if (  [String]::IsNullOrWhiteSpace($env:CMAKE_PREFIX_PATH) ) {
+              Add-Content -Path $env:GITHUB_ENV -Value "CMAKE_PREFIX_PATH=$prefix"
+          }
+          else {
+              $newPath = Join-Path $env:CMAKE_PREFIX_PATH $prefix
+              Add-Content -Path $env:GITHUB_ENV -Value "CMAKE_PREFIX_PATH=$newPath"
           }
 
       - name: Set CMAKE_PREFIX_PATH (Windows, !system_glfw, !system_wx)
         shell: pwsh
         if: runner.os == 'Windows' && !matrix.system_glfw && !matrix.system_wx
         run: |
-          $env:CMAKE_PREFIX_PATH = if (  [String]::IsNullOrWhiteSpace($env:CMAKE_PREFIX_PATH) ) {  `
-              ""  `
-          }  `
-          else {  `
-              $env:CMAKE_PREFIX_PATH = $env:CMAKE_PREFIX_PATH `
+          if (  [String]::IsNullOrWhiteSpace($env:CMAKE_PREFIX_PATH) ) {
+              Add-Content -Path $env:GITHUB_ENV -Value "CMAKE_PREFIX_PATH="
           }
+
       - name: Configure (Windows)
         shell: pwsh
         if: runner.os == 'Windows'
