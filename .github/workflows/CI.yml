@@ -233,21 +233,19 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y doxygen \
-            libglfw3-dev \
             libgtk-3-dev \
             libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev \
-            libgl1-mesa-dev libglu1-mesa-dev mesa-common-dev xvfb
+            libgl1-mesa-dev libglu1-mesa-dev mesa-common-dev xvfb \
+            build-essential libgtk-3-dev libgl1-mesa-dev \
+            libglu1-mesa-dev libwebkit2gtk-4.1-dev libcurl4-openssl-dev
 
       - name: Install System wxWidgets (Linux, system_wx)
         if: runner.os == 'Linux' && matrix.system_wx == true
         run: sudo apt-get install -y libwxgtk3.2-dev
 
-      - name: Install Additional Linux Dependencies (Linux, !system_wx)
-        if: runner.os == 'Linux' && matrix.system_wx == false
-        run: |
-          sudo apt update
-          sudo apt install -y build-essential libgtk-3-dev libgl1-mesa-dev \
-            libglu1-mesa-dev libwebkit2gtk-4.1-dev libcurl4-openssl-dev
+      - name: Install System GLFW (Linux, system_glfw)
+        if: runner.os == 'Linux' && matrix.system_glfw == true
+        run: sudo apt-get install -y libglfw3-dev
 
       - name: Install Doxygen (macOS)
         if: runner.os == 'macOS'
@@ -342,6 +340,41 @@ jobs:
         env:
           BUILD_DIR: ${{ matrix.build_dir }}
         run: cmake --build $env:BUILD_DIR -j --config Release
+
+      - name: Set CMAKE_PREFIX_PATH (Not-Windows, system_glfw)
+        if: runner.os != 'Windows' && matrix.system_glfw == true
+        run: |
+          prefix="/usr/local"
+          if [ -z "$CMAKE_PREFIX_PATH" ]; then
+              echo "CMAKE_PREFIX_PATH=$prefix" >> $GITHUB_ENV
+          else
+              newPath="$CMAKE_PREFIX_PATH:$prefix"
+              echo "CMAKE_PREFIX_PATH=$newPath" >> $GITHUB_ENV
+          fi
+
+      - name: Set CMAKE_PREFIX_PATH (Not-Windows, system_wx)
+        if: runner.os != 'Windows' && matrix.system_wx == true
+        run: |
+          prefix="/usr/local"
+          if [ -z "$CMAKE_PREFIX_PATH" ]; then
+              echo "CMAKE_PREFIX_PATH=$prefix" >> $GITHUB_ENV
+          else
+              newPath="$CMAKE_PREFIX_PATH:$prefix"
+              echo "CMAKE_PREFIX_PATH=$newPath" >> $GITHUB_ENV
+          fi
+
+      - name: Set CMAKE_PREFIX_PATH (Not-Windows, system_glfw == false, system_wx == false)
+        if: runner.os != 'Windows' && matrix.system_glfw == false && matrix.system_wx == false
+        run: |
+          if [ -z "$CMAKE_PREFIX_PATH" ]; then
+              echo "CMAKE_PREFIX_PATH=" >> $GITHUB_ENV
+          fi
+
+      - name: Debug env (Not-Windows)
+        if: runner.os != 'Windows'
+        run: |
+          set
+          echo "CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH"
 
       - name: Build
         if: runner.os != 'Windows'
